@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.9.10)  10 SEP 2025 17:30
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.9.10)  10 SEP 2025 17:45
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -344,21 +344,17 @@ LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 12
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 ) (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
-)
-LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <8> not available
-(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 133.
-<figures/dag_lang_example.png, id=13, 596.2275pt x 131.49126pt>
-File: figures/dag_lang_example.png Graphic file (type png)
-<use figures/dag_lang_example.png>
-Package pdftex.def Info: figures/dag_lang_example.png  used on input line 155.
-(pdftex.def)             Requested size: 252.0pt x 55.57506pt.
- (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
+) [3] [4] (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 )
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[3 <./figures/dag_lang_example.png>] [4] (main.bbl)
+LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <8> not available
+(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 257.
+<figures/dag_lang_example.png, id=21, 596.2275pt x 131.49126pt>
+File: figures/dag_lang_example.png Graphic file (type png)
+<use figures/dag_lang_example.png>
+Package pdftex.def Info: figures/dag_lang_example.png  used on input line 281.
+(pdftex.def)             Requested size: 252.0pt x 55.57506pt.
+ (main.bbl)
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -370,22 +366,22 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[5] (main.aux)
+[5 <./figures/dag_lang_example.png>] (main.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 7673 strings out of 474486
- 121625 string characters out of 5743755
- 2109542 words of memory out of 5000000
- 29879 multiletter control sequences out of 15000+600000
+ 7670 strings out of 474486
+ 121572 string characters out of 5743755
+ 2105542 words of memory out of 5000000
+ 29876 multiletter control sequences out of 15000+600000
  604348 words of font info for 133 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 57i,11n,65p,916b,1436s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 57i,11n,65p,916b,1412s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrb8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrro8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (5 pages, 142886 bytes).
+Output written on main.pdf (5 pages, 142393 bytes).
 PDF statistics:
  62 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

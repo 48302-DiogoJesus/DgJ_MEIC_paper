@@ -100,7 +100,7 @@ By analyzing related works, we didn't find solutions that tried to make scheduli
 
 While current serverless platforms excel at embarrassingly parallel jobs with short-duration tasks, they present challenges for workflows involving significant data exchange between tasks due to their architectural limitations, which deny inter-function communication and control over where each function is executed. In the future, however, serverless platforms are expected to improve, eventually overcoming these limitations and becoming a viable, user-friendly and cost-effective alternative to IaaS for a wide range of workflows.
 
-As we have stated, most existing serverless schedulers employ an approach where decisions are made based solely on the immediate workflow stage without considering the global implications. We hereby propose a novel \textit{decentralized serverless workflow execution engine} that leverages historical metadata from previous workflow runs to make fast predictions and create workflow plans before they execute. Such plans include information about where to execute each task (locality), the worker resource configuration to use (how much vCPUs and Memory) and optimizations. At run-time, the workers will execute the plan and apply the specified optimizations.
+As we have stated, most existing serverless schedulers employ an approach where decisions are made based solely on the immediate workflow stage without considering the global implications. We hereby propose a novel \textit{decentralized serverless workflow execution engine} that leverages historical metadata from previous workflow runs to make fast predictions and create workflow plans before they execute. Such plans include information about where to execute each task (locality), the worker resource configuration to use (how much vCPUs and Memory) and optimizations. At run-time, the workers will execute the plan and apply the specified optimizations. It was written in \textit{Python}, a language known for its simplicity and popularity among data scientists.
 
 \subsection{Architecture Overview}
 
@@ -121,63 +121,6 @@ There are three distinct computational entities in our distributed decentralized
     \item \textbf{Workers}: These are the FaaS workers (often running in containerized environments), that execute one or more tasks. The decentralization of our solution is due to the fact that these workers are responsible for scheduling of subsequent tasks, delegating tasks and launching new workers when needed without requiring a central scheduler. Lastly, they are also responsible for collecting and uploading metadata;
     \item \textbf{Storage}: Consists of an \textit{Intermediate Storage} for intermediate outputs which may be needed for subsequent tasks and a \textit{Metadata Store} for information crucial to workflow execution (e.g., notifications about task readiness and completion).
 \end{itemize}
-
-\subsection{DAG Language}
-%TODO: highlight limitations and alternative languages
-
-The user interaction starts by defining their workflow as a composition of individual Python functions, as shown in listing \ref{lst:dag_lang_example}. Here, we define two tasks, \texttt{task\_a} and \texttt{task\_b}, and then compose them into a DAG/Workflow by passing their results as arguments to the next task. The resulting workflow can be visualized in figure \ref{fig:dag_example}.
-
-\begin{figure}[h]
-\centering
-\begin{lstlisting}[language=Python, basicstyle=\ttfamily\footnotesize, columns=fullflexible, breaklines=true]
-# 1) Task definition
-@DAGTask
-def task_a(a: int) -> int:
-    return a + 1
-
-@DAGTask
-def task_b(*args: int) -> int:
-    return sum(args)
-
-# 2) Task composition (DAG/Workflow)
-a1 = task_a(10)
-a2 = task_a(a1)
-a3 = task_a(a1)
-b1 = task_b(a2, a3)
-a4 = task_a(b1)
-\end{lstlisting}
-\caption{DAG definition example}
-\label{lst:dag_lang_example}
-\end{figure}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\columnwidth]{figures/dag_lang_example.png}
-    \caption{Simple DAG example}
-    \label{fig:dag_example}
-\end{figure}
-
-When \texttt{task\_a(10)} is invoked, it doesn't actually run the user code. It instead creates a representation of the task, which can be passed as argument to other tasks. The workflow planning and execution only happens once \texttt{.compute()} is called on the last/sink task (\texttt{a4}), as shown in listing \ref{lst:triggering_workflow_execution}. When \texttt{compute()} is called, we can create a representation of the entire workflow structure by backtracking the task dependencies.
-
-\begin{figure}[h]
-\centering
-\begin{lstlisting}[language=Python, basicstyle=\ttfamily\footnotesize, columns=fullflexible, breaklines=true]
-result = a4.compute(
-    dag_name="simpledag", 
-    config=Worker.Config(
-        faas_gateway_address=...,
-        intermediate_storage_config=(ip, port, password),
-        metrics_storage_config=(ip, port, password),
-        planner_config=SimplePlannerAlgorithm.Config(
-            sla=sla,
-            worker_resource_configuration=TaskWorkerResourceConfiguration(cpus=3, memory_mb=512),
-        )
-    )
-)
-\end{lstlisting}
-\caption{Triggering workflow execution}
-\label{lst:triggering_workflow_execution}
-\end{figure}
 
 \subsubsection{Metadata Management}
 The \textbf{Metadata Management} component is central to providing accurate task-wise predictions for execution time, input/output ratio, and data transfer times. This is achieved by collecting historical data from previous workflow runs. The gathered information is stored in WUKONGs' Metadata Store, with proposed structures for task metadata and data transfer metadata.
@@ -304,18 +247,74 @@ With a \textbf{plan-based approach}, as soon as Task 1's worker finishes, it imm
 
 By adding \textbf{optimizations like pre-warming and pre-loading}, the plan-based approach can be further enhanced [28]. For example, Task 1's worker can pre-warm the worker designated for Task 3, reducing cold start latency [28]. Simultaneously, if Worker 2 needs Task 1's output for Task 5, it can start downloading Task 1's output while it executes Task 2 [28]. This pre-loading of data dependencies in parallel significantly helps in reducing the overall workflow makespan [28].
 
-\subsection{Software Architecture Modifications}
-The integration of this solution into WUKONG 2.0 requires specific modifications to its software components [29].
-\begin{itemize}
-    \item \textbf{Workflow Preparation}: The Static Workflow Planner will be integrated into WUKONGs' workflow reception and transformation code [29]. WUKONGs' Static Schedule Generator, which currently assumes task locations are unknown, will need modification to use the annotated DAG and potentially change its DAG partitioning strategy to leverage the global view provided by the plan [29].
-    \item \textbf{Workflow Execution}: The WUKONG executors' software will be extended to support the Metadata Management component, requiring modifications to upload collected metrics to the Metadata Store [30]. Furthermore, WUKONGs' existing three data locality optimizations will be replaced with the proposed plan-aware optimizations, as the original optimizations are no longer necessary when task execution locations are predetermined [30]. The scheduler will be adapted to interpret the annotated DAG and apply the new optimizations at appropriate stages (before, during, or after task execution).
-\end{itemize}
+\subsection{Workflow Definition Language}
 
-\section{??Implementation??}
-%TODO: Makes sense to have this in the paper version??
+The user can create workflows by composing individual Python functions, as shown in listing \ref{lst:dag_lang_example}. Here, we define two tasks, \texttt{task\_a} and \texttt{task\_b}, and then compose them into a DAG/Workflow by passing their results as arguments to the next task. The resulting workflow can be visualized in figure \ref{fig:dag_example}.
+
+\begin{figure}[h]
+\centering
+\begin{lstlisting}[language=Python, basicstyle=\ttfamily\footnotesize, columns=fullflexible, breaklines=true]
+# 1) Task definition
+@DAGTask
+def task_a(a: int) -> int:
+    # ... user code logic ...
+    return a + 1
+
+@DAGTask
+def task_b(*args: int) -> int:
+    # ... user code logic ...
+    return sum(args)
+
+# 2) Task composition (DAG/Workflow)
+a1 = task_a(10)
+a2 = task_a(a1)
+a3 = task_a(a1)
+b1 = task_b(a2, a3)
+a4 = task_a(b1)
+\end{lstlisting}
+\caption{DAG definition example}
+\label{lst:dag_lang_example}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\columnwidth]{figures/dag_lang_example.png}
+    \caption{Simple DAG example}
+    \label{fig:dag_example}
+\end{figure}
+
+When \texttt{task\_a(10)} is invoked, it doesn't actually run the user code. It instead creates a representation of the task, which can be passed as argument to other tasks. The workflow planning and execution only happens once \texttt{.compute()} is called on the last/sink task (\texttt{a4}), as shown in listing \ref{lst:triggering_workflow_execution}. When \texttt{compute()} is called, we can create a representation of the entire workflow structure by backtracking the task dependencies.
+
+\begin{figure}[h]
+\centering
+\begin{lstlisting}[language=Python, basicstyle=\ttfamily\footnotesize, columns=fullflexible, breaklines=true]
+result = a4.compute(
+    dag_name="simpledag", 
+    config=Worker.Config(
+        faas_gateway_address=...,
+        intermediate_storage_config=(ip, port, password),
+        metrics_storage_config=(ip, port, password),
+        planner_config=SimplePlannerAlgorithm.Config(
+            sla=sla,
+            worker_resource_configuration=TaskWorkerResourceConfiguration(cpus=3, memory_mb=512),
+        )
+    )
+)
+\end{lstlisting}
+\caption{Triggering workflow execution}
+\label{lst:triggering_workflow_execution}
+\end{figure}
+
+It's important to note that this DAG definition language doesn't support "dynamic fan-outs" (e.g., creating a variable number of tasks depending on the result of another task).
+
+% ------------------------------------------------ %
 
 \section{Evaluation and Analysis}
+
+\subsection{Testing Environment}
 %TODO: explain Docker simulating faas environment
+\subsection{Testing Configurations}
+%TODO: worker resources, workflows, planners, SLAs
 
 \section{Conclusion}
 

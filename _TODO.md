@@ -1,0 +1,4 @@
+- Solution/Architecture
+    - Fix the distributed architecture diagram on `eraser.io` so that it shows what runs on the client and what runs on cloud
+    - Add 1/2 diagrams from pic.pdf
+    - MetadataManagement: describe the 3 available planners
