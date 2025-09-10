@@ -6,3 +6,6 @@ FaaS
 Dask
 Lambdata
 makespan
+vCPUs
+WUKONGs
+AnnotatedTask
