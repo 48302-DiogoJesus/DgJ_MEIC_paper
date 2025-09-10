@@ -10,6 +10,13 @@
 \usepackage{url}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+% Suppress overfull/underfull \hbox warnings
+\hfuzz=10pt        % allows overfull hboxes up to 10pt without warning
+\hbadness=10000    % suppresses underfull hbox warnings
+\vbadness=10000    % suppresses underfull vbox warnings
+
+
 \begin{document}
 
 \title{Serverless Dataflows}
@@ -37,20 +44,20 @@ In this document, we introduce a decentralized DAG engine that leverages histori
 \end{abstract}
 
 \begin{IEEEkeywords}
-Cloud Computing, Serverless, FaaS, Serverless Workflows, Metadata, Workflow Prediction
+Cloud Computing, Serverless, FaaS, Serverless Workflows, DAG, Metadata, Workflow Prediction
 \end{IEEEkeywords}
 
 \section{Introduction}
 
 Serverless computing, with its Function-as-a-Service (FaaS) model, offers operational simplicity, automatic scalability, and a fine-grained pay-per-use pricing model by abstracting infrastructure management. This has led to its widespread adoption for event-driven systems, microservices, and web services on platforms like AWS Lambda\footnote{https://aws.amazon.com/pt/lambda/}, Azure Functions\footnote{https://azure.microsoft.com/en-us/products/functions}, and Google Cloud Functions\footnote{https://cloud.google.com/functions}.
 
-This paradigm is also increasingly used to execute complex scientific and data processing workflows, such as the Cybershake~\cite{cybershake_workflow} seismic hazard analysis or multimedia processing pipelines. These applications are structured as workflows—formally represented as Directed Acyclic Graphs (DAGs) of interdependent tasks. However, efficiently executing these complex workflows on serverless platforms remains a significant challenge. The stateless nature of serverless functions hinders direct communication, forcing data exchange between these tasks through external storage and leading to performance degradation and increased latency for data-intensive workflows.
+This paradigm is also increasingly used to execute complex scientific and data processing workflows, such as the Cybershake~\cite{cybershake_workflow} seismic hazard analysis or Montage~\cite{montage_astronomy}, an astronomy image mosaicking workflow. These applications are structured as workflows—formally represented as Directed Acyclic Graphs (DAGs) of interdependent tasks. However, efficiently executing these complex workflows on serverless platforms remains a significant challenge. The stateless nature of serverless functions hinders direct communication, forcing data exchange between these tasks through external storage and leading to performance degradation and increased latency for data-intensive workflows.
 
 Existing solutions, including commercial stateful functions and research prototypes like WUKONG~\cite{wukong_2}, address these issues with improved orchestration and decentralized scheduling. Yet, these approaches often rely on one-step scheduling, making decisions based solely on the immediate workflow stage without considering global implications.
 
 In this paper, we argue that leveraging historical metadata from previous workflow runs can provide critical insights into task behavior. We propose a scheduler that uses this information to make smarter scheduling decisions, aiming to reduce overall workflow makespan and increase resource efficiency on serverless platforms.
 
-%! TODO: Contributions
+%! TODO: Contributions we make with this work
 
 \section{Related Work}
 \label{s:related_work}
@@ -73,19 +80,20 @@ The most directly comparable work to ours is \textbf{WUKONG}~\cite{wukong_2}, a 
     \item \textbf{Delayed I/O:} Heuristically postponing data writes to external storage in the hope that dependent tasks can be executed locally.
 \end{itemize}
 
-While WUKONG represents a significant advance, its scheduling and optimizations are based solely on the structure of the \textit{current} workflow DAG. It employs a \textbf{one-step scheduling} policy, making decisions using immediate runtime information without leveraging knowledge it has about the entire workflow. Besides that, WUKONG also uses optimizations based on heuristics, which can lead to suboptimal performance when workflow behaviour deviates from expected patterns.
+While WUKONG represents a significant advance, its scheduling and optimizations are based solely on the structure of the \textit{current} workflow DAG. It employs a \textbf{one-step scheduling} policy, making decisions using immediate runtime information without leveraging knowledge it has about the entire workflow. Besides that, WUKONG also uses optimizations based on heuristics, which can lead to suboptimal performance when workflow behavior deviates from expected patterns.
 
 \subsection{Discussion}
 The Function-as-a-Service (FaaS) model offers a transformative approach to cloud computing by abstracting infrastructure management and enabling developers to focus on business logic. Despite current platform limitations, Serverless architectures have been widely adopted for event-driven applications, microservices, IoT processing, and web services.
 
 While researching, we explored some modern cloud-native solutions that seamlessly integrate with cloud environments. We also found innovative extensions to the FaaS runtime that aim to improve \textbf{data locality}, a technique that can enhance performance and resource efficiency of serverless workflows by reducing data transfer overheads and removing the need to use external services for synchronization.
 
-Finally, we compared serverless workflow execution orchestrators and schedulers, from which we found WUKONG to be the most interesting, innovative and promising approach for exploiting the most out of the serverless computing paradigm. WUKONG achieves \textbf{fast scale-out times} by delegating part of the worker instancing to an external component, \textbf{scalability} with its distributed scheduling approach, and \textbf{data locality} with its optimizations that try to run related tasks on the same worker, minimizing data transfers. Despite its advantages, we also found that WUKONG’s heuristic optimizations could become inefficient in some scenarios. We believe that WUKONG scheduling decisions are optimized for workflows with short and uniform tasks.
+Finally, we compared serverless workflow execution orchestrators and schedulers, from which we found WUKONG to be the most interesting, innovative and promising approach for exploiting the most out of the serverless computing paradigm. WUKONG achieves \textbf{fast scale-out times} by delegating part of the worker instancing to an external component, \textbf{scalability} with its distributed scheduling approach, and \textbf{data locality} with its optimizations that try to run related tasks on the same worker, minimizing data transfers. Despite its advantages, we also found that WUKONG's heuristic optimizations could become inefficient in some scenarios. We believe that WUKONG scheduling decisions are optimized for workflows with short and uniform tasks.
 
 % TODO: Solutions found and them not using historical information
-Information from previous workflow runs could help WUKONG achieve greater performance and resource usage, which would naturally allow it to run a wider number of workflows on top of FaaS.
+By analyzing related works, we didn't find solutions that tried to make scheduling decisions based on the entire workflow nor that used historical information to make scheduling decisions. We saw this as a research opportunity and decided to explore it with the goal of reducing makespan of workflows running on top of FaaS while also using fewer resources, thereby improving cost efficiency and enabling a wider variety of workflows to run on top of FaaS.
 
 \section{Architecture}
+
 
 
 \section{Evaluation and Analysis}

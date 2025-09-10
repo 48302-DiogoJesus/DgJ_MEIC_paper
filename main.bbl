@@ -31,6 +31,16 @@ R.~Graves, T.~H. Jordan, S.~Callaghan, E.~Deelman, E.~Field, G.~Juve,
   \url{https://doi.org/10.1007/s00024-010-0161-6}
 \BIBentrySTDinterwordspacing
 
+\bibitem{montage_astronomy}
+\BIBentryALTinterwordspacing
+J.~C. Jacob, D.~S. Katz, G.~B. Berriman, J.~C. Good, A.~Laity, E.~Deelman,
+  C.~Kesselman, G.~Singh, M.-H. Su, T.~Prince, and R.~Williams, ``Montage: A
+  grid portal and software toolkit for science-grade astronomical image
+  mosaicking,'' \emph{International Journal of Computational Science and
+  Engineering}, vol.~4, no.~2, pp. 73--87, 2009. [Online]. Available:
+  \url{https://doi.org/10.1504/IJCSE.2009.026999}
+\BIBentrySTDinterwordspacing
+
 \bibitem{wukong_2}
 B.~Carver, J.~Zhang, A.~Wang, A.~Anwar, P.~Wu, and Y.~Cheng, ``Wukong: A
   scalable and locality-enhanced framework for serverless parallel computing,''

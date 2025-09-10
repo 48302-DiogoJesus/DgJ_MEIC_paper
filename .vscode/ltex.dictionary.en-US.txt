@@ -1,0 +1,8 @@
+WUKONG
+mosaicking
+DAGs
+Cybershake
+FaaS
+Dask
+Lambdata
+makespan
