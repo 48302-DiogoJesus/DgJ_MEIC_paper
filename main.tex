@@ -60,7 +60,12 @@ Existing solutions, including commercial stateful functions and research prototy
 
 In this paper, we argue that leveraging historical metadata from previous workflow runs can provide critical insights into task behavior. We propose a decentralized serverless workflow execution engine that uses this information to make smarter scheduling decisions, aiming to reduce overall workflow makespan and increase resource efficiency on serverless platforms.
 
-%TODO: Contributions of our work
+The main contributions of this work are as follows:
+\begin{itemize}
+    \item Analyze the serverless workflow orchestration research landscape;
+    \item Propose a decentralized serverless workflow execution engine that uses historical information to create workflow execution plans;
+    \item Understand how using historical information can be used to improve workflow execution on FaaS platforms.
+\end{itemize}
 
 \section{Related Work}
 \label{s:related_work}
@@ -265,6 +270,8 @@ For simplicity, all planners currently use the same optimization assignment logi
 Because planners may sometimes lack sufficient information to make optimal decisions about optimization assignments, it is important to allow users to specify optimizations for specific tasks manually. An example of this feature is shown in Listing~\ref{lst:dag_lang_example}, where the user requests that \texttt{task\_b} attempt to \textit{pre-load} its dependencies.
 
 Once these optimizations are assigned, workflow planning is complete, and workers can begin execution. Because planning occurs on the user's machine, it is responsible for initiating the workflow by starting the initial workers. From that point onward, workers dynamically invoke additional workers as needed, following a choreographed, decentralized execution model.
+
+%TODO: show example of planned workflow: IMAGE and describe it
 
 \subsection{Scheduling}
 

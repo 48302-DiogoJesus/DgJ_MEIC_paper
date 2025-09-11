@@ -5,8 +5,8 @@
             - support for atomic integers that can be atomically incremented and checked (atomic_increment_and_get())
             - pub/sub
     - Static Workflow Planner:
-        - rename "Static Workflow Planner" to "Static Workflow Planning" (on figures too)
         - show the image example + explain it
     - Scheduling
-    - Explain listings and figures whenever necessary
-    - find better names for the planners + refactor code
+    - RE-CHECK
+        - Explain listings and figures whenever necessary
+        - find better names for the planners + refactor code
