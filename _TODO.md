@@ -1,4 +1,10 @@
 - Solution/Architecture
-    - Add 1/2 diagrams from pic.pdf
-    - Static Workflow Planner: describe the 3 available planners
-    - Scheudler
+    - Metadata Management: 
+        - mention SLA
+    - Static Workflow Planner: 
+        - mention SLA
+        - describe the 3 available planners
+        - describe the 3 available optimizations (see shared google doc)
+        - show the image example
+    - Scheduling
+    - Explain listings and figures whenever necessary
