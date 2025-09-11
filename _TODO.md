@@ -1,10 +1,12 @@
 - Solution/Architecture
-    - Metadata Management: 
-        - mention SLA
-    - Static Workflow Planner: 
-        - mention SLA
-        - describe the 3 available planners
-        - describe the 3 available optimizations (see shared google doc)
-        - show the image example
+    - Mention cold starts in the Introduction?
+    - Metadata Management
+        - mention storage requirements
+            - support for atomic integers that can be atomically incremented and checked (atomic_increment_and_get())
+            - pub/sub
+    - Static Workflow Planner:
+        - rename "Static Workflow Planner" to "Static Workflow Planning" (on figures too)
+        - show the image example + explain it
     - Scheduling
     - Explain listings and figures whenever necessary
+    - find better names for the planners + refactor code
