@@ -12,3 +12,5 @@ AnnotatedTask
 performant
 predition
 resimulated
+cloudpickle
+FaaS-based

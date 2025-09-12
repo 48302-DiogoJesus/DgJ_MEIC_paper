@@ -51,6 +51,7 @@ Cloud Computing, Serverless, FaaS, Serverless Workflows, DAG, Metadata, Workflow
 \end{IEEEkeywords}
 
 \section{Introduction}
+\label{s:introduction}
 
 Serverless computing, with its Function-as-a-Service (FaaS) model, offers operational simplicity, automatic scalability, and a fine-grained pay-per-use pricing model by abstracting infrastructure management. This has led to its widespread adoption for event-driven systems, microservices, and web services on platforms like AWS Lambda\footnote{https://aws.amazon.com/pt/lambda/}, Azure Functions\footnote{https://azure.microsoft.com/en-us/products/functions}, and Google Cloud Functions\footnote{https://cloud.google.com/functions}.
 
@@ -66,6 +67,8 @@ The main contributions of this work are as follows:
     \item Propose a decentralized serverless workflow execution engine that uses historical information to create workflow execution plans;
     \item Understand how using historical information can be used to improve workflow execution on FaaS platforms.
 \end{itemize}
+
+% ------------------------------------------------ %
 
 \section{Related Work}
 \label{s:related_work}
@@ -98,6 +101,8 @@ While researching, we explored some modern cloud-native solutions that seamlessl
 Finally, we compared serverless workflow execution orchestrators and schedulers, from which we found WUKONG to be the most interesting, innovative and promising approach for exploiting the most out of the serverless computing paradigm. WUKONG achieves \textbf{fast scale-out times} by delegating part of the worker instancing to an external component, \textbf{scalability} with its distributed scheduling approach, and \textbf{data locality} with its optimizations that try to run related tasks on the same worker, minimizing data transfers. Despite its advantages, we also found that WUKONG's heuristic optimizations could become inefficient in some scenarios. We believe that WUKONG scheduling decisions are optimized for workflows with short and uniform tasks.
 
 By analyzing related works, we didn't find solutions that tried to make scheduling decisions based on the entire workflow nor that used historical information to make scheduling decisions. We saw this as a research opportunity and decided to explore it with the goal of reducing makespan of workflows running on top of FaaS while also using fewer resources, thereby improving cost efficiency and enabling a wider variety of workflows to run on top of FaaS.
+
+% ------------------------------------------------ %
 
 \section{Architecture}
 \label{s:architecture}
@@ -275,10 +280,25 @@ Once these optimizations are assigned, workflow planning is complete, and worker
 
 \subsection{Scheduling}
 
-%TODO: explain what are the workers: FaaS workers
-%TODO: when they are started, they fetch the DAG from Metadata Storage
-%TODO: they emit and listen for TASK_READY and TASK_COMPLETED events to make optimizations possible
-%TODO: they use a dependency counter (similar to WUKONG) atomic integer to detect when a task is ready
+Since our target execution platform is FaaS, the worker logic is implemented as a FaaS handler. Due to the decentralized nature of our solution, workers will be responsible for performing both task execution and scheduling in a choreographed manner. 
+
+When invoked, a worker receives the \texttt{workflow\_id} and the \texttt{task\_ids} of the tasks it should execute first. Using this information, it retrieves the DAG structure and execution plan from \textit{Metadata Storage}. Rather than immediately executing the initial tasks, the worker first subscribes to \texttt{TASK\_READY} and \texttt{TASK\_COMPLETED} events for specific tasks. These events are essential both for enabling certain optimizations and for ensuring the worker follows the workflow plan correctly.
+
+After that, the worker starts executing the initial tasks concurrently. The logic for executing tasks is the following:
+\begin{enumerate}
+    \item \textbf{Gathering Dependencies}: Check which dependencies are missing (not downloaded yet) and download them from storage;
+    \item \textbf{Executing Task}: Execute the task. Tasks' code is stored in a serialized/pickled format (using cloudpickle\footnote{https://github.com/cloudpipe/cloudpickle}) and deserialized and executed by the workers. This enables the worker to remain generic, capable of receiving and executing arbitrary task code;
+    \item \textbf{Handling Output}: This phase is responsible for evaluating whether it's necessary to upload the task's output to storage and emitting a \texttt{TASK\_COMPLETED} event;
+    \item \textbf{Delegating Downstream Tasks}: \item \textbf{Delegating Downstream Tasks}: For each downstream task, the worker performs an \texttt{atomic\_increment\_and\_get()} operation on a "dependency counter" (inspired by WUKONG~\cite{wukong_2}) stored in \textit{Metadata Storage}, which tracks how many dependencies of a task have been satisfied. When the counter indicates that all dependencies for a downstream task have been satisfied, the worker emits a \texttt{TASK\_READY} event for that task. The worker then consults the execution plan to determine how to proceed for each downstream task unlocked: if the unlocked task is assigned to another worker, a \texttt{TASK\_READY} event is emitted; if the unlocked task is assigned to the same worker and has no remaining dependencies, the worker immediately continues the cycle by executing it.
+\end{enumerate}
+
+%TODO: Add simple workflow IMAGE with "becomes" and "delegates" stuff to help visualize the choreographed execution model
+
+A workflow is considered complete once the output of the final (sink) task is available in storage. The worker that uploads this final result is also responsible for cleaning up all intermediate results before shutting down. Meanwhile, after submitting the workflow, the user's machine subscribes to the \texttt{TASK\_COMPLETED} event for the sink task; upon receiving this notification, it retrieves the final result from \textit{Intermediate Storage}.
+
+By delegating downstream tasks to workers, our approach eliminates the need for a central scheduler, a common component in many existing FaaS-based workflow engines. This decentralization increases flexibility and scalability, as workers can dynamically invoke additional workers as needed, following a choreographed execution model.
+
+Having described the design and implementation of the system, we now turn to its evaluation. The next section presents the experimental setup, results, and analysis used to assess the strengths and weaknesses of our approach.
 
 % ------------------------------------------------ %
 
@@ -288,8 +308,15 @@ Once these optimizations are assigned, workflow planning is complete, and worker
 %TODO: explain Docker simulating faas environment
 \subsection{Testing Configurations}
 %TODO: worker resources, workflows, planners, SLAs
+\subsection{Results}
+%TODO:
+\subsection{Analysis}
 
+% ------------------------------------------------ %
+
+%TODO:
 \section{Conclusion}
+%TODO:
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}

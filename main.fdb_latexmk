@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex main"] 1757604909.21935 "main.aux" "main.bbl" "main" 1757605057.97393 0
+["bibtex main"] 1757681582.79135 "main.aux" "main.bbl" "main" 1757681584.79554 0
   "./references.bib" 1757504532 19907 e33e0b8d2ef545ee16bf16a69b81596d ""
   "C:/Users/dijes/AppData/Local/Programs/MiKTeX/bibtex/bst/ieeetran/IEEEtran.bst" 1440622569 57748 7c8250ecf02814ce6ddc0cdbb63df1dd ""
-  "main.aux" 1757605057 3903 5e9fa227518782d702c8dccb1b974982 "pdflatex"
+  "main.aux" 1757681583 4184 e4dcfdbcb9f91a1b8fc158e401275174 "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1757605056.08945 "c:/Users/dijes/Desktop/Current/PG/Tecnico/_A2/TESE/DgJ_MEIC_paper/main.tex" "main.pdf" "main" 1757605057.97468 0
+["pdflatex"] 1757681583.09068 "c:/Users/dijes/Desktop/Current/PG/Tecnico/_A2/TESE/DgJ_MEIC_paper/main.tex" "main.pdf" "main" 1757681584.79623 0
   "C:/Users/dijes/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1757520132 82507 a9eef8696c92627b87e9975edea03b2a ""
   "C:/Users/dijes/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1757504112 24225046 38d4591ba2ff146cd60fb2b4577dd929 ""
   "C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc" 1458473887 4993 80dc9bab7f31fb78a000ccfed0e27cab ""
@@ -101,12 +101,12 @@
   "C:/Users/dijes/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "C:/Users/dijes/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1700127522 55487 80a65caedd3722f4c20a14a69e785d8f ""
   "IEEEtran.cls" 1757502968 281957 5b2e4fa15b0f7eabb840ebf67df4c0f7 ""
-  "c:/Users/dijes/Desktop/Current/PG/Tecnico/_A2/TESE/DgJ_MEIC_paper/main.tex" 1757605057 28165 3ca0804399e26addb06a673b5d199f8f ""
+  "c:/Users/dijes/Desktop/Current/PG/Tecnico/_A2/TESE/DgJ_MEIC_paper/main.tex" 1757681580 31656 1cf8b523283aa657247325a1c19c8a63 ""
   "figures/dag_lang_example.png" 1757518705 8863 0fc7d9127968840b4e9cee339d4157c9 ""
   "figures/solution_distributedarchintegrated.png" 1757593434 278164 9430b60d4642445f0b16b8d4d61871d2 ""
-  "main.aux" 1757605057 3903 5e9fa227518782d702c8dccb1b974982 "pdflatex"
-  "main.bbl" 1757604909 4666 446f2f29460926e7810bd63bf42181c8 "bibtex main"
-  "main.tex" 1757605057 28165 3ca0804399e26addb06a673b5d199f8f ""
+  "main.aux" 1757681583 4184 e4dcfdbcb9f91a1b8fc158e401275174 "pdflatex"
+  "main.bbl" 1757681583 4666 446f2f29460926e7810bd63bf42181c8 "bibtex main"
+  "main.tex" 1757681580 31656 1cf8b523283aa657247325a1c19c8a63 ""
   (generated)
   "main.aux"
   "main.log"

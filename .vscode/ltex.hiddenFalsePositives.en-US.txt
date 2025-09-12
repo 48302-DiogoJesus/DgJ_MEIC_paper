@@ -1,0 +1,2 @@
+{"rule":"ESSENTIAL_ESSENTIALLY","sentence":"^\\QThese events are essential both for enabling certain optimizations and for ensuring the worker follows the workflow plan correctly.\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\QTasks code is stored in a serialized/pickled format (using cloudpickle Python library); Handling Output:; Delegating Downstream Tasks:.\\E$"}
