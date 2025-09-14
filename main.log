@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.9.10)  12 SEP 2025 13:53
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.9.10)  14 SEP 2025 17:46
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -282,7 +282,8 @@ Package caption Info: listings package is loaded.
 File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count294
 \l__pdf_internal_box=\box57
-) (main.aux)
+)
+No file main.aux.
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 23.
@@ -299,7 +300,6 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 23.
 LaTeX Font Info:    ... okay on input line 23.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 23.
 LaTeX Font Info:    ... okay on input line 23.
-
 -- Lines per column: 56 (exact).
 (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -332,37 +332,147 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 41.
  (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 82.
- (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ts1ptm.fd
+
+LaTeX Warning: Citation `cybershake_workflow' on page 1 undefined on input line 58.
+
+
+LaTeX Warning: Citation `montage_astronomy' on page 1 undefined on input line 58.
+
+
+LaTeX Warning: Citation `pywren' on page 1 undefined on input line 62.
+
+
+LaTeX Warning: Citation `wukong_2' on page 1 undefined on input line 62.
+
+
+LaTeX Warning: Citation `unum_decentralized_orchestrator' on page 1 undefined on input line 62.
+
+
+LaTeX Warning: Citation `dewe_v3' on page 1 undefined on input line 62.
+
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 62.
+(C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
-) [1{C:/Users/dijes/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}
+)
+
+LaTeX Warning: Citation `faast_caching' on page 1 undefined on input line 62.
+
+
+LaTeX Warning: Citation `palette_load_balancing' on page 1 undefined on input line 62.
+
+
+LaTeX Warning: Citation `lambdata_intents' on page 1 undefined on input line 62.
+
+
+LaTeX Warning: Citation `openfaas' on page 1 undefined on input line 62.
+
+
+LaTeX Warning: Citation `open_whisk' on page 1 undefined on input line 62.
+
+
+LaTeX Warning: Citation `knative' on page 1 undefined on input line 62.
+
+[1{C:/Users/dijes/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}
 
 
 ]
-<figures/solution_distributedarchintegrated.png, id=10, 889.82437pt x 748.29562pt>
+
+LaTeX Warning: Citation `aws_step_functions' on page 2 undefined on input line 83.
+
+
+LaTeX Warning: Citation `azure_durable_functions' on page 2 undefined on input line 83.
+
+
+LaTeX Warning: Citation `google_cloud_workflows' on page 2 undefined on input line 83.
+
+
+LaTeX Warning: Citation `palette_load_balancing' on page 2 undefined on input line 86.
+
+
+LaTeX Warning: Citation `faast_caching' on page 2 undefined on input line 86.
+
+
+LaTeX Warning: Citation `lambdata_intents' on page 2 undefined on input line 86.
+
+
+LaTeX Warning: Citation `pywren' on page 2 undefined on input line 89.
+
+
+LaTeX Warning: Citation `unum_decentralized_orchestrator' on page 2 undefined on input line 89.
+
+
+LaTeX Warning: Citation `wukong_2' on page 2 undefined on input line 91.
+
+[2]
+
+LaTeX Warning: Reference `fig:solution_architecture' on page 3 undefined on input line 120.
+
+<figures/solution_distributedarchintegrated.png, id=13, 889.82437pt x 748.29562pt>
 File: figures/solution_distributedarchintegrated.png Graphic file (type png)
 <use figures/solution_distributedarchintegrated.png>
-Package pdftex.def Info: figures/solution_distributedarchintegrated.png  used on input line 120.
+Package pdftex.def Info: figures/solution_distributedarchintegrated.png  used on input line 124.
 (pdftex.def)             Requested size: 252.0pt x 211.91913pt.
+
+LaTeX Warning: Reference `lst:dag_lang_example' on page 3 undefined on input line 147.
+
+LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 147.
+(C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ot1pcr.fd
+File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+)
+
+LaTeX Warning: Reference `fig:dag_example' on page 3 undefined on input line 147.
+
+(C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
+File: lstlang1.sty 2023/02/27 1.9 listings language file
+)
+LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <8> not available
+(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 152.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[2]
-LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 143.
- (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ot1pcr.fd
-File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
-) (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
-File: lstlang1.sty 2023/02/27 1.9 listings language file
-)
-LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <8> not available
-(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 148.
 <figures/dag_lang_example.png, id=15, 596.2275pt x 131.49126pt>
 File: figures/dag_lang_example.png Graphic file (type png)
 <use figures/dag_lang_example.png>
-Package pdftex.def Info: figures/dag_lang_example.png  used on input line 172.
+Package pdftex.def Info: figures/dag_lang_example.png  used on input line 176.
 (pdftex.def)             Requested size: 252.0pt x 55.57506pt.
- [3 <./figures/solution_distributedarchintegrated.png> <./figures/dag_lang_example.png>] [4] [5] (main.bbl)
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: Reference `lst:triggering_workflow_execution' on page 3 undefined on input line 181.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[3 <./figures/solution_distributedarchintegrated.png>]
+
+LaTeX Warning: Reference `lst:task_predictions_api' on page 4 undefined on input line 211.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: Reference `lst:triggering_workflow_execution' on page 4 undefined on input line 243.
+
+
+LaTeX Warning: Reference `ss:metadata_management' on page 4 undefined on input line 243.
+
+
+LaTeX Warning: Citation `palette_load_balancing' on page 4 undefined on input line 247.
+
+
+LaTeX Warning: Citation `wukong_2' on page 4 undefined on input line 247.
+
+[4 <./figures/dag_lang_example.png>]
+
+LaTeX Warning: Reference `lst:dag_lang_example' on page 5 undefined on input line 279.
+
+[5]
+
+LaTeX Warning: Citation `wukong_2' on page 6 undefined on input line 296.
+
+(main.bbl [6])
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -374,24 +484,33 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[6] (main.aux)
+[7
+
+] (main.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
+
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
  ) 
 Here is how much of TeX's memory you used:
- 7584 strings out of 474486
- 120774 string characters out of 5743755
- 2032542 words of memory out of 5000000
- 29792 multiletter control sequences out of 15000+600000
- 604348 words of font info for 133 fonts, out of 8000000 for 9000
+ 7586 strings out of 474486
+ 120725 string characters out of 5743755
+ 2081542 words of memory out of 5000000
+ 29796 multiletter control sequences out of 15000+600000
+ 604662 words of font info for 134 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 57i,11n,65p,960b,1436s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 57i,11n,65p,1134b,1436s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrb8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrro8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (6 pages, 335581 bytes).
+Output written on main.pdf (7 pages, 339078 bytes).
 PDF statistics:
- 67 PDF objects out of 1000 (max. 8388607)
+ 72 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  11 words of extra memory for PDF output out of 10000 (max. 10000000)
 

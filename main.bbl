@@ -41,11 +41,68 @@ J.~C. Jacob, D.~S. Katz, G.~B. Berriman, J.~C. Good, A.~Laity, E.~Deelman,
   \url{https://doi.org/10.1504/IJCSE.2009.026999}
 \BIBentrySTDinterwordspacing
 
+\bibitem{pywren}
+E.~Jonas, Q.~Pu, S.~Venkataraman, I.~Stoica, and B.~Recht, ``Occupy the cloud:
+  Distributed computing for the 99\%,'' in \emph{Proceedings of the 2017
+  symposium on cloud computing}, 2017, pp. 445--451.
+
 \bibitem{wukong_2}
 B.~Carver, J.~Zhang, A.~Wang, A.~Anwar, P.~Wu, and Y.~Cheng, ``Wukong: A
   scalable and locality-enhanced framework for serverless parallel computing,''
   in \emph{Proceedings of the 11th ACM symposium on cloud computing}, 2020, pp.
   1--15.
+
+\bibitem{unum_decentralized_orchestrator}
+D.~H. Liu, A.~Levy, S.~Noghabi, and S.~Burckhardt, ``Doing more with less:
+  Orchestrating serverless applications without an orchestrator,'' in
+  \emph{20th USENIX Symposium on Networked Systems Design and Implementation
+  (NSDI 23)}, 2023, pp. 1505--1519.
+
+\bibitem{dewe_v3}
+Q.~Jiang, Y.~C. Lee, and A.~Y. Zomaya, ``Serverless execution of scientific
+  workflows,'' in \emph{International Conference on Service-Oriented
+  Computing}.\hskip 1em plus 0.5em minus 0.4em\relax Springer, 2017, pp.
+  706--721.
+
+\bibitem{faast_caching}
+\BIBentryALTinterwordspacing
+F.~Romero, G.~I. Chaudhry, I.~n. Goiri, P.~Gopa, P.~Batum, N.~J. Yadwadkar,
+  R.~Fonseca, C.~Kozyrakis, and R.~Bianchini, ``Faa\$t: A transparent
+  auto-scaling cache for serverless applications,'' in \emph{Proceedings of the
+  ACM Symposium on Cloud Computing}, ser. SoCC '21.\hskip 1em plus 0.5em minus
+  0.4em\relax New York, NY, USA: Association for Computing Machinery, 2021, p.
+  122–137. [Online]. Available: \url{https://doi.org/10.1145/3472883.3486974}
+\BIBentrySTDinterwordspacing
+
+\bibitem{palette_load_balancing}
+\BIBentryALTinterwordspacing
+M.~Abdi, S.~Ginzburg, C.~Lin, J.~M. Faleiro, I.~Goiri, G.~I. Chaudhry,
+  R.~Bianchini, D.~S. Berger, and R.~Fonseca, ``Palette load balancing:
+  Locality hints for serverless functions,'' in \emph{EuroSys}.\hskip 1em plus
+  0.5em minus 0.4em\relax ACM, May 2023. [Online]. Available:
+  \url{https://www.microsoft.com/en-us/research/publication/palette-load-balancing-locality-hints-for-serverless-functions/}
+\BIBentrySTDinterwordspacing
+
+\bibitem{lambdata_intents}
+Y.~Tang and J.~Yang, ``Lambdata: Optimizing serverless computing by making data
+  intents explicit,'' in \emph{2020 IEEE 13th International Conference on Cloud
+  Computing (CLOUD)}.\hskip 1em plus 0.5em minus 0.4em\relax IEEE, 2020, pp.
+  294--303.
+
+\bibitem{openfaas}
+\BIBentryALTinterwordspacing
+Openfaas. [Online]. Available: \url{https://www.openfaas.com/}
+\BIBentrySTDinterwordspacing
+
+\bibitem{open_whisk}
+\BIBentryALTinterwordspacing
+Apache openwhisk. [Online]. Available: \url{https://openwhisk.apache.org/}
+\BIBentrySTDinterwordspacing
+
+\bibitem{knative}
+\BIBentryALTinterwordspacing
+Knative. [Online]. Available: \url{https://knative.dev/docs/}
+\BIBentrySTDinterwordspacing
 
 \bibitem{aws_step_functions}
 \BIBentryALTinterwordspacing
@@ -64,41 +121,5 @@ Azure durable functions. [Online]. Available:
 Google cloud workflows. [Online]. Available:
   \url{https://cloud.google.com/workflows}
 \BIBentrySTDinterwordspacing
-
-\bibitem{palette_load_balancing}
-\BIBentryALTinterwordspacing
-M.~Abdi, S.~Ginzburg, C.~Lin, J.~M. Faleiro, I.~Goiri, G.~I. Chaudhry,
-  R.~Bianchini, D.~S. Berger, and R.~Fonseca, ``Palette load balancing:
-  Locality hints for serverless functions,'' in \emph{EuroSys}.\hskip 1em plus
-  0.5em minus 0.4em\relax ACM, May 2023. [Online]. Available:
-  \url{https://www.microsoft.com/en-us/research/publication/palette-load-balancing-locality-hints-for-serverless-functions/}
-\BIBentrySTDinterwordspacing
-
-\bibitem{faast_caching}
-\BIBentryALTinterwordspacing
-F.~Romero, G.~I. Chaudhry, I.~n. Goiri, P.~Gopa, P.~Batum, N.~J. Yadwadkar,
-  R.~Fonseca, C.~Kozyrakis, and R.~Bianchini, ``Faa\$t: A transparent
-  auto-scaling cache for serverless applications,'' in \emph{Proceedings of the
-  ACM Symposium on Cloud Computing}, ser. SoCC '21.\hskip 1em plus 0.5em minus
-  0.4em\relax New York, NY, USA: Association for Computing Machinery, 2021, p.
-  122–137. [Online]. Available: \url{https://doi.org/10.1145/3472883.3486974}
-\BIBentrySTDinterwordspacing
-
-\bibitem{lambdata_intents}
-Y.~Tang and J.~Yang, ``Lambdata: Optimizing serverless computing by making data
-  intents explicit,'' in \emph{2020 IEEE 13th International Conference on Cloud
-  Computing (CLOUD)}.\hskip 1em plus 0.5em minus 0.4em\relax IEEE, 2020, pp.
-  294--303.
-
-\bibitem{pywren}
-E.~Jonas, Q.~Pu, S.~Venkataraman, I.~Stoica, and B.~Recht, ``Occupy the cloud:
-  Distributed computing for the 99\%,'' in \emph{Proceedings of the 2017
-  symposium on cloud computing}, 2017, pp. 445--451.
-
-\bibitem{unum_decentralized_orchestrator}
-D.~H. Liu, A.~Levy, S.~Noghabi, and S.~Burckhardt, ``Doing more with less:
-  Orchestrating serverless applications without an orchestrator,'' in
-  \emph{20th USENIX Symposium on Networked Systems Design and Implementation
-  (NSDI 23)}, 2023, pp. 1505--1519.
 
 \end{thebibliography}
