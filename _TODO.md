@@ -1,7 +1,4 @@
 - Solution/Architecture
-    - Introduction
-        - mention cold starts
-        - move computation closer to the data (locality)
     - Metadata Management
     - Static Workflow Planner
         - show the image example + explain it
