@@ -3,9 +3,6 @@
     - Static Workflow Planner
         - show the image example + explain it
     - Evaluation (Setup)
-        - mention storage requirements
-            - support for atomic integers that can be atomically incremented and checked (atomic_increment_and_get())
-            - pub/sub
         - Insist on the choreographed scheduling, using a diagram maybe (the delegate and become stuff)
     - RE-CHECK
         - Explain listings and figures whenever necessary

@@ -283,6 +283,7 @@ Because planners may sometimes lack sufficient information to make optimal decis
 Once these optimizations are assigned, workflow planning is complete, and workers can begin execution. Because planning occurs on the user's machine, it is responsible for initiating the workflow by starting the initial workers. From that point onward, workers dynamically invoke additional workers as needed, following a choreographed, decentralized execution model.
 
 %TODO: show example of planned workflow: IMAGE and describe it
+\textbf{TODO: show example of planned workflow: IMAGE and describe it}
 
 \subsection{Scheduling}
 
@@ -298,7 +299,13 @@ After that, the worker starts executing the initial tasks concurrently. The logi
     \item \textbf{Delegating Downstream Tasks}: \item \textbf{Delegating Downstream Tasks}: For each downstream task, the worker performs an \texttt{atomic\_increment\_and\_get()} operation on a "dependency counter" (inspired by WUKONG~\cite{wukong_2}) stored in \textit{Metadata Storage}, which tracks how many dependencies of a task have been satisfied. When the counter indicates that all dependencies for a downstream task have been satisfied, the worker emits a \texttt{TASK\_READY} event for that task. The worker then consults the execution plan to determine how to proceed for each downstream task unlocked: if the unlocked task is assigned to another worker, a \texttt{TASK\_READY} event is emitted; if the unlocked task is assigned to the same worker and has no remaining dependencies, the worker immediately continues the cycle by executing it.
 \end{enumerate}
 
-%TODO: Add simple workflow IMAGE with "becomes" and "delegates" stuff to help visualize the choreographed execution model
+%TODO: Describe and justify the image
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/choreographed_execution_example.png}
+    \caption{Choreographed Scheduling Example}
+    \label{fig:choreographed_scheduling_example}
+\end{figure}
 
 A workflow is considered complete once the output of the final (sink) task is available in storage. The worker that uploads this final result is also responsible for cleaning up all intermediate results before shutting down. Meanwhile, after submitting the workflow, the user's machine subscribes to the \texttt{TASK\_COMPLETED} event for the sink task; upon receiving this notification, it retrieves the final result from \textit{Intermediate Storage}.
 
@@ -312,8 +319,10 @@ Having described the design and implementation of the system, we now turn to its
 
 \subsection{Testing Environment}
 %TODO: explain Docker simulating faas environment
+\textbf{TODO: explain Docker simulating faas environment}
 \subsection{Testing Configurations}
 %TODO: worker resources, workflows, planners, SLAs
+\textbf{TODO: worker resources, workflows, planners, SLAs}
 \subsection{Results}
 %TODO:
 \subsection{Analysis}
