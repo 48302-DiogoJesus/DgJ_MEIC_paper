@@ -104,22 +104,4 @@ Apache openwhisk. [Online]. Available: \url{https://openwhisk.apache.org/}
 Knative. [Online]. Available: \url{https://knative.dev/docs/}
 \BIBentrySTDinterwordspacing
 
-\bibitem{aws_step_functions}
-\BIBentryALTinterwordspacing
-Aws step functions. [Online]. Available:
-  \url{https://aws.amazon.com/en/step-functions/}
-\BIBentrySTDinterwordspacing
-
-\bibitem{azure_durable_functions}
-\BIBentryALTinterwordspacing
-Azure durable functions. [Online]. Available:
-  \url{https://learn.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-overview}
-\BIBentrySTDinterwordspacing
-
-\bibitem{google_cloud_workflows}
-\BIBentryALTinterwordspacing
-Google cloud workflows. [Online]. Available:
-  \url{https://cloud.google.com/workflows}
-\BIBentrySTDinterwordspacing
-
 \end{thebibliography}

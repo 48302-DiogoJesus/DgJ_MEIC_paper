@@ -27,14 +27,18 @@
 %should not be used}
 %\thanks{Identify applicable funding agency here. If none, delete this.}
 
-\author{\IEEEauthorblockN{1\textsuperscript{st} Diogo Jesus}
-\IEEEauthorblockA{\textit{dept. name of organisation (of Aff.)} \\
+% \author{\IEEEauthorblockN{1\textsuperscript{st} Diogo Jesus}
+\author{\IEEEauthorblockN{Diogo Jesus}
+% \IEEEauthorblockA{\textit{dept. name of organisation (of Aff.)} \\
+\IEEEauthorblockA{
 \textit{Instituto Superior Tecnico (IST), INESC-ID Lisboa}\\
 Lisbon, Portugal \\
 diogofjesus@inesc-id.pt}
 \and
-\IEEEauthorblockN{2\textsuperscript{nd} Luís Veiga}
-\IEEEauthorblockA{\textit{dept. name of organisation (of Aff.)} \\
+% \IEEEauthorblockN{2\textsuperscript{nd} Luís Veiga}
+\IEEEauthorblockN{Luís Veiga}
+% \IEEEauthorblockA{\textit{dept. name of organisation (of Aff.)} \\
+\IEEEauthorblockA{
 \textit{Instituto Superior Tecnico (IST), INESC-ID Lisboa}\\
 Lisbon, Portugal \\
 luis.veiga@inesc-id.pt}}
@@ -80,7 +84,7 @@ The main contributions of this work are as follows:
 Our work builds upon and differs from existing research in serverless workflow orchestration, which can be broadly categorized into \textbf{cloud-native stateful services}, \textbf{FaaS runtime extensions}, and \textbf{decentralized serverless schedulers}.
 
 \subsection{Cloud-Native Stateful Orchestration}
-Commercial platforms like AWS Step Functions~\cite{aws_step_functions}, Azure Durable Functions~\cite{azure_durable_functions}, and Google Cloud Workflows~\cite{google_cloud_workflows} provide a managed solution for composing serverless functions into workflows. They handle state persistence and fault tolerance, abstracting orchestration complexity from the developer. However, they are often tightly coupled with their provider's ecosystem, can introduce vendor lock-in, and are generally designed for reliability and ease of use rather than performance, optimal resource usage or data locality.
+Commercial platforms like AWS Step Functions~\footnote{https://aws.amazon.com/pt/step-functions/}, Azure Durable Functions~\footnote{https://learn.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-overview}, and Google Cloud Workflows~\footnote{https://cloud.google.com/workflows} provide a managed solution for composing serverless functions into workflows. They handle state persistence and fault tolerance, abstracting orchestration complexity from the developer. However, they are often tightly coupled with their provider's ecosystem, can introduce vendor lock-in, and are generally designed for reliability and ease of use rather than performance, optimal resource usage or data locality.
 
 \subsection{FaaS Runtime Extensions for Data Locality}
 A body of work seeks to address the fundamental data exchange inefficiency in serverless platforms through runtime modifications. \textbf{Palette}~\cite{palette_load_balancing} introduces locality ``hints'' to co-locate related function invocations on the same worker. \textbf{Faa\$T}~\cite{faast_caching} provides a transparent, auto-scaling distributed cache for serverless functions. \textbf{Lambdata}~\cite{lambdata_intents} requires developers to declare data intents (input/output objects) to enable data-aware scheduling. These solutions demonstrate the significant performance gains possible by improving data locality, but often require modifications to the application code or the underlying FaaS platform itself, limiting their portability and adoption.
@@ -299,7 +303,8 @@ After that, the worker starts executing the initial tasks concurrently. The logi
     \item \textbf{Delegating Downstream Tasks}: \item \textbf{Delegating Downstream Tasks}: For each downstream task, the worker performs an \texttt{atomic\_increment\_and\_get()} operation on a "dependency counter" (inspired by WUKONG~\cite{wukong_2}) stored in \textit{Metadata Storage}, which tracks how many dependencies of a task have been satisfied. When the counter indicates that all dependencies for a downstream task have been satisfied, the worker emits a \texttt{TASK\_READY} event for that task. The worker then consults the execution plan to determine how to proceed for each downstream task unlocked: if the unlocked task is assigned to another worker, a \texttt{TASK\_READY} event is emitted; if the unlocked task is assigned to the same worker and has no remaining dependencies, the worker immediately continues the cycle by executing it.
 \end{enumerate}
 
-%TODO: Describe and justify the image
+To illustrate how workers handle downstream tasks, Figure~\ref{fig:choreographed_scheduling_example} presents an example of choreographed scheduling with three workers (A, B, and C) and seven tasks (T1-T7). In this example, once Task T1 completes on Worker B, the worker inspects the dependency counters for tasks T3, T4, and T5. It determines that T3 and T4 are ready to run, while T5 is still pending because Task T2 has not yet completed. Worker B then launches a new worker (C) to execute T3 and proceeds to execute T4 itself. Later, when T2 finishes on Worker A, all dependencies of T5 are satisfied, prompting Worker A to execute it directly.
+
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.5\textwidth]{figures/choreographed_execution_example.png}
