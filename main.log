@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.9.10)  16 SEP 2025 16:29
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.9.10)  16 SEP 2025 18:31
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -341,38 +341,48 @@ File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 79.
  (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
-) [2]
-<figures/solution_distributedarchintegrated.png, id=14, 889.82437pt x 748.29562pt>
+) [2] [3] [4]
+<figures/solution_distributedarchintegrated.png, id=20, 889.82437pt x 748.29562pt>
 File: figures/solution_distributedarchintegrated.png Graphic file (type png)
 <use figures/solution_distributedarchintegrated.png>
-Package pdftex.def Info: figures/solution_distributedarchintegrated.png  used on input line 132.
+Package pdftex.def Info: figures/solution_distributedarchintegrated.png  used on input line 152.
 (pdftex.def)             Requested size: 252.0pt x 211.91913pt.
- [3] (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
+ (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 )
 LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <8> not available
-(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 160.
-<figures/dag_lang_example.png, id=19, 596.2275pt x 131.49126pt>
-File: figures/dag_lang_example.png Graphic file (type png)
-<use figures/dag_lang_example.png>
-Package pdftex.def Info: figures/dag_lang_example.png  used on input line 184.
-(pdftex.def)             Requested size: 252.0pt x 55.57506pt.
+(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 180.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[4 <./figures/solution_distributedarchintegrated.png> <./figures/dag_lang_example.png>] [5] [6]
-<figures/choreographed_execution_example.png, id=33, 892.83563pt x 442.65375pt>
+<figures/dag_lang_example.png, id=22, 596.2275pt x 131.49126pt>
+File: figures/dag_lang_example.png Graphic file (type png)
+<use figures/dag_lang_example.png>
+Package pdftex.def Info: figures/dag_lang_example.png  used on input line 204.
+(pdftex.def)             Requested size: 252.0pt x 55.57506pt.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[5 <./figures/solution_distributedarchintegrated.png>]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[6 <./figures/dag_lang_example.png>] [7]
+<figures/choreographed_execution_example.png, id=37, 892.83563pt x 442.65375pt>
 File: figures/choreographed_execution_example.png Graphic file (type png)
 <use figures/choreographed_execution_example.png>
-Package pdftex.def Info: figures/choreographed_execution_example.png  used on input line 314.
+Package pdftex.def Info: figures/choreographed_execution_example.png  used on input line 334.
 (pdftex.def)             Requested size: 258.0pt x 127.91374pt.
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 314--315
+Overfull \hbox (6.0pt too wide) in paragraph at lines 334--335
  [][] 
  []
 
-(main.bbl [7 <./figures/choreographed_execution_example.png>])
+(main.bbl [8 <./figures/choreographed_execution_example.png>])
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -384,7 +394,7 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[8
+[9
 
 ] (main.aux)
  ***********
@@ -393,17 +403,17 @@ L3 programming layer <2024-01-04>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 7584 strings out of 474486
- 121075 string characters out of 5743755
- 2019542 words of memory out of 5000000
- 29793 multiletter control sequences out of 15000+600000
- 600242 words of font info for 120 fonts, out of 8000000 for 9000
+ 7583 strings out of 474486
+ 121067 string characters out of 5743755
+ 2080542 words of memory out of 5000000
+ 29792 multiletter control sequences out of 15000+600000
+ 600264 words of font info for 120 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  57i,8n,65p,1644b,1436s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrb8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrro8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (8 pages, 447434 bytes).
+Output written on main.pdf (9 pages, 454470 bytes).
 PDF statistics:
- 77 PDF objects out of 1000 (max. 8388607)
+ 80 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  16 words of extra memory for PDF output out of 10000 (max. 10000000)
 

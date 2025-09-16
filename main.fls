@@ -182,7 +182,8 @@ INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\courier\pcrr7t
 INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\courier\pcrr8r.tfm
 INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmb7t.vf
 INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmb8r.tfm
-INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmb8c.tfm
+INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmri8c.tfm
+INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmri8c.vf
 INPUT .\figures\solution_distributedarchintegrated.png
 INPUT .\figures\solution_distributedarchintegrated.png
 INPUT .\figures\solution_distributedarchintegrated.png
@@ -190,7 +191,6 @@ INPUT .\figures\solution_distributedarchintegrated.png
 INPUT .\figures\solution_distributedarchintegrated.png
 INPUT .\figures\solution_distributedarchintegrated.png
 INPUT .\figures\solution_distributedarchintegrated.png
-INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmb8c.vf
 INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex\latex\listings\lstlang1.sty
 INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex\latex\listings\lstlang1.sty
 INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex\latex\listings\lstlang1.sty
