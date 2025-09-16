@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.9.10)  14 SEP 2025 21:00
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.9.10)  16 SEP 2025 16:29
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -323,65 +323,56 @@ File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 \c@lstlisting=\count301
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 60.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 52.
  (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 60.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 52.
  (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 66.
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 58.
  (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 ) [1{C:/Users/dijes/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}
 
 
-] [2]
-<figures/solution_distributedarchintegrated.png, id=13, 889.82437pt x 748.29562pt>
-File: figures/solution_distributedarchintegrated.png Graphic file (type png)
-<use figures/solution_distributedarchintegrated.png>
-Package pdftex.def Info: figures/solution_distributedarchintegrated.png  used on input line 128.
-(pdftex.def)             Requested size: 252.0pt x 211.91913pt.
-LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 151.
+]
+LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 79.
  (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
-) (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
+) [2]
+<figures/solution_distributedarchintegrated.png, id=14, 889.82437pt x 748.29562pt>
+File: figures/solution_distributedarchintegrated.png Graphic file (type png)
+<use figures/solution_distributedarchintegrated.png>
+Package pdftex.def Info: figures/solution_distributedarchintegrated.png  used on input line 132.
+(pdftex.def)             Requested size: 252.0pt x 211.91913pt.
+ [3] (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 )
 LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <8> not available
-(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 156.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<figures/dag_lang_example.png, id=15, 596.2275pt x 131.49126pt>
+(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 160.
+<figures/dag_lang_example.png, id=19, 596.2275pt x 131.49126pt>
 File: figures/dag_lang_example.png Graphic file (type png)
 <use figures/dag_lang_example.png>
-Package pdftex.def Info: figures/dag_lang_example.png  used on input line 180.
+Package pdftex.def Info: figures/dag_lang_example.png  used on input line 184.
 (pdftex.def)             Requested size: 252.0pt x 55.57506pt.
 
-LaTeX Warning: `h' float specifier changed to `ht'.
-
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[3 <./figures/solution_distributedarchintegrated.png>]
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[4 <./figures/dag_lang_example.png>] [5]
-<figures/choreographed_execution_example.png, id=30, 892.83563pt x 442.65375pt>
+[4 <./figures/solution_distributedarchintegrated.png> <./figures/dag_lang_example.png>] [5] [6]
+<figures/choreographed_execution_example.png, id=33, 892.83563pt x 442.65375pt>
 File: figures/choreographed_execution_example.png Graphic file (type png)
 <use figures/choreographed_execution_example.png>
-Package pdftex.def Info: figures/choreographed_execution_example.png  used on input line 310.
+Package pdftex.def Info: figures/choreographed_execution_example.png  used on input line 314.
 (pdftex.def)             Requested size: 258.0pt x 127.91374pt.
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 310--311
+Overfull \hbox (6.0pt too wide) in paragraph at lines 314--315
  [][] 
  []
 
-(main.bbl [6 <./figures/choreographed_execution_example.png>])
+(main.bbl [7 <./figures/choreographed_execution_example.png>])
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -393,7 +384,7 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[7
+[8
 
 ] (main.aux)
  ***********
@@ -402,17 +393,17 @@ L3 programming layer <2024-01-04>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 7570 strings out of 474486
- 120779 string characters out of 5743755
- 2080542 words of memory out of 5000000
- 29779 multiletter control sequences out of 15000+600000
+ 7584 strings out of 474486
+ 121075 string characters out of 5743755
+ 2019542 words of memory out of 5000000
+ 29793 multiletter control sequences out of 15000+600000
  600242 words of font info for 120 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 57i,8n,65p,1199b,1436s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 57i,8n,65p,1644b,1436s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrb8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrro8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (7 pages, 441540 bytes).
+Output written on main.pdf (8 pages, 447434 bytes).
 PDF statistics:
- 74 PDF objects out of 1000 (max. 8388607)
+ 77 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  16 words of extra memory for PDF output out of 10000 (max. 10000000)
 

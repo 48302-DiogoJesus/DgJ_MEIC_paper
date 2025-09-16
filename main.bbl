@@ -41,28 +41,16 @@ J.~C. Jacob, D.~S. Katz, G.~B. Berriman, J.~C. Good, A.~Laity, E.~Deelman,
   \url{https://doi.org/10.1504/IJCSE.2009.026999}
 \BIBentrySTDinterwordspacing
 
-\bibitem{pywren}
-E.~Jonas, Q.~Pu, S.~Venkataraman, I.~Stoica, and B.~Recht, ``Occupy the cloud:
-  Distributed computing for the 99\%,'' in \emph{Proceedings of the 2017
-  symposium on cloud computing}, 2017, pp. 445--451.
+\bibitem{cold_starts_surey}
+M.~Golec, G.~K. Walia, M.~Kumar, F.~Cuadrado, S.~S. Gill, and S.~Uhlig, ``Cold
+  start latency in serverless computing: A systematic review, taxonomy, and
+  future directions,'' \emph{ACM Computing Surveys}, vol.~57, no.~3, pp. 1--36,
+  2024.
 
-\bibitem{wukong_2}
-B.~Carver, J.~Zhang, A.~Wang, A.~Anwar, P.~Wu, and Y.~Cheng, ``Wukong: A
-  scalable and locality-enhanced framework for serverless parallel computing,''
-  in \emph{Proceedings of the 11th ACM symposium on cloud computing}, 2020, pp.
-  1--15.
-
-\bibitem{unum_decentralized_orchestrator}
-D.~H. Liu, A.~Levy, S.~Noghabi, and S.~Burckhardt, ``Doing more with less:
-  Orchestrating serverless applications without an orchestrator,'' in
-  \emph{20th USENIX Symposium on Networked Systems Design and Implementation
-  (NSDI 23)}, 2023, pp. 1505--1519.
-
-\bibitem{dewe_v3}
-Q.~Jiang, Y.~C. Lee, and A.~Y. Zomaya, ``Serverless execution of scientific
-  workflows,'' in \emph{International Conference on Service-Oriented
-  Computing}.\hskip 1em plus 0.5em minus 0.4em\relax Springer, 2017, pp.
-  706--721.
+\bibitem{serverless_computing_drawbacks_survey_rw1}
+J.~M. Hellerstein, J.~Faleiro, J.~E. Gonzalez, J.~Schleier-Smith, V.~Sreekanti,
+  A.~Tumanov, and C.~Wu, ``Serverless computing: One step forward, two steps
+  back,'' \emph{arXiv preprint arXiv:1812.03651}, 2018.
 
 \bibitem{faast_caching}
 \BIBentryALTinterwordspacing
@@ -89,19 +77,72 @@ Y.~Tang and J.~Yang, ``Lambdata: Optimizing serverless computing by making data
   Computing (CLOUD)}.\hskip 1em plus 0.5em minus 0.4em\relax IEEE, 2020, pp.
   294--303.
 
-\bibitem{openfaas}
-\BIBentryALTinterwordspacing
-Openfaas. [Online]. Available: \url{https://www.openfaas.com/}
-\BIBentrySTDinterwordspacing
-
 \bibitem{open_whisk}
 \BIBentryALTinterwordspacing
 Apache openwhisk. [Online]. Available: \url{https://openwhisk.apache.org/}
 \BIBentrySTDinterwordspacing
 
-\bibitem{knative}
+\bibitem{wukong_2}
+B.~Carver, J.~Zhang, A.~Wang, A.~Anwar, P.~Wu, and Y.~Cheng, ``Wukong: A
+  scalable and locality-enhanced framework for serverless parallel computing,''
+  in \emph{Proceedings of the 11th ACM symposium on cloud computing}, 2020, pp.
+  1--15.
+
+\bibitem{unum_decentralized_orchestrator}
+D.~H. Liu, A.~Levy, S.~Noghabi, and S.~Burckhardt, ``Doing more with less:
+  Orchestrating serverless applications without an orchestrator,'' in
+  \emph{20th USENIX Symposium on Networked Systems Design and Implementation
+  (NSDI 23)}, 2023, pp. 1505--1519.
+
+\bibitem{dewe_v3}
+Q.~Jiang, Y.~C. Lee, and A.~Y. Zomaya, ``Serverless execution of scientific
+  workflows,'' in \emph{International Conference on Service-Oriented
+  Computing}.\hskip 1em plus 0.5em minus 0.4em\relax Springer, 2017, pp.
+  706--721.
+
+\bibitem{apache_hadoop}
 \BIBentryALTinterwordspacing
-Knative. [Online]. Available: \url{https://knative.dev/docs/}
+Apache hadoop. [Online]. Available: \url{https://hadoop.apache.org/}
 \BIBentrySTDinterwordspacing
+
+\bibitem{apache_spark}
+\BIBentryALTinterwordspacing
+Apache spark. [Online]. Available: \url{https://spark.apache.org/}
+\BIBentrySTDinterwordspacing
+
+\bibitem{apache_flink}
+\BIBentryALTinterwordspacing
+Apache flink. [Online]. Available: \url{https://flink.apache.org/}
+\BIBentrySTDinterwordspacing
+
+\bibitem{mapreduce}
+\BIBentryALTinterwordspacing
+J.~Dean and S.~Ghemawat, ``Mapreduce: simplified data processing on large
+  clusters,'' vol.~51, no.~1.\hskip 1em plus 0.5em minus 0.4em\relax New York,
+  NY, USA: Association for Computing Machinery, Jan. 2008, pp. 107--113.
+  [Online]. Available: \url{https://doi.org/10.1145/1327452.1327492}
+\BIBentrySTDinterwordspacing
+
+\bibitem{dask_python}
+\BIBentryALTinterwordspacing
+Dask - python parallel computing framework. [Online]. Available:
+  \url{https://www.dask.org/}
+\BIBentrySTDinterwordspacing
+
+\bibitem{dask_python_distributed}
+\BIBentryALTinterwordspacing
+Dask distributed. [Online]. Available:
+  \url{https://distributed.dask.org/en/stable/}
+\BIBentrySTDinterwordspacing
+
+\bibitem{apache_airflow}
+\BIBentryALTinterwordspacing
+Apache airflow. [Online]. Available: \url{https://airflow.apache.org/}
+\BIBentrySTDinterwordspacing
+
+\bibitem{pywren}
+E.~Jonas, Q.~Pu, S.~Venkataraman, I.~Stoica, and B.~Recht, ``Occupy the cloud:
+  Distributed computing for the 99\%,'' in \emph{Proceedings of the 2017
+  symposium on cloud computing}, 2017, pp. 445--451.
 
 \end{thebibliography}

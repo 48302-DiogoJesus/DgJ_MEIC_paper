@@ -13,46 +13,48 @@ Database file #1: references.bib
 -- IEEEtran.bst version 1.14 (2015/08/26) by Michael Shell.
 -- http://www.michaelshell.org/tex/ieeetran/bibtex/
 -- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
+Warning--empty booktitle in mapreduce
 
 Done.
-You've used 12 entries,
+You've used 19 entries,
             4087 wiz_defined-function locations,
-            891 strings with 10175 characters,
-and the built_in function-call counts, 9844 in all, are:
-= -- 711
-> -- 313
-< -- 65
-+ -- 166
-- -- 62
-* -- 480
-:= -- 1377
-add.period$ -- 25
-call.type$ -- 12
-change.case$ -- 12
-chr.to.int$ -- 159
-cite$ -- 12
-duplicate$ -- 694
-empty$ -- 832
-format.name$ -- 71
-if$ -- 2309
+            924 strings with 11169 characters,
+and the built_in function-call counts, 13307 in all, are:
+= -- 957
+> -- 392
+< -- 83
++ -- 209
+- -- 77
+* -- 625
+:= -- 1907
+add.period$ -- 36
+call.type$ -- 19
+change.case$ -- 19
+chr.to.int$ -- 195
+cite$ -- 20
+duplicate$ -- 972
+empty$ -- 1151
+format.name$ -- 89
+if$ -- 3108
 int.to.chr$ -- 0
-int.to.str$ -- 12
-missing$ -- 145
-newline$ -- 73
-num.names$ -- 9
-pop$ -- 395
+int.to.str$ -- 19
+missing$ -- 205
+newline$ -- 104
+num.names$ -- 12
+pop$ -- 574
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 736
+skip$ -- 991
 stack$ -- 0
-substring$ -- 397
-swap$ -- 550
-text.length$ -- 12
+substring$ -- 483
+swap$ -- 738
+text.length$ -- 18
 text.prefix$ -- 0
 top$ -- 5
-type$ -- 12
-warning$ -- 0
-while$ -- 38
-width$ -- 14
-write$ -- 143
+type$ -- 19
+warning$ -- 1
+while$ -- 48
+width$ -- 21
+write$ -- 207
+(There was 1 warning)

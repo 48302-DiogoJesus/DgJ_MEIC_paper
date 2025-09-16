@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex main"] 1757880050.6122 "main.aux" "main.bbl" "main" 1757880052.49951 0
-  "./references.bib" 1757868927 19741 dd2dfe8c705e7da21d1fda5949f4aa56 ""
+["bibtex main"] 1758036543.23217 "main.aux" "main.bbl" "main" 1758036545.39184 0
+  "./references.bib" 1758028517 21220 afafbbfc2e52312bb109a642cb642f6b ""
   "C:/Users/dijes/AppData/Local/Programs/MiKTeX/bibtex/bst/ieeetran/IEEEtran.bst" 1440622569 57748 7c8250ecf02814ce6ddc0cdbb63df1dd ""
-  "main.aux" 1757880051 4494 d0fc27db08aba36cd963ebf069abe796 "pdflatex"
+  "main.aux" 1758036544 5411 b3e2732f2624ddd6411fc98032e6cafd "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1757880050.89836 "c:/Users/dijes/Desktop/Current/PG/Tecnico/_A2/TESE/DgJ_MEIC_paper/main.tex" "main.pdf" "main" 1757880052.50023 0
-  "C:/Users/dijes/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1757520132 82507 a9eef8696c92627b87e9975edea03b2a ""
+["pdflatex"] 1758036543.54463 "c:/Users/dijes/Desktop/Current/PG/Tecnico/_A2/TESE/DgJ_MEIC_paper/main.tex" "main.pdf" "main" 1758036545.39257 0
+  "C:/Users/dijes/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1757953480 82507 a9eef8696c92627b87e9975edea03b2a ""
   "C:/Users/dijes/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1757504112 24225046 38d4591ba2ff146cd60fb2b4577dd929 ""
   "C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc" 1458473887 4993 80dc9bab7f31fb78a000ccfed0e27cab ""
   "C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/tfm/adobe/courier/pcrb7t.tfm" 1136765053 960 4ab65358b8406f30ef5496c8c096d22b ""
@@ -97,13 +97,13 @@
   "C:/Users/dijes/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "C:/Users/dijes/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1700127522 55487 80a65caedd3722f4c20a14a69e785d8f ""
   "IEEEtran.cls" 1757502968 281957 5b2e4fa15b0f7eabb840ebf67df4c0f7 ""
-  "c:/Users/dijes/Desktop/Current/PG/Tecnico/_A2/TESE/DgJ_MEIC_paper/main.tex" 1757880047 35799 4b3a6412040fec4efc08df92126ce129 ""
+  "c:/Users/dijes/Desktop/Current/PG/Tecnico/_A2/TESE/DgJ_MEIC_paper/main.tex" 1758036540 40684 f13a9e7936f88924d0a06083d15e257c ""
   "figures/choreographed_execution_example.png" 1757879297 155630 fccb6626b2e75cebf209824d118f8721 ""
   "figures/dag_lang_example.png" 1757518705 8863 0fc7d9127968840b4e9cee339d4157c9 ""
   "figures/solution_distributedarchintegrated.png" 1757593434 278164 9430b60d4642445f0b16b8d4d61871d2 ""
-  "main.aux" 1757880051 4494 d0fc27db08aba36cd963ebf069abe796 "pdflatex"
-  "main.bbl" 1757880050 4756 5b8092fafbb5eb74d8e8861390b31e4c "bibtex main"
-  "main.tex" 1757880047 35799 4b3a6412040fec4efc08df92126ce129 ""
+  "main.aux" 1758036544 5411 b3e2732f2624ddd6411fc98032e6cafd "pdflatex"
+  "main.bbl" 1758036543 6390 94d4122fca93d53b97c47e27188f453f "bibtex main"
+  "main.tex" 1758036540 40684 f13a9e7936f88924d0a06083d15e257c ""
   (generated)
   "main.aux"
   "main.log"
