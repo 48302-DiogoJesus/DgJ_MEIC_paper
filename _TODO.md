@@ -1,3 +1,6 @@
+- Prof. Review
+    - rewrite considering the feedback on line: "Planners can use different optimizations to achieve their goals"
+
 - Solution/Architecture
     - Static Workflow Planner
         - show the image example + explain it

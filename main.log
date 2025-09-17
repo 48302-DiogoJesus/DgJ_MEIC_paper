@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.9.10)  17 SEP 2025 17:26
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.9.10)  17 SEP 2025 18:11
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -365,10 +365,10 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <figures/choreographed_execution_example.png, id=30, 892.83563pt x 442.65375pt>
 File: figures/choreographed_execution_example.png Graphic file (type png)
 <use figures/choreographed_execution_example.png>
-Package pdftex.def Info: figures/choreographed_execution_example.png  used on input line 278.
+Package pdftex.def Info: figures/choreographed_execution_example.png  used on input line 280.
 (pdftex.def)             Requested size: 258.0pt x 127.91374pt.
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 278--279
+Overfull \hbox (6.0pt too wide) in paragraph at lines 280--281
  [][] 
  []
 
@@ -393,13 +393,13 @@ L3 programming layer <2024-01-04>
 Here is how much of TeX's memory you used:
  7584 strings out of 474486
  121111 string characters out of 5743755
- 2060542 words of memory out of 5000000
+ 2059542 words of memory out of 5000000
  29793 multiletter control sequences out of 15000+600000
  600264 words of font info for 120 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  57i,8n,65p,1600b,1436s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrb8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrro8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (9 pages, 438217 bytes).
+Output written on main.pdf (9 pages, 438646 bytes).
 PDF statistics:
  80 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
