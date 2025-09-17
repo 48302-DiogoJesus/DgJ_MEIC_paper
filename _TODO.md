@@ -1,7 +1,4 @@
 - Solution/Architecture
-    - Related Work
-        - Reference Airflow (between Haddop and WUKONG)
-        - re-check "Serverless Workflow Scheduling and Orchestration" subsection
     - Static Workflow Planner
         - show the image example + explain it
     - Evaluation (Setup)

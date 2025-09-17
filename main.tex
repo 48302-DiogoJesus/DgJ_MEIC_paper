@@ -81,7 +81,9 @@ As we have stated, most existing serverless schedulers employ an approach where 
 
 \subsection{Architecture Overview}
 
-The overall architecture of our decentralized serverless workflow execution engine is organized into 3 high-level layers. Figure~\ref{fig:solution_architecture} provides an overview of this architecture.
+The overall architecture and logical flow of our decentralized serverless workflow execution engine is organized into 3 high-level layers. Figure~\ref{fig:solution_architecture} provides an overview of this architecture. The upper part represents the components that run on the user's machine, while the lower part represents the components that run outside the user's machine. 
+
+The user writes its workflows in Python (demonstrated in Section \ref{ss:workflow_definition_language}). First, a planning algorithm, chosen by the user, will run locally to generate a static workflow plan. This plan defines a task-to-worker mapping and other task-level optimization hints for FaaS workers. Once the plan is done, the client launches the initial workers for the root tasks, kicking off workflow execution. The user program then waits for a storage notification indicating workflow completion and then retrieves the final result from storage.
 
 The following sections should provide a deeper understanding of each layer as well as how the user interacts with the system.
 
@@ -109,8 +111,9 @@ There are 3 distinct computational entities involved in this system:
 Next, we will explain how the user defines and submits workflows for execution.
 
 \subsection{Workflow Definition Language}
+\label{ss:workflow_definition_language}
 
-The user can create workflows by composing individual Python functions, as shown in listing \ref{lst:dag_lang_example}. Here, we define two tasks, \texttt{task\_a} and \texttt{task\_b}, and then compose them into a DAG/Workflow by passing their results as arguments to the next task. The resulting workflow can be visualized in figure \ref{fig:dag_example}.
+Inspired by WUKONG, Dask and Airflow's way of expressing workflows, the user can create workflows by composing individual Python functions, as shown in Listing \ref{lst:dag_lang_example}. In this example, we define two tasks, \texttt{task\_a} and \texttt{task\_b}, and then compose them into a DAG by passing their results as arguments to the next task. The resulting workflow structure is illustrated in Figure \ref{fig:dag_lang_example}.
 
 \begin{figure}[h]
 \centering
@@ -141,10 +144,10 @@ a4 = task_a(b1)
     \centering
     \includegraphics[width=\columnwidth]{figures/dag_lang_example.png}
     \caption{Simple DAG example}
-    \label{fig:dag_example}
+    \label{fig:dag_lang_example}
 \end{figure}
 
-When \texttt{task\_a(10)} is invoked, it doesn't actually run the user code. It instead creates a representation of the task, which can be passed as argument to other tasks. The workflow planning and execution only happens once \texttt{.compute()} is called on the last/sink task (\texttt{a4}), as shown in listing \ref{lst:triggering_workflow_execution}. When \texttt{compute()} is called, we can create a representation of the entire workflow structure by backtracking the task dependencies.
+When \texttt{task\_a(10)} is invoked, it doesn't actually run the user code. It instead creates a representation of the task, which can be passed as argument to other tasks. The workflow planning and execution only happens once \texttt{.compute()} is called on the last/sink task (\texttt{a4}), as shown in Listing~\ref{lst:setup_and_launch_workflow_execution}. When \texttt{compute()} is called, we can create a representation of the entire workflow structure by backtracking the task dependencies.
 
 \begin{figure}[h]
 \centering
@@ -162,11 +165,11 @@ result = a4.compute(
     )
 )
 \end{lstlisting}
-\caption{Triggering workflow execution}
-\label{lst:triggering_workflow_execution}
+\caption{Setting up and launching workflow execution}
+\label{lst:setup_and_launch_workflow_execution}
 \end{figure}
 
-One limitation of this DAG definition language is that it doesn't support "dynamic fan-outs" (e.g., creating a variable number of tasks depending on the result of another task). 
+One limitation of this DAG definition language is that it doesn't support "dynamic fan-outs" (e.g., creating a variable number of tasks depending on the result of another task). This is a common limitation among other solutions, such as Dask, WUKONG, and Unum. Implementing this feature would be possible but result in less accurate predictions.
 
 We will now go into more detail about each of the 3 layers, unfolding its components and importance to the overall system.
 
@@ -183,7 +186,9 @@ The prediction methods take an additional parameter, \texttt{SLA} (Service-level
 \begin{lstlisting}[basicstyle=\ttfamily\footnotesize, columns=fullflexible, breaklines=true]
 class PredictionsProvider:
   def predict_output_size(function_name, input_size, sla) -> int
+
   def predict_worker_startup_time(resource_config, state: 'cold' | 'warm', sla) -> float
+
   def predict_data_transfer_time(
         type: 'upload' | 'download',
         data_size_bytes,
@@ -191,6 +196,7 @@ class PredictionsProvider:
         sla,
         scaling_exponent
     ) -> float
+
   def predict_execution_time(
         task_name,
         input_size,
@@ -206,7 +212,7 @@ class PredictionsProvider:
 In addition, metrics such as worker startup time, data transfer time, and task execution time are tied to the specific worker resource configuration. To account for this, our prediction method follows two paths. If we have enough historical samples for the same resource configuration, we use only those. Otherwise, when there are not enough samples with the same resource configuration, we fall back to a normalization strategy: we adjust samples from other memory configurations to a baseline, use those to estimate execution time, and then rescale the result back to the target configuration. After selecting all relevant samples we use an algorithm that selects a limited number of the most relevant samples for each prediction.
 
 \subsection{Static Workflow Planning}
-This layer executes on the user side, and it receives the workflow representation and a workflow planning algorithm chosen by the user (as shown in listing \ref{lst:triggering_workflow_execution}). Its job is to execute the planning algorithm, providing it access to the predictions exposed by the Metadata Management layer (section \ref{ss:metadata_management}).
+This layer executes on the user side, and it receives the workflow representation and a workflow planning algorithm chosen by the user (as shown in Listing \ref{lst:setup_and_launch_workflow_execution}). Its job is to execute the planning algorithm, providing it access to the predictions exposed by the Metadata Management layer (Section \ref{ss:metadata_management}).
 
 Planners can run \textit{workflow simulations} based on the predictions, allowing them to experiment with different resource configurations for different tasks, different task co-location strategies, and different optimizations. The accuracy of this simulation depends on the accuracy of the predictions exposed by the \textit{Predictions API}.
 
