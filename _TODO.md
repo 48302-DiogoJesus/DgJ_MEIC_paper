@@ -1,19 +1,11 @@
-- Prof. Review
-    - rewrite considering the feedback on line: "Planners can use different optimizations to achieve their goals"
-
-- ADD: Other solutions don't use non-uniform worker resources
-
 - Solution/Architecture
-    - Static Workflow Planner
-        - show the image example + explain it
     - Evaluation (Setup)
         - Insist on the choreographed scheduling, using a diagram maybe (the delegate and become stuff)
     - RE-CHECK
         - Explain listings and figures whenever necessary
-        - find better names for the planners + refactor code
 
 
-- possible extensions/improvements
+- For the Conclusion maybe possible solution extensions/improvements
     - improvements to prediction logic
     - make the metrics collection more scalable while not sacrificing predictions
     - supporting dynamic fan-outs
