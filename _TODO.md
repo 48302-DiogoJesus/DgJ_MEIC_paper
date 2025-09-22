@@ -1,6 +1,8 @@
 - Prof. Review
     - rewrite considering the feedback on line: "Planners can use different optimizations to achieve their goals"
 
+- ADD: Other solutions don't use non-uniform worker resources
+
 - Solution/Architecture
     - Static Workflow Planner
         - show the image example + explain it
