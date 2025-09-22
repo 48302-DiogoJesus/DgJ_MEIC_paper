@@ -232,7 +232,7 @@ Users can select from three provided planners or implement their own planner by 
 
 With the information they have access to, planners can estimate whether it is worthwhile to offload a task to a more powerful worker. This involves weighing the overhead of uploading the input data, waiting for the worker to be provisioned, and then executing the task, against the alternative of simply executing the task on the current, less powerful worker.
 
-Aside from their \texttt{worker\_id} and resource assignments, planners can also use different \textbf{optimizations} to further improve the workflow execution. The optimizations to be used are selected by the user, as shown in Listing \ref{lst:setup_and_launch_workflow_execution}. Similarly to planners, we provide three optimizations: \textbf{pre-warm}, \textbf{pre-load} and \textbf{task-dup}, but it is also possible to create new optimizations and define how workers should react to them. Now, we will describe the three base optimizations and how they are assigned to tasks.
+Aside from their \texttt{worker\_id} and resource assignments, planners can also apply different \textbf{optimizations} to further improve the workflow execution. The optimizations to be used are selected by the user, as shown in Listing \ref{lst:setup_and_launch_workflow_execution}. Similarly to planners, we provide three optimizations: \textbf{pre-warm}, \textbf{pre-load} and \textbf{task-dup}, but it is also possible to create new optimizations and define how workers should react to them. Now, we will describe the three base optimizations and how they are assigned to tasks.
 
 \textbf{pre-warm}(worker\_config) [Pre-warming Workers]:
 \begin{itemize}
@@ -256,18 +256,19 @@ Because planners may sometimes lack sufficient information to make optimal decis
 
 Once these optimizations are assigned, workflow planning is complete, and workers can begin execution. Because planning occurs on the user's machine (i.e., the machine launching the workflow), it is responsible for initiating the workflow by starting the initial workers. From that point onward, workers dynamically invoke additional workers as needed, following a choreographed, decentralized execution model.
 
-To illustrate this execution model, Figure~\ref{fig:planned_workflow_execution_example} provides a visual trace of how a planned workflow would be executed. The diagram depicts the workflow with the optimizations and \texttt{worker\_id} assignments for each task. The non-dashed arrows represent task dependencies, while the dashed arrows represent interactions with the \textit{Intermediate Storage} to either upload or download task data. We can see that task outputs are only uploaded to storage when there is at least one downstream task that depends on it and is assigned to another worker. 
-
-It is also worth noting that the planner assigned \texttt{Task 6} to \texttt{Worker 2}. This decision might be due to \texttt{Worker 2} being more powerful than \texttt{Worker 1}, and because the output of \texttt{Task 5} is larger than that of \texttt{Tasks 4} and \texttt{5}. Therefore, even if the task were executed on a more powerful worker (such as \texttt{Worker 3}, which handled \texttt{Task 3}), the potential performance gain would not offset the additional time or resources required. This is an example of a planner deciding to co-locate \texttt{Tasks 5 and 6} on the same worker to reduce data movement.
-
-Regarding \textbf{optimizations}, we can see \texttt{Task 1} \texttt{pre-warming} \texttt{Worker 3}, by making  a dummy invocation to the FaaS gateway, in an attempt to make it available before \texttt{Task 3} needs it. The \texttt{pre-load} optimization is used in \texttt{Task 5}, where the planner decided that \texttt{Worker 2} should start downloading the external dependencies for \texttt{Task 6} (\texttt{Task 3} and \texttt{Task 4}) as soon as they are available. This \texttt{pre-loading} can begin as soon as \texttt{Task 6}'s dependencies are ready in storage, potentially overlapping with \texttt{Task 2}'s execution instead of \texttt{Task 5}, as shown in the figure.
-
 \begin{figure*}[h]
     \centering
     \includegraphics[width=\textwidth]{figures/solution_workflowinstanceexample.png}
     \caption{Planned Workflow Execution Example}
     \label{fig:planned_workflow_execution_example}
 \end{figure*}
+
+To illustrate this execution model, Figure~\ref{fig:planned_workflow_execution_example} provides a visual trace of how a planned workflow would be executed. The diagram depicts the workflow with the optimizations and \texttt{worker\_id} assignments for each task. The non-dashed arrows represent task dependencies, while the dashed arrows represent interactions with the \textit{Intermediate Storage} to either upload or download task data. We can see that task outputs are only uploaded to storage when there is at least one downstream task that depends on it and is assigned to another worker. 
+
+It is also worth noting that the planner assigned \texttt{Task 6} to \texttt{Worker 2}. This decision might be due to \texttt{Worker 2} being more powerful than \texttt{Worker 1}, and because the output of \texttt{Task 5} is larger than that of \texttt{Tasks 4} and \texttt{5}. Therefore, even if the task were executed on a more powerful worker (such as \texttt{Worker 3}, which handled \texttt{Task 3}), the potential performance gain would not offset the additional time or resources required. This is an example of a planner deciding to co-locate \texttt{Tasks 5 and 6} on the same worker to reduce data movement.
+
+Regarding \textbf{optimizations}, we can see \texttt{Task 1} \texttt{pre-warming} \texttt{Worker 3}, by making  a dummy invocation to the FaaS gateway, in an attempt to make it available before \texttt{Task 3} needs it. The \texttt{pre-load} optimization is used in \texttt{Task 5}, where the planner decided that \texttt{Worker 2} should start downloading the external dependencies for \texttt{Task 6} (\texttt{Task 3} and \texttt{Task 4}) as soon as they are available. This \texttt{pre-loading} can begin as soon as \texttt{Task 6}'s dependencies are ready in storage, potentially overlapping with \texttt{Task 2}'s execution instead of \texttt{Task 5}, as shown in the figure.
+
 
 \subsection{Decentralized Scheduling}
 
