@@ -386,18 +386,16 @@ Serverless workflow engines like PyWren, Unum, and WUKONG represent the most dir
 \section{Conclusion}
 %TODO:
 
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\clearpage
+\onecolumn
 \appendix
 
-\section{Worker Assignment Algorithm Implementation}
-\label{app:worker-assignment}
-
-\begin{figure*}[!t]  % figure* spans both columns
-\begin{lstlisting}[
-    basicstyle=\scriptsize\ttfamily,
-    breaklines=true,
-    language=Python
-]
-def assign_workers(nodes, predict, base_rc, SLA, MAX_CLUSTERING):
+\begin{figure*}[h]
+\begin{lstlisting}[basicstyle=\scriptsize\ttfamily, breaklines=true, language=Python]
+def assign_workers(nodes, predictions, base_rc, SLA, MAX_CLUSTERING):
     assigned = set()
 
     # {nodes} are topologicaly sorted (won't iterate on a node without first iterating on its upstream nodes)
@@ -414,14 +412,14 @@ def assign_workers(nodes, predict, base_rc, SLA, MAX_CLUSTERING):
                 fanout = [d for d in u.downstream if d not in assigned]
                 assign_group(u.worker, fanout)
         else: # N->1                       
-            outputs = {u.worker: predict.output_size(u) for u in n.upstream}
+            outputs = {u.worker: predictions.output_size(u) for u in n.upstream}
             best = max(outputs, key=outputs.get)
             assign_worker([n], best)
     
     def assign_group(up_worker, tasks):
         if not tasks: return
-        exec_t = {t: predict.exec_time(t) for t in tasks}
-        out_sz = {t: predict.output_size(t) for t in tasks}
+        exec_t = {t: predictions.exec_time(t) for t in tasks}
+        out_sz = {t: predictions.output_size(t) for t in tasks}
         median = median(exec_t.values())
         longs  = [t for t in tasks if exec_t[t] > median]
         shorts = sort_larger_output_first([t for t in tasks if exec_t[t] <= median])
@@ -449,11 +447,60 @@ def assign_workers(nodes, predict, base_rc, SLA, MAX_CLUSTERING):
             assign_worker(longs[:half], new_worker_id())
             longs = longs[half:]
 \end{lstlisting}
-\caption{Worker ID Assignment Algorithm Implementation}
+\caption{Worker ID Assignment Algorithm Implementation (Pseudocode)}
 \label{lst:worker_id_assignment}
 \end{figure*}
 
-\bibliographystyle{IEEEtran}
-\bibliography{references}
+\begin{figure*}[h]
+\begin{lstlisting}[basicstyle=\scriptsize\ttfamily, breaklines=true, language=Python]
+def downgrade_resources(dag, nodes, critical_path_ids, original_critical_path_time, configs, predictions):
+    """
+    Attempt to downgrade worker resources outside the critical path
+    without increasing total workflow time.
+    """
+    workers_outside = set()
+    # 1) Identify workers and nodes outside the critical path
+    # {nodes} are topologicaly sorted
+    for n in nodes:
+        wid = n.worker_id
+        if n.id not in critical_path_ids and all(wid != cp.worker_id for cp in dag.critical_path_nodes):
+            workers_outside.add(wid)
+
+    nodes_outside_cp = [n for n in nodes if n.id not in critical_path_ids]
+    successful_downgrades = 0
+
+    # 2) Try downgrading each worker
+    for wid in workers_outside:
+        # Save the last known good configuration for each node of this worker
+        last_good = {n.id: n.config for n in nodes_outside_cp if n.worker_id == wid}
+
+        # Iterate through weaker resource configurations (skip strongest at index 0)
+        for cfg in configs[1:]:
+            trial = cfg.clone(worker_id=wid)
+
+            # Apply trial configuration to all nodes of this worker
+            for n in nodes_outside_cp:
+                if n.worker_id == wid:
+                    n.config = trial
+
+            # Recompute workflow timing with predictions
+            timings = simulate_workflow(nodes, predictions)
+            cp_time = simulate_critical_path_time(dag, timings)
+
+            if cp_time == original_critical_path_time:
+                # Downgrade didn't affect critical path, record as last good state
+                for n in nodes_outside_cp:
+                    if n.worker_id == wid:
+                        last_good[n.id] = n.config
+            else:
+                # Downgrade increases critical path -> revert and stop for this worker
+                for n in nodes_outside_cp:
+                    if n.worker_id == wid:
+                        n.config = last_good[n.id]
+                break # move to next worker
+\end{lstlisting}
+\caption{Non-Uniform planner: resource downgrading algorithm (Pseudocode)}
+\label{lst:resource_downgrading_algorithm}
+\end{figure*}
 
 \end{document}

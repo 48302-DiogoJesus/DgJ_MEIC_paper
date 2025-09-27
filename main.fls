@@ -224,9 +224,6 @@ INPUT .\figures\choreographed_execution_example.png
 INPUT .\figures\choreographed_execution_example.png
 INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmri8c.tfm
 INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmri8c.vf
-INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\courier\pcrr7t.tfm
-INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\courier\pcrb7t.tfm
-INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\courier\pcrro7t.tfm
 INPUT .\main.bbl
 INPUT .\main.bbl
 INPUT main.bbl
@@ -234,6 +231,9 @@ INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmr8c.
 INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmri7t.vf
 INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmri8r.tfm
 INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmr8c.vf
+INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\courier\pcrr7t.tfm
+INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\courier\pcrb7t.tfm
+INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\courier\pcrro7t.tfm
 INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\courier\pcrb7t.vf
 INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\courier\pcrb8r.tfm
 INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\courier\pcrr7t.vf
