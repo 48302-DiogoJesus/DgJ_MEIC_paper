@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.9.10)  24 SEP 2025 21:09
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.9.10)  27 SEP 2025 18:51
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -359,33 +359,38 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <figures/solution_distributedarchintegrated.png, id=19, 802.49812pt x 600.74437pt>
 File: figures/solution_distributedarchintegrated.png Graphic file (type png)
 <use figures/solution_distributedarchintegrated.png>
-Package pdftex.def Info: figures/solution_distributedarchintegrated.png  used on input line 157.
+Package pdftex.def Info: figures/solution_distributedarchintegrated.png  used on input line 159.
 (pdftex.def)             Requested size: 252.0pt x 188.63965pt.
- [3 <./figures/solution_distributedarchintegrated.png>] [4]
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[3 <./figures/solution_distributedarchintegrated.png>] [4]
 <figures/solution_workflowinstanceexample.png, id=27, 1017.8025pt x 548.80031pt>
 File: figures/solution_workflowinstanceexample.png Graphic file (type png)
 <use figures/solution_workflowinstanceexample.png>
-Package pdftex.def Info: figures/solution_workflowinstanceexample.png  used on input line 261.
+Package pdftex.def Info: figures/solution_workflowinstanceexample.png  used on input line 264.
 (pdftex.def)             Requested size: 516.0pt x 278.23476pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[5]
-<figures/choreographed_execution_example.png, id=31, 892.83563pt x 442.65375pt>
+[5] [6 <./figures/solution_workflowinstanceexample.png>]
+<figures/choreographed_execution_example.png, id=35, 892.83563pt x 442.65375pt>
 File: figures/choreographed_execution_example.png Graphic file (type png)
 <use figures/choreographed_execution_example.png>
-Package pdftex.def Info: figures/choreographed_execution_example.png  used on input line 291.
+Package pdftex.def Info: figures/choreographed_execution_example.png  used on input line 294.
 (pdftex.def)             Requested size: 258.0pt x 127.91374pt.
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 291--292
+Overfull \hbox (6.0pt too wide) in paragraph at lines 294--295
  [][] 
  []
 
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[6 <./figures/solution_workflowinstanceexample.png>] [7 <./figures/choreographed_execution_example.png>] [8] [9] (main.bbl)
+[7 <./figures/choreographed_execution_example.png>] [8] [9]
+** WARNING: Ignoring useless \section in Appendix (line 391).
+LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <7> not available
+(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 403.
+(main.bbl)
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -397,24 +402,24 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[10] (main.aux)
+[10] [11] (main.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 7597 strings out of 474486
- 121618 string characters out of 5743755
- 2023542 words of memory out of 5000000
- 29806 multiletter control sequences out of 15000+600000
- 600264 words of font info for 120 fonts, out of 8000000 for 9000
+ 7645 strings out of 474486
+ 122205 string characters out of 5743755
+ 2233542 words of memory out of 5000000
+ 29851 multiletter control sequences out of 15000+600000
+ 601911 words of font info for 126 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  57i,8n,65p,1600b,1436s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrb8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrro8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (10 pages, 598056 bytes).
+Output written on main.pdf (11 pages, 605667 bytes).
 PDF statistics:
- 85 PDF objects out of 1000 (max. 8388607)
+ 88 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  21 words of extra memory for PDF output out of 10000 (max. 10000000)
 

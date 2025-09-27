@@ -1,9 +1,13 @@
+- Notas
+    dynamic fan-out
+    - ?pseudocodigo dos algoritmos de planning?
+    - ?pseudocodigo para decentralized scheduling?
+
 - Solution/Architecture
     - Evaluation (Setup)
         - Insist on the choreographed scheduling, using a diagram maybe (the delegate and become stuff)
     - RE-CHECK
         - Explain listings and figures whenever necessary
-
 
 - For the Conclusion maybe possible solution extensions/improvements
     - improvements to prediction logic
@@ -14,3 +18,4 @@
         - if below a certain threshold, because worker invocation data has size limits
     - ? supporting execution of generic executables as tasks, and not just python functions
         CLI program (input (stdin or cli args) => output (stdout))
+        

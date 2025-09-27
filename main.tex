@@ -83,7 +83,7 @@ As we have stated, most existing serverless schedulers employ an approach where 
 \subsection{Workflow Definition Language}
 \label{ss:workflow_definition_language}
 
-We will now present our DAG-based workflow engine that transforms ordinary Python functions into parallelizable tasks, automatically managing dependencies and execution through an intuitive decorator-based API. It is inspired by WUKONG, Dask and Airflow's way of expressing workflows, the user can create workflows by composing individual Python functions, as shown in Listing \ref{lst:dag_lang_example}. In this example, we define two tasks, \texttt{task\_a} and \texttt{task\_b}, and then compose them into a DAG by passing their results as arguments to the next task. The resulting workflow structure is illustrated in Figure \ref{fig:dag_lang_example}.
+We will now present our DAG-based workflow engine that transforms ordinary Python functions into parallelizable tasks, automatically managing dependencies and execution through an intuitive decorator-based API. It is inspired by WUKONG, Dask and Airflow's way of expressing workflows: the user can create workflows by composing individual Python functions, as shown in Listing \ref{lst:dag_lang_example}. In this example, we define two tasks, \texttt{task\_a} and \texttt{task\_b}, and then compose them into a DAG by passing their results as arguments to the next task. The resulting workflow structure is illustrated in Figure \ref{fig:dag_lang_example}.
 
 \begin{figure}[h]
 \centering
@@ -140,7 +140,9 @@ result = a4.compute(
 \label{lst:setup_and_launch_workflow_execution}
 \end{figure}
 
-One limitation of this DAG definition language is that it doesn't support "dynamic fan-outs" (e.g., creating a variable number of tasks depending on the result of another task). This is a common limitation among other solutions, such as Dask, WUKONG, and Unum. Implementing this feature would be possible but result in less accurate predictions.
+One limitation of this DAG definition language is that it doesn't support "dynamic fan-outs" (e.g., creating a variable number of tasks depending on the result of another task) on a single workflow. This is a powerful and expressive feature, but that is seldom supported in other DAG definition languages (e.g., Dask, WUKONG, Unum, Oozie~\cite{apache_oozie} do not support it). These languages require the user to split the workflow into multiple workflows, one for each \textit{dynamic fan-out}: one workflow runs up to the task that generates a list of results, while a second workflow starts with a number of tasks that depends on the size or contents of that list. 
+
+Apache AirFlow~\footnote{https://airflow.apache.org/docs/apache-airflow/stable/authoring-and-scheduling/dynamic-task-mapping.html} supports this feature through an extension to their DAG language, allowing a variable number of tasks to be created at run-time depending on the number of results produced by a previous task. Implementing similar functionality is possible, but it would reduce the accuracy of predictions. This is because we would also need to predict the expected fan-out size, and any errors in that prediction could amplify inaccuracies in the predictions for the rest of the workflow.
 
 We will now present the architecture, highlighting the core layers of our solution.
 
@@ -232,26 +234,27 @@ Users can select from three provided planners or implement their own planner by 
 
 With the information they have access to, planners can estimate whether it is worthwhile to offload a task to a more powerful worker. This involves weighing the overhead of uploading the input data, waiting for the worker to be provisioned, and then executing the task, against the alternative of simply executing the task on the current, less powerful worker.
 
-Aside from their \texttt{worker\_id} and resource assignments, planners can also apply different \textbf{optimizations} to further improve the workflow execution. The optimizations to be used are selected by the user, as shown in Listing \ref{lst:setup_and_launch_workflow_execution}. Similarly to planners, we provide three optimizations: \textbf{pre-warm}, \textbf{pre-load} and \textbf{task-dup}, but it is also possible to create new optimizations and define how workers should react to them. Now, we will describe the three base optimizations and how they are assigned to tasks.
+Aside from their \texttt{worker\_id} and resource assignments, planners can also apply different \textbf{optimizations} to further improve the workflow execution. The optimizations to be used are selected by the user, as shown in Listing \ref{lst:setup_and_launch_workflow_execution}. Similarly to planners, we provide three optimizations: \textbf{pre-warm}, \textbf{pre-load} and \textbf{task-dup}, but it is also possible to create new optimizations and define how workers should react to them. Now, we will describe the three base optimizations and how they are assigned to tasks:
 
-\textbf{pre-warm}(worker\_config) [Pre-warming Workers]:
+\begin{enumerate}
+\item\textbf{pre-warm}(worker\_config) [Pre-warming Workers]:
 \begin{itemize}
   \item \textit{Interpretation}: Tasks/Nodes with this optimization should perform a special invocation to the FaaS gateway that forces it to launch a new worker with the specified resource configuration \texttt{worker\_config}. This can be used to warm up workers ahead of time and mask cold start latencies;
   \item \textit{Assignment Logic}: For the nodes whose workers are expected to have cold starts, find the "optimal" node to perform the pre-warming by searching for nodes/tasks whose activity timing falls within a window (goal: avoid the pre-warmed worker from going cold before needed, while also not being warm too late). The optimization will be added to the "optimal" node, which will be responsible for doing the special "empty invocation" to the FaaS gateway.
 \end{itemize}
 
-\textbf{pre-load} [Pre-Loading Dependencies]:
+\item\textbf{pre-load} [Pre-Loading Dependencies]:
 \begin{itemize}
   \item \textit{Interpretation}: Workers assigned to tasks or nodes with this optimization should begin downloading the task's dependencies as early as possible. This prevents scenarios where a worker must fetch all dependencies at once. The optimization is effective only if the worker is active before executing the task, allowing it to download dependencies in parallel with other ongoing tasks. This is implemented by having the worker receive completion notifications from the \textit{Metadata Storage} for all tasks upstream of the optimized task;
   \item \textit{Assignment Logic}: First, all tasks with more than a configurable threshold of dependencies/upstream tasks are assigned the optimization. Then, an iterative process is used to optimize the workflow along its critical path using this optimization. First, the algorithm identifies the critical path and assigns the optimization to eligible nodes on it. The critical path is then recalculated: if the total execution time increases, the optimization is removed; if the execution time decreases but the critical path changes, the algorithm restarts with the new path. This process repeats until no further improvements are possible, or the algorithm hits a fixed iteration limit.
 \end{itemize}
 
-\textbf{task-dup} [Task Duplication]:
+\item\textbf{task-dup} [Task Duplication]:
 \begin{itemize}
   \item \textit{Interpretation}: Tasks or nodes with this optimization can be executed by other workers if doing so helps unlock dependent tasks more quickly. The task could be "duplicated" by workers that depend on its output. It is a trade-off between performance and resource utilization, allowing potentially faster execution at the cost of using additional compute resources;
   \item \textit{Assignment Logic}: Assigned to all nodes whose execution time and input size do not exceed predefined thresholds. Whether duplication actually occurs is decided at run-time. The optimization targets fast tasks with small inputs, as these are inexpensive to duplicate in terms of both downloading dependencies and execution. This way, even if duplication turns out to be unnecessary, the impact on performance and resource usage remains minimal.
 \end{itemize}
-
+\end{enumerate}
 Because planners may sometimes lack sufficient information to make optimal decisions about optimization assignments, it is important to not only allow the user to select optimizations at the workflow-level, but also allow them the flexibility to specify optimizations at the \textit{task-level}. An example of this feature is shown in Listing~\ref{lst:dag_lang_example}, where the user requests that \texttt{task\_b} attempt to use the \textit{pre-load} optimization.
 
 Once these optimizations are assigned, workflow planning is complete, and workers can begin execution. Because planning occurs on the user's machine (i.e., the machine launching the workflow), it is responsible for initiating the workflow by starting the initial workers. From that point onward, workers dynamically invoke additional workers as needed, following a choreographed, decentralized execution model.
@@ -382,6 +385,73 @@ Serverless workflow engines like PyWren, Unum, and WUKONG represent the most dir
 
 \section{Conclusion}
 %TODO:
+
+\appendix
+
+\section{Worker Assignment Algorithm Implementation}
+\label{app:worker-assignment}
+
+\begin{figure*}[!t]  % figure* spans both columns
+\begin{lstlisting}[
+    basicstyle=\scriptsize\ttfamily,
+    breaklines=true,
+    language=Python
+]
+def assign_workers(nodes, predict, base_rc, SLA, MAX_CLUSTERING):
+    assigned = set()
+
+    # {nodes} are topologicaly sorted (won't iterate on a node without first iterating on its upstream nodes)
+    for n in nodes:                
+        if n in assigned: continue
+        if not n.upstream: # root nodes
+            roots = [r for r in nodes if not r.upstream and r not in assigned]
+            assign_group(None, roots)
+        elif len(n.upstream) == 1: # 1->1 or 1->N
+            u = n.upstream[0]
+            if len(u.downstream) == 1:
+            assign_worker([n], u.worker) # reuse worker
+            else: # 1->N
+                fanout = [d for d in u.downstream if d not in assigned]
+                assign_group(u.worker, fanout)
+        else: # N->1                       
+            outputs = {u.worker: predict.output_size(u) for u in n.upstream}
+            best = max(outputs, key=outputs.get)
+            assign_worker([n], best)
+    
+    def assign_group(up_worker, tasks):
+        if not tasks: return
+        exec_t = {t: predict.exec_time(t) for t in tasks}
+        out_sz = {t: predict.output_size(t) for t in tasks}
+        median = median(exec_t.values())
+        longs  = [t for t in tasks if exec_t[t] > median]
+        shorts = sort_larger_output_first([t for t in tasks if exec_t[t] <= median])
+
+        # 1) cluster short tasks with bigger outputs on upstream worker
+        if up_worker and shorts:
+            cluster = shorts[:MAX_CLUSTERING]
+            assign_worker(cluster, up_worker)
+            shorts  = shorts[MAX_CLUSTERING:]
+
+        # 2) pair long tasks with remaining short tasks (1 long per group)
+        while longs and shorts:
+            cluster = [longs.pop(0)] + shorts[:MAX_CLUSTERING-1]
+            assign_worker(cluster, new_worker_id())
+            shorts  = shorts[MAX_CLUSTERING-1:]
+
+        # 3) group remaining short tasks
+        while shorts:
+            assign_worker(shorts[:MAX_CLUSTERING], new_worker_id())
+            shorts = shorts[MAX_CLUSTERING:]
+
+        # 4) group remaining longs (half-size)
+        half = max(1, MAX_CLUSTERING // 2)
+        while longs:
+            assign_worker(longs[:half], new_worker_id())
+            longs = longs[half:]
+\end{lstlisting}
+\caption{Worker ID Assignment Algorithm Implementation}
+\label{lst:worker_id_assignment}
+\end{figure*}
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}

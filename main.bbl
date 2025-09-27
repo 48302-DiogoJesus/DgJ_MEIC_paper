@@ -100,6 +100,11 @@ Q.~Jiang, Y.~C. Lee, and A.~Y. Zomaya, ``Serverless execution of scientific
   Computing}.\hskip 1em plus 0.5em minus 0.4em\relax Springer, 2017, pp.
   706--721.
 
+\bibitem{apache_oozie}
+\BIBentryALTinterwordspacing
+Apache oozie. [Online]. Available: \url{https://oozie.apache.org/}
+\BIBentrySTDinterwordspacing
+
 \bibitem{apache_hadoop}
 \BIBentryALTinterwordspacing
 Apache hadoop. [Online]. Available: \url{https://hadoop.apache.org/}
