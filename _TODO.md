@@ -1,11 +1,7 @@
 - Notas
-    dynamic fan-out
-    - ?pseudocodigo dos algoritmos de planning?
     - ?pseudocodigo para decentralized scheduling?
 
 - Solution/Architecture
-    - Evaluation (Setup)
-        - Insist on the choreographed scheduling, using a diagram maybe (the delegate and become stuff)
     - RE-CHECK
         - Explain listings and figures whenever necessary
 

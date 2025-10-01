@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.9.10)  27 SEP 2025 19:36
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.9.10)  1 OCT 2025 16:50
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -182,23 +182,12 @@ Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
 LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
 LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 (Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
-)) (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/algorithms\algorithmic.sty
-Package: algorithmic 2009/08/24 v0.1 Document Style `algorithmic'
- (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/base\ifthen.sty
-Package: ifthen 2022/04/13 v1.1d Standard LaTeX ifthen package (DPC)
-) (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/graphics\keyval.sty
+)) (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphicx.sty
+Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
+ (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/graphics\keyval.sty
 Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
 \KV@toks@=\toks23
-)
-\c@ALC@unique=\count280
-\c@ALC@line=\count281
-\c@ALC@rem=\count282
-\c@ALC@depth=\count283
-\ALC@tlm=\skip54
-\algorithmicindent=\skip55
-) (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphicx.sty
-Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
- (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphics.sty
+) (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphics.sty
 Package: graphics 2022/03/10 v1.4e Standard LaTeX Graphics (DPC,SPQR)
  (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/graphics\trig.sty
 Package: trig 2021/08/11 v1.11 sin cos tan (DPC)
@@ -233,22 +222,22 @@ Package xcolor Info: Model `wave' substituted by `hsb' on input line 1373.
 \Urlmuskip=\muskip17
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 ) (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/listings\listings.sty
-\lst@mode=\count284
+\lst@mode=\count280
 \lst@gtempboxa=\box55
 \lst@token=\toks24
-\lst@length=\count285
+\lst@length=\count281
 \lst@currlwidth=\dimen175
-\lst@column=\count286
-\lst@pos=\count287
+\lst@column=\count282
+\lst@pos=\count283
 \lst@lostspace=\dimen176
 \lst@width=\dimen177
-\lst@newlines=\count288
-\lst@lineno=\count289
+\lst@newlines=\count284
+\lst@lineno=\count285
 \lst@maxwidth=\dimen178
  (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstmisc.sty
 File: lstmisc.sty 2023/02/27 1.9 (Carsten Heinz)
-\c@lstnumber=\count290
-\lst@skipnumbers=\count291
+\c@lstnumber=\count286
+\lst@skipnumbers=\count287
 \lst@framebox=\box56
 ) (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/listings\listings.cfg
 File: listings.cfg 2023/02/27 1.9 listings configuration
@@ -275,81 +264,114 @@ Package caption Warning: Unknown document class (or package),
 (caption)                standard defaults will be used.
 See the caption package documentation for explanation.
 
-\c@caption@flags=\count292
-\c@continuedfloat=\count293
+\c@caption@flags=\count288
+\c@continuedfloat=\count289
 Package caption Info: listings package is loaded.
+) (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/algorithms\algorithm.sty
+Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating environment
+ (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/float\float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count290
+\float@exts=\toks25
+\float@box=\box57
+\@float@everytoks=\toks26
+\@floatcapt=\box58
+) (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/base\ifthen.sty
+Package: ifthen 2022/04/13 v1.1d Standard LaTeX ifthen package (DPC)
+)
+\@float@every@algorithm=\toks27
+\c@algorithm=\count291
+) (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/algorithmicx\algpseudocode.sty
+Package: algpseudocode 
+ (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/algorithmicx\algorithmicx.sty
+Package: algorithmicx 2005/04/27 v1.2 Algorithmicx
+
+Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
+\c@ALG@line=\count292
+\c@ALG@rem=\count293
+\c@ALG@nested=\count294
+\ALG@tlm=\skip54
+\ALG@thistlm=\skip55
+\c@ALG@Lnr=\count295
+\c@ALG@blocknr=\count296
+\c@ALG@storecount=\count297
+\c@ALG@tmpcounter=\count298
+\ALG@tmplength=\skip56
+)
+Document Style - pseudocode environments for use with the `algorithmicx' style
 ) (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
 File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count294
-\l__pdf_internal_box=\box57
+\l__color_backend_stack_int=\count299
+\l__pdf_internal_box=\box59
 ) (main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
 
 -- Lines per column: 56 (exact).
 (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count295
+\scratchcounter=\count300
 \scratchdimen=\dimen187
-\scratchbox=\box58
-\nofMPsegments=\count296
-\nofMParguments=\count297
-\everyMPshowfont=\toks25
-\MPscratchCnt=\count298
+\scratchbox=\box60
+\nofMPsegments=\count301
+\nofMParguments=\count302
+\everyMPshowfont=\toks28
+\MPscratchCnt=\count303
 \MPscratchDim=\dimen188
-\MPnumerator=\count299
-\makeMPintoPDFobject=\count300
-\everyMPtoPDFconversion=\toks26
+\MPnumerator=\count304
+\makeMPintoPDFobject=\count305
+\everyMPtoPDFconversion=\toks29
 ) (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
  (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
-\c@lstlisting=\count301
+\c@lstlisting=\count306
 Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: float package is loaded.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 52.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 54.
  (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 52.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 54.
  (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 58.
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 60.
  (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 ) [1{C:/Users/dijes/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc}
 
 
 ]
-LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 86.
+LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 88.
  (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/psnfss\ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 ) (C:\Users\dijes\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 )
 LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <8> not available
-(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 91.
+(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 93.
 <figures/dag_lang_example.png, id=9, 596.2275pt x 131.49126pt>
 File: figures/dag_lang_example.png Graphic file (type png)
 <use figures/dag_lang_example.png>
-Package pdftex.def Info: figures/dag_lang_example.png  used on input line 115.
+Package pdftex.def Info: figures/dag_lang_example.png  used on input line 117.
 (pdftex.def)             Requested size: 252.0pt x 55.57506pt.
 
 
@@ -359,17 +381,24 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <figures/solution_distributedarchintegrated.png, id=19, 802.49812pt x 600.74437pt>
 File: figures/solution_distributedarchintegrated.png Graphic file (type png)
 <use figures/solution_distributedarchintegrated.png>
-Package pdftex.def Info: figures/solution_distributedarchintegrated.png  used on input line 159.
+Package pdftex.def Info: figures/solution_distributedarchintegrated.png  used on input line 161.
 (pdftex.def)             Requested size: 252.0pt x 188.63965pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[3 <./figures/solution_distributedarchintegrated.png>] [4] [5]
+[3 <./figures/solution_distributedarchintegrated.png>] [4]
+
+LaTeX Warning: Reference `lst:worker_id_assignment' on page 5 undefined on input line 237.
+
+
+LaTeX Warning: Reference `lst:resource_downgrading_algorithm' on page 5 undefined on input line 239.
+
+[5]
 <figures/solution_workflowinstanceexample.png, id=30, 1017.8025pt x 548.80031pt>
 File: figures/solution_workflowinstanceexample.png Graphic file (type png)
 <use figures/solution_workflowinstanceexample.png>
-Package pdftex.def Info: figures/solution_workflowinstanceexample.png  used on input line 268.
+Package pdftex.def Info: figures/solution_workflowinstanceexample.png  used on input line 270.
 (pdftex.def)             Requested size: 516.0pt x 278.23476pt.
 
 
@@ -378,10 +407,10 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <figures/choreographed_execution_example.png, id=31, 892.83563pt x 442.65375pt>
 File: figures/choreographed_execution_example.png Graphic file (type png)
 <use figures/choreographed_execution_example.png>
-Package pdftex.def Info: figures/choreographed_execution_example.png  used on input line 298.
+Package pdftex.def Info: figures/choreographed_execution_example.png  used on input line 300.
 (pdftex.def)             Requested size: 258.0pt x 127.91374pt.
 
-Overfull \hbox (6.0pt too wide) in paragraph at lines 298--299
+Overfull \hbox (6.0pt too wide) in paragraph at lines 300--301
  [][] 
  []
 
@@ -391,11 +420,8 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 [6] [7 <./figures/solution_workflowinstanceexample.png> <./figures/choreographed_execution_example.png>] [8] [9] (main.bbl [10]) [11
 
 ]
-LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <7> not available
-(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 405.
 
-
-LaTeX Warning: `h' float specifier changed to `ht'.
+LaTeX Warning: Float too large for page by 76.63075pt on input line 484.
 
 
 ** Conference Paper **
@@ -410,25 +436,30 @@ Before submitting the final camera ready copy, remember to:
 
 [12
 
+] [13
 
-] [13] (main.aux)
+] (main.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
+
+
+LaTeX Warning: There were undefined references.
+
  ) 
 Here is how much of TeX's memory you used:
- 7666 strings out of 474486
- 122568 string characters out of 5743755
- 2363542 words of memory out of 5000000
- 29872 multiletter control sequences out of 15000+600000
- 601911 words of font info for 126 fonts, out of 8000000 for 9000
+ 8147 strings out of 474486
+ 130665 string characters out of 5743755
+ 2023542 words of memory out of 5000000
+ 30338 multiletter control sequences out of 15000+600000
+ 607587 words of font info for 133 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 57i,8n,65p,1600b,1436s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrb8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrro8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (13 pages, 610640 bytes).
+ 57i,10n,65p,1600b,1438s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi9.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy9.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrb8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrro8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
+Output written on main.pdf (13 pages, 668640 bytes).
 PDF statistics:
- 95 PDF objects out of 1000 (max. 8388607)
+ 120 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  21 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -3,13 +3,15 @@
 % The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
 \usepackage{cite}
 \usepackage{amsmath,amssymb,amsfonts}
-\usepackage{algorithmic}
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{xcolor}
 \usepackage{url}
 \usepackage{listings}
 \usepackage{caption}
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 
 \captionsetup[lstlisting]{position=bottom}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
@@ -394,117 +396,155 @@ Serverless workflow engines like PyWren, Unum, and WUKONG represent the most dir
 \bibliography{references}
 
 \clearpage
-\onecolumn
+% \onecolumn
 \appendix
 
-\begin{figure*}[h]
-\begin{lstlisting}[basicstyle=\scriptsize\ttfamily, breaklines=true, language=Python]
-def assign_workers(nodes, predictions, base_rc, SLA, MAX_CLUSTERING):
-    assigned = set()
-
-    # {nodes} are topologicaly sorted (won't iterate on a node without first iterating on its upstream nodes)
-    for n in nodes:                
-        if n in assigned: continue
-        if not n.upstream: # root nodes
-            roots = [r for r in nodes if not r.upstream and r not in assigned]
-            assign_group(None, roots)
-        elif len(n.upstream) == 1: # 1->1 or 1->N
-            u = n.upstream[0]
-            if len(u.downstream) == 1:
-            assign_worker([n], u.worker) # reuse worker
-            else: # 1->N
-                fanout = [d for d in u.downstream if d not in assigned]
-                assign_group(u.worker, fanout)
-        else: # N->1                       
-            outputs = {u.worker: predictions.output_size(u) for u in n.upstream}
-            best = max(outputs, key=outputs.get)
-            assign_worker([n], best)
+\begin{algorithm}
+    \caption{Worker Assignment Algorithm}
+    \label{alg:worker_assignment}
+    \small
+    \begin{algorithmic}[1]
+    \Require $nodes$, $predictions$, $base\_rc$, $SLA$, $MAX\_CLUSTERING$
+    \State $assigned \gets \emptyset$
     
-    def assign_group(up_worker, tasks):
-        if not tasks: return
-        exec_t = {t: predictions.exec_time(t) for t in tasks}
-        out_sz = {t: predictions.output_size(t) for t in tasks}
-        median = median(exec_t.values())
-        longs  = [t for t in tasks if exec_t[t] > median]
-        shorts = sort_larger_output_first([t for t in tasks if exec_t[t] <= median])
+    \Comment{nodes are topologically sorted}
+    \ForAll{$n \in nodes$}
+        \If{$n \in assigned$}
+            \State \textbf{continue}
+        \EndIf
+        
+        \If{$n.upstream = \emptyset$} \Comment{root nodes}
+            \State $roots \gets \{r \in nodes \mid r.upstream = \emptyset \land r \notin assigned\}$
+            \State \Call{AssignGroup}{$\textit{null}$, $roots$}
+        \ElsIf{$|n.upstream| = 1$} \Comment{1$\to$1 or 1$\to$N}
+            \State $u \gets n.upstream[0]$
+            \If{$|u.downstream| = 1$}
+                \State \Call{AssignWorker}{$[n]$, $u.worker$} \Comment{reuse worker}
+            \Else \Comment{1$\to$N}
+                \State $fanout \gets \{d \in u.downstream \mid d \notin assigned\}$
+                \State \Call{AssignGroup}{$u.worker$, $fanout$}
+            \EndIf
+        \Else \Comment{N$\to$1}
+            \State $outputs \gets \{u.worker: predictions.output\_size(u) \mid u \in n.upstream\}$
+            \State $best \gets \arg\max_{w \in outputs} outputs[w]$
+            \State \Call{AssignWorker}{$[n]$, $best$}
+        \EndIf
+    \EndFor
+    
+    \Statex
+    
+    \Function{AssignGroup}{$up\_worker$, $tasks$}
+        \If{$tasks = \emptyset$}
+            \Return
+        \EndIf
+        
+        \State $exec\_t \gets \{t: predictions.exec\_time(t) \mid t \in tasks\}$
+        \State $out\_sz \gets \{t: predictions.output\_size(t) \mid t \in tasks\}$
+        \State $median \gets \textsc{Median}(exec\_t.values())$
+        \State $longs \gets \{t \in tasks \mid exec\_t[t] > median\}$
+        \State $shorts \gets \textsc{SortLargerOutputFirst}(\{t \in tasks \mid exec\_t[t] \leq median\})$
+        
+        \Statex
+        \State \Comment{1) cluster short tasks with bigger outputs on upstream worker}
+        \If{$up\_worker \neq \textit{null} \land shorts \neq \emptyset$}
+            \State $cluster \gets shorts[0:MAX\_CLUSTERING]$
+            \State \Call{AssignWorker}{$cluster$, $up\_worker$}
+            \State $shorts \gets shorts[MAX\_CLUSTERING:]$
+        \EndIf
+        
+        \Statex
+        \State \Comment{2) pair long tasks with remaining short tasks (1 long per group)}
+        \While{$longs \neq \emptyset \land shorts \neq \emptyset$}
+            \State $cluster \gets [longs[0]] + shorts[0:MAX\_CLUSTERING-1]$
+            \State $worker\_id \gets$ \Call{NewWorkerId}{}
+            \State \Call{AssignWorker}{$cluster$, $worker\_id$}
+            \State $longs \gets longs[1:]$
+            \State $shorts \gets shorts[MAX\_CLUSTERING-1:]$
+        \EndWhile
+        
+        \Statex
+        \State \Comment{3) group remaining short tasks}
+        \While{$shorts \neq \emptyset$}
+            \State $worker\_id \gets$ \Call{NewWorkerId}{}
+            \State \Call{AssignWorker}{$shorts[0:MAX\_CLUSTERING]$, $worker\_id$}
+            \State $shorts \gets shorts[MAX\_CLUSTERING:]$
+        \EndWhile
+        
+        \Statex
+        \State \Comment{4) group remaining longs (half-size)}
+        \State $half \gets \max(1, \lfloor MAX\_CLUSTERING / 2 \rfloor)$
+        \While{$longs \neq \emptyset$}
+            \State $worker\_id \gets$ \Call{NewWorkerId}{}
+            \State \Call{AssignWorker}{$longs[0:half]$, $worker\_id$}
+            \State $longs \gets longs[half:]$
+        \EndWhile
+    \EndFunction
+    
+\end{algorithmic}
+\end{algorithm}
 
-        # 1) cluster short tasks with bigger outputs on upstream worker
-        if up_worker and shorts:
-            cluster = shorts[:MAX_CLUSTERING]
-            assign_worker(cluster, up_worker)
-            shorts  = shorts[MAX_CLUSTERING:]
-
-        # 2) pair long tasks with remaining short tasks (1 long per group)
-        while longs and shorts:
-            cluster = [longs.pop(0)] + shorts[:MAX_CLUSTERING-1]
-            assign_worker(cluster, new_worker_id())
-            shorts  = shorts[MAX_CLUSTERING-1:]
-
-        # 3) group remaining short tasks
-        while shorts:
-            assign_worker(shorts[:MAX_CLUSTERING], new_worker_id())
-            shorts = shorts[MAX_CLUSTERING:]
-
-        # 4) group remaining longs (half-size)
-        half = max(1, MAX_CLUSTERING // 2)
-        while longs:
-            assign_worker(longs[:half], new_worker_id())
-            longs = longs[half:]
-\end{lstlisting}
-\caption{Worker ID Assignment Algorithm Implementation (Pseudocode)}
-\label{lst:worker_id_assignment}
-\end{figure*}
-
-\begin{figure*}[h]
-\begin{lstlisting}[basicstyle=\scriptsize\ttfamily, breaklines=true, language=Python]
-def downgrade_resources(dag, nodes, critical_path_ids, original_critical_path_time, configs, predictions):
-    """
-    Attempt to downgrade worker resources outside the critical path
-    without increasing total workflow time.
-    """
-    workers_outside = set()
-    # 1) Identify workers and nodes outside the critical path
-    # {nodes} are topologicaly sorted
-    for n in nodes:
-        wid = n.worker_id
-        if n.id not in critical_path_ids and all(wid != cp.worker_id for cp in dag.critical_path_nodes):
-            workers_outside.add(wid)
-
-    nodes_outside_cp = [n for n in nodes if n.id not in critical_path_ids]
-    successful_downgrades = 0
-
-    # 2) Try downgrading each worker
-    for wid in workers_outside:
-        # Save the last known good configuration for each node of this worker
-        last_good = {n.id: n.config for n in nodes_outside_cp if n.worker_id == wid}
-
-        # Iterate through weaker resource configurations (skip strongest at index 0)
-        for cfg in configs[1:]:
-            trial = cfg.clone(worker_id=wid)
-
-            # Apply trial configuration to all nodes of this worker
-            for n in nodes_outside_cp:
-                if n.worker_id == wid:
-                    n.config = trial
-
-            # Recompute workflow timing with predictions
-            timings = simulate_workflow(nodes, predictions)
-            cp_time = simulate_critical_path_time(dag, timings)
-
-            if cp_time == original_critical_path_time:
-                # Downgrade didn't affect critical path, record as last good state
-                for n in nodes_outside_cp:
-                    if n.worker_id == wid:
-                        last_good[n.id] = n.config
-            else:
-                # Downgrade increases critical path -> revert and stop for this worker
-                for n in nodes_outside_cp:
-                    if n.worker_id == wid:
-                        n.config = last_good[n.id]
-                break # move to next worker
-\end{lstlisting}
-\caption{Non-Uniform planner: resource downgrading algorithm (Pseudocode)}
-\label{lst:resource_downgrading_algorithm}
-\end{figure*}
+\begin{algorithm}
+    \caption{Resource Downgrade Algorithm}
+    \label{alg:resource_downgrade}
+    \small
+    \begin{algorithmic}[1]
+    \Require $dag$, $nodes$, $critical\_path\_ids$, $original\_cp\_time$, $configs$, $predictions$
+    \State $workers\_outside \gets \emptyset$
+    
+    \Statex
+    \State \Comment{1) Identify workers outside the critical path}
+    \ForAll{$n \in nodes$} \Comment{nodes are topologically sorted}
+        \State $wid \gets n.worker\_id$
+        \If{$n.id \notin critical\_path\_ids \land \forall cp \in dag.critical\_path\_nodes: wid \neq cp.worker\_id$}
+            \State $workers\_outside \gets workers\_outside \cup \{wid\}$
+        \EndIf
+    \EndFor
+    
+    \State $nodes\_outside\_cp \gets \{n \in nodes \mid n.id \notin critical\_path\_ids\}$
+    
+    \Statex
+    \State \Comment{2) Attempt downgrade for each worker outside critical path}
+    \ForAll{$wid \in workers\_outside$}
+        \State $last\_good_\_rc \gets \{n.id: n.config \mid n \in nodes\_outside\_cp \land n.worker\_id = wid\}$
+        
+        \Statex
+        \State \Comment{Iterate through weaker configurations (skip strongest at index 0)}
+        \For{$i \gets 1$ \textbf{to} $|configs| - 1$}
+            \State $trial \gets configs[i].\textsc{Clone}(wid)$
+            
+            \Statex
+            \State \Comment{Apply trial configuration to all nodes of this worker}
+            \ForAll{$n \in nodes\_outside\_cp$}
+                \If{$n.worker\_id = wid$}
+                    \State $n.config \gets trial$
+                \EndIf
+            \EndFor
+            
+            \Statex
+            \State \Comment{Recompute workflow timing with predictions}
+            \State $cp\_time \gets$ \Call{SimulateCriticalPathTime}{$dag$}
+            
+            \Statex
+            \If{$cp\_time = original\_cp\_time$}
+                \State \Comment{Downgrade acceptable, record as last good state}
+                \ForAll{$n \in nodes\_outside\_cp$}
+                    \If{$n.worker\_id = wid$}
+                        \State $last\_good\_rc[n.id] \gets n.config$
+                    \EndIf
+                \EndFor
+            \Else
+                \State \Comment{Downgrade increases critical path, revert and move on to the next worker}
+                \ForAll{$n \in nodes\_outside\_cp$}
+                    \If{$n.worker\_id = wid$}
+                        \State $n.config \gets last\_good\_rc[n.id]$
+                    \EndIf
+                \EndFor
+                \State \textbf{break} \Comment{move to next worker}
+            \EndIf
+        \EndFor
+    \EndFor
+    
+\end{algorithmic}
+\end{algorithm}
 
 \end{document}
