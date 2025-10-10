@@ -1,4 +1,5 @@
-- Solution/Architecture
+- Evaluation
+    - summary of most relevant results from thesis
 
 - For the Conclusion maybe possible solution extensions/improvements
     - improvements to prediction logic

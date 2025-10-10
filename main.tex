@@ -237,11 +237,11 @@ Users can select from three provided planners or implement their own planner by 
 Both the \textbf{Uniform} and \textbf{Non-Uniform} planners follow a two-phase approach for task allocation: resource configuration assignment followed by worker ID assignment. The planners differ in their resource allocation strategies. The \textbf{Uniform planner} applies a single, user-specified CPU and memory configuration to all tasks, while the \textbf{Non-Uniform planner} selects the most powerful configuration from the user-specified options for each task. After resource configuration, both planners employ the logic detailed in Algorithm \ref{alg:worker_assignment} for worker ID assignment. This algorithm implements an intelligent clustering strategy with two primary objectives: launch as few new workers as possible while trying not to overload workers; and minimizing network data transfers by co-locating tasks whose outputs are expected to be larger. This clustering approach provides an additional benefit of reducing fan-in operation costs.
 
 \begin{algorithm}
-    \caption{Worker Assignment Algorithm}
+    \caption{Worker Assignment Algorithm (used by Uniform and Non-Uniform planners)}
     \label{alg:worker_assignment}
     \small
     \begin{algorithmic}[1]
-    \Require $nodes$, $predictions$, $base\_rc$, $SLA$, $MAX\_CLUSTERING$
+    \Require $nodes$, $predictions$, $MAX\_CLUSTERING$
     \State $assigned \gets \emptyset$
     
     \Comment{nodes are topologically sorted}
@@ -261,9 +261,9 @@ Both the \textbf{Uniform} and \textbf{Non-Uniform} planners follow a two-phase a
                 \State $fanout \gets \{d \in u.downstream \mid d \notin assigned\}$
                 \State \Call{AssignGroup}{$u.worker$, $fanout$}
             \EndIf
-        \Else \Comment{N$\to$1}
+        \Else \Comment{N$\to$1 (assign to worker of upstream task with the largest total output)}
             \State $outputs \gets \{u.worker: predictions.output\_size(u) \mid u \in n.upstream\}$
-            \State $best \gets \arg\max_{w \in outputs} outputs[w]$
+            \State $worker\_w\_greatest\_acc\_output \gets \arg\max_{w \in outputs} outputs[w]$
             \State \Call{AssignWorker}{$[n]$, $best$}
         \EndIf
     \EndFor
@@ -319,11 +319,10 @@ Both the \textbf{Uniform} and \textbf{Non-Uniform} planners follow a two-phase a
 \end{algorithmic}
 \end{algorithm}
 
-
 After this, the \textbf{Non-Uniform} planner runs an additional algorithm, shown in Algorithm \ref{alg:resource_downgrading}, that attempts to downgrade resources of workers \textit{outside the critical path} as much as possible without introducing a new critical path, by iteratively simulating the effect of downgrading resources of workers \textit{outside the critical path} with different configurations.
 
 \begin{algorithm}
-    \caption{Resource Downgrading Algorithm}
+    \caption{Resource Downgrading Algorithm (used by Non-Uniform planner)}
     \label{alg:resource_downgrading}
     \small
     \begin{algorithmic}[1]
@@ -344,7 +343,7 @@ After this, the \textbf{Non-Uniform} planner runs an additional algorithm, shown
     \Statex
     \State \Comment{2) Attempt downgrade for each worker outside critical path}
     \ForAll{$wid \in workers\_outside$}
-        \State $last\_good_\_rc \gets \{n.id: n.config \mid n \in nodes\_outside\_cp \land n.worker\_id = wid\}$
+        \State $last\_acceptable_\_rc \gets \{n.id: n.config \mid n \in nodes\_outside\_cp \land n.worker\_id = wid\}$
         
         \Statex
         \State \Comment{Iterate through weaker configurations (skip strongest at index 0)}
@@ -365,27 +364,25 @@ After this, the \textbf{Non-Uniform} planner runs an additional algorithm, shown
             
             \Statex
             \If{$cp\_time = original\_cp\_time$}
-                \State \Comment{Downgrade acceptable, record as last good state}
+                \State \Comment{Downgrade acceptable, record as last acceptable state}
                 \ForAll{$n \in nodes\_outside\_cp$}
                     \If{$n.worker\_id = wid$}
-                        \State $last\_good\_rc[n.id] \gets n.config$
+                        \State $last\_acceptable\_rc[n.id] \gets n.config$
                     \EndIf
                 \EndFor
             \Else
                 \State \Comment{Downgrade increases critical path, revert and move on to the next worker}
                 \ForAll{$n \in nodes\_outside\_cp$}
                     \If{$n.worker\_id = wid$}
-                        \State $n.config \gets last\_good\_rc[n.id]$
+                        \State $n.config \gets last\_acceptable\_rc[n.id]$
                     \EndIf
                 \EndFor
                 \State \textbf{break} \Comment{move to next worker}
             \EndIf
         \EndFor
     \EndFor
-    
 \end{algorithmic}
 \end{algorithm}
-
 
 With the information they have access to, planners can estimate whether it is worthwhile to offload a task to a more powerful worker. This involves weighing the overhead of uploading the input data, waiting for the worker to be provisioned, and then executing the task, against the alternative of simply executing the task on the current, less powerful worker.
 
@@ -436,43 +433,165 @@ When invoked, a worker receives the \texttt{workflow\_id} and the \texttt{task\_
 
 After that, the worker starts executing the initial tasks concurrently. The logic for executing tasks is the following:
 \begin{enumerate}
-    \item \textbf{Gathering Dependencies}: Check which dependencies are missing (not downloaded yet) and download them from storage;
-    \item \textbf{Executing Task}: Execute the task. Tasks' code is stored in a serialized/pickled format (using cloudpickle\footnote{https://github.com/cloudpipe/cloudpickle}) and deserialized and executed by the workers. This enables the worker to remain generic, capable of receiving and executing arbitrary task code;
-    \item \textbf{Handling Output}: This phase is responsible for evaluating whether it's necessary to upload the task's output to storage and emitting a \texttt{TASK\_COMPLETED} event;
-    \item \textbf{Delegating Downstream Tasks}: For each downstream task, the worker performs an \texttt{atomic\_increment\_and\_get()} operation on a "dependency counter" (inspired by WUKONG~\cite{wukong_2}) stored in \textit{Metadata Storage}, which tracks how many dependencies of a task have been satisfied. When the counter indicates that all dependencies for a downstream task have been satisfied, the worker emits a \texttt{TASK\_READY} event for that task. The worker then consults the execution plan to determine how to proceed for each downstream task unlocked: if the unlocked task is assigned to another worker, a \texttt{TASK\_READY} event is emitted; if the unlocked task is assigned to the same worker and has no remaining dependencies, the worker immediately continues the cycle by executing it.
+    \item \textbf{Gathering Dependencies}: Check which dependencies are missing (not downloaded yet) and download them from storage. Some dependencies might be present in the local representation of the DAG if \texttt{task-dup} or \texttt{pre-load} were applied, if the same worker executed some of the upstream tasks, or if the worker already downloaded large hardcoded data (explained previously in Section~\ref{s:client}) because previous tasks needed it;
+    \item \textbf{Executing Task}: After gathering all task dependencies (upstream task outputs and hardcoded data), it executes the task's code. Its function code is embedded within the workflow representation so it can be easily executed by the workers, similarly to WUKONG. This enables the worker to remain generic, capable of receiving and executing arbitrary task code (excluding async functions, since \textit{cloudpickle} can't serialize them). Tasks' code execute on a separate thread, to avoid slowing down or even blocking (e.g., if the task code calls \texttt{time.sleep()}) the main thread, where the other coroutines are running: both task branch execution and other internal coroutines (i.e., Redis pub/sub listener, and delayed \texttt{pre-warm} requests);
+    \item \textbf{Handling Output}: This phase is responsible for evaluating whether it's necessary to upload the task's output to storage and emitting a \texttt{TASK\_COMPLETED} event. A tasks' output is uploaded if there is at least one downstream task assigned to a different worker, or if it's the sink/last task of the workflow;
+    \item \textbf{Updating Dependency Counters}: For each downstream task, the worker performs an \textit{atomic increment and get} operation on a \textit{"Dependency Counter"} (inspired by WUKONG~\cite{wukong_2}) stored in \textit{Metadata Storage}, which tracks how many dependencies of a task have been satisfied. If the counter sees that the value returned is the same as the number of dependencies for a downstream task, the worker emits a \texttt{TASK\_READY} event for that task, signaling other workers or workers that aren't active yet that the task became ready to execute;
+    \item \textbf{Delegating Downstream Tasks}: After updating dependency counters, the worker knows which tasks became \textit{ready}. The worker then consults the execution plan to determine how to proceed for each of those tasks: for tasks assigned to the same worker and has no remaining unfulfilled dependencies, the worker will execute it (one \textit{coroutine} for each task); for tasks assigned to another worker \textbf{that is already active}, a \texttt{TASK\_READY} event is emitted; for tasks assigned to another worker \textbf{that is not active}, this worker launches the target worker, indicating the branches (\textit{immediate task identifiers}) it should execute. Because of the planner validation mentioned in Section ~\ref{ss:planning_algorithms}, it is possible for a worker to know, at any point in time, whether another worker is already active or not just by looking at the workflow representation and respective plan.
 \end{enumerate}
 
-To illustrate how workers handle downstream tasks, Figure~\ref{fig:choreographed_scheduling_example} presents an example of choreographed decentralized scheduling with three workers (A, B, and C) and seven tasks (T1-T7). In this example, once Task T1 completes on Worker B, the worker inspects the dependency counters for tasks T3, T4, and T5. It determines that T3 and T4 are ready to run, while T5 is still pending because Task T2 has not yet completed. Worker B then launches a new worker (C) to execute T3 and proceeds to execute T4 itself. Later, when T2 finishes on Worker A, all dependencies of T5 are satisfied, prompting Worker A to execute it directly.
+Both \textit{Intermediate Storage} and \textit{Metadata Storage} are also implemented in Redis for deployment simplicity. For exchanging events among workers, we use Redis's Pub/Sub~\footnote{\url{https://redis.io/glossary/pub-sub/}}. These events are \texttt{TASK\_READY} and \texttt{TASK\_COMPLETED}, and are implemented as Pub/Sub channels. 
 
-\begin{figure}[h]
+We will now go over a practical example of how we use these events are used to coordinate decentralized scheduling. Figure~\ref{fig:choreographed_scheduling_example} presents an example of a workflow with four workers (A, B, C, and D) and eight tasks (T1-T8).
+
+In this example, tasks complete in the following order: T1, T2, T3, T4, T5, T6, T7, and T8. The text in the arrows represent the order of actions performed by the worker who executed the task from which the arrow starts, where each action is separated by a semicolon. When T1 finishes, its worker will increment the dependency counter of T5 because it knows, by looking at the workflow representation, that T5 depends on other tasks from another worker. This storage operation returns "1", but T5 has 2 dependencies (T1 and T2) and as such, it isn't READY to execute. Then T1's worker sees T4 and since it's assigned to it, and it doesn't have any other dependencies, it schedules it for execution locally. Lastly T1 will see that T3 doesn't depend on any other tasks, meaning it is also ready for execution and, since it is assigned to another worker (Worker C), it sends a request to the FaaS gateway to launch Worker C, providing the branches it should execute.
+
+Then, when T3 finishes execution, its worker will see that T7 depends on external tasks, so it updates the dependency counter of T7 and remains idle waiting for the \texttt{TASK\_READY} event for T7. Later, T4 finishes, realizes that T7 is meant to execute on another worker, increments its dependency counter, realizes all dependencies are met, and emits a \texttt{TASK\_READY} event for T7, to which Worker C will react to by start executing T7. Once T5 finishes execution, it realizes that T6 depends on external tasks, increments its dependency counter, realizes all dependencies are met, and since it's assigned to itself, it schedules it for execution locally.
+
+Finally, T6 finishes, increments the dependency counter of T8 (because it has other dependencies), but since it's still missing 1 dependency, it exits. Later, then T7 finishes, it increments the dependency counter of T8 and realizes all dependencies are met and that the worker assigned to T8 (Worker D) isn't active yet, so it makes a request to the FaaS gateway to invoke this worker. Once T8 finishes, it emits a \texttt{TASK\_COMPLETED} event which is received by the client, who then downloads the result from \textit{Intermediate Storage}.
+
+\begin{figure*}[h]
     \centering
-    \includegraphics[width=0.5\textwidth]{figures/choreographed_execution_example.png}
+    \includegraphics[width=\textwidth]{figures/choreographed_execution_example.png}
     \caption{Choreographed Scheduling Example}
     \label{fig:choreographed_scheduling_example}
-\end{figure}
+\end{figure*}
 
-A workflow is considered complete once the output of the final (sink) task is available in storage. The worker that uploads this final result is also responsible for cleaning up all intermediate results before shutting down. Meanwhile, after submitting the workflow, the user's machine subscribes to the \texttt{TASK\_COMPLETED} event for the sink task; upon receiving this notification, it retrieves the final result from \textit{Intermediate Storage}.
+A workflow is considered complete once the output of the final (sink) task is available in storage. The worker that uploads this final result is also responsible for cleaning up all intermediate results before shutting down. This worker emits a \texttt{TASK\_COMPLETED} event for the sink task, triggering the client to retrieve the final result from \textit{Intermediate Storage}.
 
-By delegating downstream tasks to workers, our approach eliminates the need for a central scheduler, a common component in many existing FaaS-based workflow engines. This decentralization increases flexibility and scalability, as workers can dynamically invoke additional workers as needed, following a choreographed decentralized execution model.
+In contrast to traditional FaaS-based workflow engines that rely on a centralized scheduler, our system delegates downstream task scheduling to workers themselves. This decentralized model eliminates continuous coordination with a central controller, reducing overhead and removing a single point of failure. By enabling workers to trigger subsequent tasks immediately after completing their own, the approach minimizes scheduling latency and improves scalability, which primarily depends on the horizontal scalability of the underlying FaaS and storage layers. The client initiates the initial set of workers, after which execution proceeds autonomously based on metadata embedded within the workflow representation passed among the workers. A lightweight coordination mechanism (atomic dependency counter) ensures that all tasks are eventually executed according to the scheduling plan and applied optimizations.
 
 Having described the design and implementation of the system, we now turn to its evaluation. The next section presents the experimental setup, results, and analysis used to assess the strengths and weaknesses of our approach.
 
 % ------------------------------------------------ %
 
-\section{Evaluation and Analysis}
+\section{Evaluation}
+\label{s:evaluation}
 
-\subsection{Testing Environment}
-%TODO: explain Docker simulating faas environment
-\textbf{TODO: explain Docker simulating faas environment}
-\subsection{Testing Configurations}
-%TODO: worker resources, workflows, planners, SLAs
-\textbf{TODO: worker resources, workflows, planners, SLAs}
-\subsection{Results}
-%TODO:
-\subsection{Analysis}
+% #############################################################################
+\subsection{FaaS Environment Emulation}
+\label{ss:faas_emulator}
+
+To enable reproducible and controlled experiments, a lightweight Function-as-a-Service (FaaS) emulator was implemented in approximately \textasciitilde300 lines of Python. The emulator reproduces the core behavior of serverless platforms while remaining simple and with greater observability.
+
+The system consists of two components: a \textbf{gateway service} and a \textbf{worker runtime}. The gateway, implemented as an HTTP server, receives invocation requests, manages container lifecycles, and enforces resource constraints using Docker's built-in CPU and memory limits\footnote{\url{https://docs.docker.com/engine/containers/resource_constraints/}}. Workers are packaged as Docker images containing the execution logic and a persistent background process to keep the container alive between invocations, until the gateway decides to shut it down (when idle for too long).
+
+Function execution requests are issued to the gateway's \texttt{/job} endpoint, specifying task identifiers, resource configurations, and cached results. If no idle container with the required configuration is available and the maximum concurrency (32 containers) is reached, requests are queued until resources become free. To avoid resource contention, each container executes a single task at a time. This constraint is enforced through a file-based locking mechanism.
+
+Idle containers are automatically removed after 7~seconds of inactivity, to help simulate cold starts more easily. The gateway also provides a \texttt{/warmup} endpoint that pre-allocates containers without executing worker logic, a simplification that makes it easier to perform \textit{pre-warming} without adding extra logic to the workers code. To improve observability, worker logs (stdout and stderr) are streamed to the gateway and captured in real time for debugging and performance analysis.
+
+\subsection{Research Questions}
+
+With the evaluation of work, we aim to address the following research questions:
+
+\begin{itemize}
+\item \textbf{RQ1:} To what extent can historical metrics from previous workflow executions improve the accuracy of predicting serverless workflow behavior, specifically regarding execution time, container startup latency, data transfer performance, and function I/O characteristics?
+
+\item \textbf{RQ2:} What are the main advantages and limitations of applying prediction-based scheduling strategies in serverless workflow environments, compared to traditional reactive or static scheduling approaches? Can the proposed system achieve a lower \textit{makespan} and reduced overall resource consumption compared to WUKONG~\cite{wukong_2}, a decentralized serverless workflow engine that employs its own set of data-locality optimizations?
+
+\item \textbf{RQ3:} How effective are the proposed optimizations in practice? In particular, how much does \texttt{pre-load} contribute to hiding latency and enabling earlier task execution, and how beneficial is \texttt{pre-warming} in reducing cold-start delays and improving overall workflow performance?
+
+\item \textbf{RQ4:} How much performance improvement can be achieved by adopting a non-uniform worker resource allocation strategy, compared to a uniform scheduling approach that assigns identical resource configurations to all tasks? And what is the trade-off between the achieved performance gains and the additional resource consumption introduced by this adaptive allocation strategy?
+\end{itemize}
+
+To help answer these questions we had to collect a wide range of metrics:
+
+\begin{itemize}
+    \item For each \textbf{task}:
+    \begin{itemize}
+        \item Timestamp of when it started being handled (before executing its tasks);
+        \item Time to download all dependencies;
+        \item Size and time to download each of the dependencies;
+        \item Task execution time;
+        \item Size and time to upload output;
+        \item Optimization-specific metrics of all optimizations applied to a given task on a particular workflow instance.
+    \end{itemize}
+    \item For each \textbf{workflow instance}:
+    \begin{itemize}
+        \item Entire workflow plan, with worker resource and ID assignments, as well as optimizations;
+        \item Time at which user submitted the workflow;
+        \item Monitor Docker containers during the workflow, recording total run-time and memory allocation in GB-seconds, similar to AWS Lambda's cost calculation, which is based on memory (GB) * run-time (seconds).
+    \end{itemize}
+    \item For each \textbf{worker}:
+    \begin{itemize}
+        \item Resource Configuration (CPUs and Memory);
+        \item Time at which a worker invocation was made to the FaaS Gateway and time at which the worker script started executing (used to calculate worker startup latency);
+        \item Worker state, indicating whether the worker script was executed in a \textit{cold} or \textit{warm} environment. A cold start occurs when a new container must be created to run the worker, while a warm start reuses an existing, previously initialized container. The system determines this state using a file-based locking mechanism: during startup, the worker attempts an atomic \textit{“create-if-not-exists”} operation on the file \texttt{/tmp/worker\_startup.atomic}. If the file already exists, it implies that the container has been used before, and the current execution is therefore a warm start; otherwise, it is a cold start. When a container is \textit{pre-warmed}, this file is proactively created during initialization, even though the worker script itself is not yet executed.
+    \end{itemize}
+\end{itemize}
+
+In the following section, we describe the experimental setup used to evaluate the proposed system.
+
+\subsection{Experimental Setup}
+
+To evaluate our proposed solution, we deployed the FaaS emulator described in Section~\ref{ss:faas_emulator} on an AMD EPYC 7282 16-Core Processor with 125GiB of RAM, running Ubuntu 22.04.5 LTS. Both \textit{Metadata Storage} and \textit{Intermediate Storage} were deployed as Redis Docker containers. The client, responsible for submitting the workflow and uploading hardcoded dependencies, was also run on the same machine. We added some artificial delay in both storage and gateway interactions, to try simulating a more realistic environment. This delay is applied before requests are made and the value we used was 30ms of round-trip time. This value was chosen based of observations of median latency between AWS Europe data centers in the same region being around 8ms and around 15ms across different data centers~\footnote{\url{https://www.cloudping.co/}}.
+
+The workflows used to test out system were the following:
+
+\begin{itemize}
+    \item \textbf{Matrix Multiplication}: A workflow with a straightforward structure, shown in Figure~\ref{fig:matrix_multiplication}, that performs distributed matrix multiplication. The input matrices are first divided into smaller chunks, and each pair of compatible chunks is multiplied independently in parallel. The resulting partial products are then aggregated by a final task, which reconstructs the full matrix from the computed blocks, producing the complete multiplication result. WUKONG's evaluation also includes a comparable workflow that follows the same computational pattern;
+
+    \item \textbf{Tree Reduction}: A workflow that performs a hierarchical reduction over a list of numeric values, depicted in Figure~\ref{fig:tree_reduction}. In each stage, pairs of elements are summed in parallel, forming a binary reduction tree where the number of active tasks halves at each level. This process continues recursively until a single task (the sink) produces the final aggregated result. This workflow is useful for evaluating how well the system handles iterative task dependencies and parallel aggregation. WUKONG's evaluation includes an identical workflow, featuring the exact same structure;
+
+    \item \textbf{Text Analysis}: A workflow with a more complex structure, shown in Figure~\ref{fig:text_analysis}, designed to simulate a multi-stage text processing pipeline, combining both fan-out and fan-in patterns. It includes several interdependent analytical tasks that operate on an input text (a 750,000 lines text file). This workflow aims to highlight scenarios where our decentralized execution model can better exploit task parallelism and reduce scheduling overhead compared to WUKONG;
+
+    \item \textbf{Image Transformation}: A complex, highly parallel workflow that applies multiple transformations to an input image, shown in Figure~\ref{fig:image_transformer}. The image is first divided into chunks, each processed independently through two parallel transformation branches of differing complexity: one performing color-based operations such as resizing, blurring, normalization, and sepia filtering, and another applying edge detection and sharpening. The results from both branches are then combined and merged back into a complete image. This workflow is bigger, composed of 130 tasks large fan-outs and heterogeneous task execution times, making it ideal for evaluating our solutions' efficiency. We also expect better performance compared to WUKONG, as our scheduling model requires fewer worker launches and thus less downstream coordination overhead.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\columnwidth]{figures/dag_image_gemm.png}
+    \caption{Matrix Multiplication Workflow}
+    \label{fig:matrix_multiplication}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\columnwidth]{figures/dag_image_tree_reduction.png}
+    \caption{Tree Reduction Workflow}
+    \label{fig:tree_reduction}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\columnwidth]{figures/dag_image_text_analysis.png}
+    \caption{Text Analysis Workflow}
+    \label{fig:text_analysis}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\columnwidth]{figures/dag_image_image_transformer.png}
+    \caption{Image Transformation Workflow}
+    \label{fig:image_transformer}
+\end{figure}
+
+We ran our experiments with three different SLAs: median (50th percentile), 75th percentile, and 90th percentile and analyzed the fulfillment success rates of each SLA, as well as their prediction accuracy.
+
+To assess our research questions, we implemented and evaluated three core planners: our proposed \textbf{Uniform} and \textbf{Non-Uniform} planners, and a planner replicating \textbf{WUKONGs'} scheduling model. To isolate the impact of our optimizations, we tested our two planners with and without them enabled. For a comprehensive comparison, we also implemented WUKONGs' native optimizations (\textit{Task Clustering for Fan-ins and Fan-outs} and \textit{Delayed I/O}, described in Section~\ref{prw:wukong}). In total, we evaluated six planner variations: \textit{Uniform}, \textit{Uniform w/ optimizations}, \textit{Non-Uniform}, \textit{Non-Uniform w/ optimizations}, \textit{WUKONG}, and \textit{WUKONG w/ optimizations}.
+
+%TODO: update this if it changes (more instances)
+The experimental process was automated with a script that iterated through every combination of planner variation, SLA, and workflow. Each unique configuration was executed five times to account for performance variability, resulting in 360 total experiments for analysis.
+
+\section{Results}
+% always analysing and comparing to wukong, trying to provide an explanation for the observed results
+\subsection{Predictions Accuracy}
+TODO: 
+
+\subsection{SLA Fulfillment}
+TODO: 
+
+\subsection{Planners}
+TODO: 
+
+\subsection{Optimizations}
+TODO: 
+
+\subsection{Resource Usage}
+TODO: 
+
+\section{Discussion}
+TODO: summary of results analysis\\
+TODO: wukong comparison\\
 
 % ------------------------------------------------ %
-
 
 \section{Related Work}
 \label{s:related_work}
@@ -521,6 +640,7 @@ PyWren~\cite{pywren}, representing one of the pioneering pure serverless approac
 Unum~\cite{unum_decentralized_orchestrator} takes a radically different approach from the two previous solutions by decentralizing orchestration logic entirely, eliminating the need for a standalone orchestrator service. This application-level serverless workflow orchestration system embeds orchestration logic directly into a library that wraps user-defined FaaS functions, leveraging an external scalable consistent data store for coordination during fan-ins and execution correctness. Unum introduces an Intermediate Representation (IR) to capture information about workflow progression (nearby tasks) and relies only on minimal, common serverless APIs (function invocation and basic data store operations) available across cloud platforms. This design choice provides exceptional portability and cost-effectiveness, as it can run on unmodified serverless infrastructure. Unum also can and compile workflows defined in languages from providers like AWS Step Functions and Google Cloud Workflows into its IR format. However, Unum's generic approach comes with trade-offs: it currently supports only statically defined control structures and cannot express workflows where the next step is determined dynamically at runtime, and it lacks data locality optimizations since it cannot force related tasks to execute on the same worker, with each function instance executing only its specific task before triggering the next function.
 
 \subsubsection{WUKONG}
+\label{prw:wukong}
 WUKONG~\cite{wukong_2} represents the most sophisticated approach among these solutions, designed as a decentralized locality-enhanced serverless workflow engine. WUKONG addresses the limitations of traditional serverful models like Dask Distributed while maximizing the advantages of serverless computing, focusing on improving scale-out speed and enhancing data locality to minimize large object movement. The system's architecture is divided into static components (operating before workflow execution) and dynamic components (operating during execution). The static scheduler includes a \textbf{DAG Generator} that converts Python code into DAGs (using Dask), a \textbf{Schedule Generator} that creates \texttt{n} static schedules for \texttt{n} root/leaf nodes (each containing every reachable task in a depth-first search starting at that node), \textbf{Initial Task Executor Invokers} that launches the first Lambda instances for each root task, and a \textbf{Process} on the client that waits for and downloads final results. 
 
 After receiving the initial schedules, FaaS workers (referenced to as \textit{AWS Lambda Executors}) drive workflow execution. Workers execute tasks until they encounter a \textit{fan-out}, at which point they transfer data to intermediate storage, execute 1 of the \texttt{N} fan-out tasks and invoke \textit{N - 1} \textit{new} executors for the other tasks. Then, when they find a \textit{fan-in}, the group of executors that reach the common fan-in node cooperate using a \textit{dynamic scheduling} model to select only one executor to proceed. This coordination is managed through a shared \textbf{dependency counter} in a Key-Value Store (KVS). Each involved executor \textit{atomically} updates this counter; the one whose update satisfies the final input dependency for the fan-in task will execute that task and continue along its static schedule. The other executors transfer their intermediate data to storage, and then stop their execution, decreasing the workflow parallelism.
