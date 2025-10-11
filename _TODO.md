@@ -1,3 +1,6 @@
+- Update tree reduction and text analysis workflow structures
+- Ensure good image and listing placement
+
 - Evaluation
     - summary of most relevant results from thesis
 

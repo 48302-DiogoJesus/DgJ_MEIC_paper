@@ -8,6 +8,12 @@
 \usepackage{xcolor}
 \usepackage{url}
 \usepackage{listings}
+\lstset{
+  xleftmargin=2em,       % add left margin inside the text area
+  framexleftmargin=1.5em, % adjust frame (if any)
+  numbers=left,
+  numbersep=10pt
+}
 \usepackage{caption}
 
 \usepackage{algorithm}
@@ -41,7 +47,7 @@ diogofjesus@inesc-id.pt}}
 \begin{abstract}
 Serverless computing has become a suitable cloud paradigm for many applications, prized for its operational ease, automatic scalability, and fine-grained pay-per-use pricing model. However, executing workflows, which are compositions of multiple tasks, in Function-as-a-Service (FaaS) environments remains inefficient. This inefficiency stems from the stateless nature of functions, and a heavy reliance on external services for intermediate data transfers and inter-function communication.
 
-In this document, we introduce a decentralized DAG engine that leverages historical metadata to plan and influence task scheduling. Our solution encompasses metadata management, static workflow planning, and a worker-level scheduling strategy designed to drive workflow execution with minimal synchronization. We compare our system against WUKONG, another decentralized serverless DAG engine, and Dask Distributed, a more traditional cluster-based DAG engine. Our evaluation demonstrates that utilizing historical information significantly improves performance and reduces resource utilization for workflows running on serverless platforms.
+In this document, we introduce a decentralized DAG engine that leverages historical metadata to plan and influence task scheduling. Our solution encompasses metadata management, static workflow planning, and a worker-level scheduling strategy designed to drive workflow execution with minimal synchronization. We compare our system against WUKONG, another decentralized serverless DAG engine. Our evaluation demonstrates that utilizing historical information significantly improves performance and reduces resource utilization for workflows running on serverless platforms.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -87,9 +93,7 @@ As we have stated, most existing serverless schedulers employ an approach where 
 
 We will now present our DAG-based workflow engine that transforms ordinary Python functions into parallelizable tasks, automatically managing dependencies and execution through an intuitive decorator-based API. It is inspired by WUKONG, Dask and Airflow's way of expressing workflows: the user can create workflows by composing individual Python functions, as shown in Listing \ref{lst:dag_lang_example}. In this example, we define two tasks, \texttt{task\_a} and \texttt{task\_b}, and then compose them into a DAG by passing their results as arguments to the next task. The resulting workflow structure is illustrated in Figure \ref{fig:dag_lang_example}.
 
-\begin{figure}[h]
-\centering
-\begin{lstlisting}[language=Python, basicstyle=\ttfamily\footnotesize, columns=fullflexible, breaklines=true]
+\begin{lstlisting}[language=Python, basicstyle=\ttfamily\footnotesize, columns=fullflexible, breaklines=true, caption=DAG definition example, label=lst:dag_lang_example]
 # 1) Task definition
 @DAGTask
 def task_a(a: int) -> int:
@@ -108,9 +112,6 @@ a3 = task_a(a1)
 b1 = task_b(a2, a3)
 a4 = task_a(b1)
 \end{lstlisting}
-\caption{DAG definition example}
-\label{lst:dag_lang_example}
-\end{figure}
 
 \begin{figure}[h]
     \centering
@@ -121,9 +122,7 @@ a4 = task_a(b1)
 
 When \texttt{task\_a(10)} is invoked, it doesn't actually run the user code. It instead creates a representation of the task, which can be passed as argument to other tasks. The workflow planning and execution only happens once \texttt{.compute()} is called on the last/sink task (\texttt{a4}), as shown in Listing~\ref{lst:setup_and_launch_workflow_execution}. When \texttt{compute()} is called, we can create a representation of the entire workflow structure by backtracking the task dependencies.
 
-\begin{figure}[h]
-\centering
-\begin{lstlisting}[language=Python, basicstyle=\ttfamily\footnotesize, columns=fullflexible, breaklines=true]
+\begin{lstlisting}[language=Python, basicstyle=\ttfamily\footnotesize, columns=fullflexible, breaklines=true, caption=Setting up and launching workflow execution, label=lst:setup_and_launch_workflow_execution]
 result = a4.compute(
     dag_name="simpledag", 
     config=Worker.Config(
@@ -133,14 +132,11 @@ result = a4.compute(
         planner_config=UniformPlanner.Config(
             sla=sla,
             worker_resource_configuration=TaskWorkerResourceConfiguration(cpus=3, memory_mb=512),
-            optimizations=[PreLoadOptimization, TaskDupOptimization]
+            optimizations=[PreLoadOptimization, TaskDupOptimization, PreWarmOptimization]
         )
     )
 )
 \end{lstlisting}
-\caption{Setting up and launching workflow execution}
-\label{lst:setup_and_launch_workflow_execution}
-\end{figure}
 
 One limitation of this DAG definition language is that it doesn't support "dynamic fan-outs" (e.g., creating a variable number of tasks depending on the result of another task) on a single workflow. This is a powerful and expressive feature, but that is seldom supported in other DAG definition languages (e.g., Dask, WUKONG, Unum, Oozie~\cite{apache_oozie} do not support it). These languages require the user to split the workflow into multiple workflows, one for each \textit{dynamic fan-out}: one workflow runs up to the task that generates a list of results, while a second workflow starts with a number of tasks that depends on the size or contents of that list. 
 
@@ -187,34 +183,16 @@ Storing these metrics enables us to provide a prediction API, shown in Listing~\
 
 The prediction methods take an additional parameter, \texttt{SLA} (Service-level Agreement), which is specified by the user and influences the selection of prediction samples. For example, \texttt{SLA="median"} will use the median of the historical samples, whereas \texttt{SLA=Percentile(80)} will return a more conservative estimate. By allowing the user to control this parameter, the API can provide predictions that are tailored to different performance requirements.
 
-\begin{figure}[h]
-\centering
-\begin{lstlisting}[basicstyle=\ttfamily\footnotesize, columns=fullflexible, breaklines=true]
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize, columns=fullflexible, breaklines=true, caption=Task Predictions API, label=lst:task_predictions_api]
 class PredictionsProvider:
-  def predict_output_size(function_name, input_size, sla) -> int
+    def predict_output_size(function_name, input_size, sla) -> int
 
-  def predict_worker_startup_time(resource_config, state: 'cold' | 'warm', sla) -> float
+    def predict_worker_startup_time(state: 'cold' | 'warm', resource_config, sla) -> float
 
-  def predict_data_transfer_time(
-        type: 'upload' | 'download',
-        data_size_bytes,
-        resource_config,
-        sla,
-        scaling_exponent
-    ) -> float
+    def predict_data_transfer_time(data_size_bytes, resource_config, sla) -> float
 
-  def predict_execution_time(
-        task_name,
-        input_size,
-        resource_config,
-        sla: SLA,
-        size_scaling_factor
-    ) -> float
+    def predict_execution_time(task_name, input_size, resource_config, sla) -> float
 \end{lstlisting}
-\caption{Task Predictions API}
-\label{lst:task_predictions_api}
-\end{figure}
-
 In addition, metrics such as worker startup time, data transfer time, and task execution time are tied to the specific worker resource configuration. To account for this, our prediction method follows two paths. If we have enough historical samples for the same resource configuration, we use only those. Otherwise, when there are not enough samples with the same resource configuration, we fall back to a normalization strategy: we adjust samples from other memory configurations to a baseline, use those to estimate execution time, and then rescale the result back to the target configuration. 
 
 After filtering samples we use an algorithm that selects a limited number of the most relevant samples for each prediction. This algorithm works by gradually widening a tolerance window around the reference value until it finds enough nearby samples. Within each window, it balances samples that are smaller, larger, or exactly equal to the reference, giving preference to the closest ones. If there still aren't enough candidates, it falls back to simply picking the nearest available samples overall. This way, the algorithm adapts to the data while keeping the selection both relevant and limited in size.
@@ -388,25 +366,30 @@ With the information they have access to, planners can estimate whether it is wo
 
 Aside from their \texttt{worker\_id} and resource assignments, planners can also apply different \textbf{optimizations} to further improve the workflow execution. The optimizations to be used are selected by the user, as shown in Listing \ref{lst:setup_and_launch_workflow_execution}. Similarly to planners, we provide three optimizations: \textbf{pre-warm}, \textbf{pre-load} and \textbf{task-dup}, but it is also possible to create new optimizations and define how workers should react to them. Now, we will describe the three base optimizations and how they are assigned to tasks:
 
+
 \begin{enumerate}
-\item\textbf{pre-warm}(worker\_config) [Pre-warming Workers]:
+\item\textbf{pre-warm}(worker\_config, delay\_s) [Pre-warming Workers]:
 \begin{itemize}
-  \item \textit{Interpretation}: Tasks/Nodes with this optimization should perform a special invocation to the FaaS gateway that forces it to launch a new worker with the specified resource configuration \texttt{worker\_config}. This can be used to warm up workers ahead of time and mask cold start latencies;
-  \item \textit{Assignment Logic}: For the nodes whose workers are expected to have cold starts, find the "optimal" node to perform the pre-warming by searching for nodes/tasks whose activity timing falls within a window (goal: avoid the pre-warmed worker from going cold before needed, while also not being warm too late). The optimization will be added to the "optimal" node, which will be responsible for doing the special "empty invocation" to the FaaS gateway.
+\item \textit{Interpretation}: Tasks/Nodes with this optimization should perform a special invocation to the FaaS gateway that forces it to launch a new worker with the specified resource configuration \texttt{worker\_config}. This can be used to warm up workers ahead of time and mask cold start latencies.
+\item \textit{Assignment Logic}: For workers that are predicted to experience a cold start, the algorithm identifies an optimal worker to perform the pre-warming action. It searches for a task whose execution window aligns with a calculated pre-warming interval. This process balances two objectives: ensuring the pre-warmed worker does not go cold before it is required, while also not being warmed too late to be effective.
+\item \textit{Integration with Task Handling Logic}: The optimization is attached to the identified optimal worker's task and includes a \texttt{delay\_s} parameter. As soon as this optimal worker begins its own execution, it launches a concurrent Python coroutine. This coroutine waits for the specified delay before making a special “empty invocation” to the FaaS gateway, which in turn initializes the target worker.
 \end{itemize}
 
 \item\textbf{pre-load} [Pre-Loading Dependencies]:
 \begin{itemize}
-  \item \textit{Interpretation}: Workers assigned to tasks or nodes with this optimization should begin downloading the task's dependencies as early as possible. This prevents scenarios where a worker must fetch all dependencies at once. The optimization is effective only if the worker is active before executing the task, allowing it to download dependencies in parallel with other ongoing tasks. This is implemented by having the worker receive completion notifications from the \textit{Metadata Storage} for all tasks upstream of the optimized task;
-  \item \textit{Assignment Logic}: First, all tasks with more than a configurable threshold of dependencies/upstream tasks are assigned the optimization. Then, an iterative process is used to optimize the workflow along its critical path using this optimization. First, the algorithm identifies the critical path and assigns the optimization to eligible nodes on it. The critical path is then recalculated: if the total execution time increases, the optimization is removed; if the execution time decreases but the critical path changes, the algorithm restarts with the new path. This process repeats until no further improvements are possible, or the algorithm hits a fixed iteration limit.
+\item \textit{Interpretation}: Workers assigned to a task with this optimization will proactively download the task's dependencies as soon as they become available. This is achieved by subscribing to completion notifications from the \textit{Metadata Storage} for the task's upstream dependencies. When an upstream task finishes, the worker is notified and can immediately start downloading the result in the background, parallel to other ongoing computations. This strategy aims to reduce data-fetching latency when the task is finally ready to execute, as its inputs may already be present locally;
+\item \textit{Assignment Logic}: The optimization is applied using a simple, single-pass heuristic. The logic iterates through the tasks and assigns the \texttt{pre-load} optimization to tasks that depend on at least two upstream tasks that are assigned to a different worker;
+\item \textit{Integration with Task Handling Logic}: Before a worker starts fetching a task dependencies, it prevents any new \texttt{pre-loads} from starting, and gathers a list of all ongoing \texttt{pre-loads}. It then fetches all other dependencies from storage and waits for all preloads to complete before executing the task.
 \end{itemize}
 
 \item\textbf{task-dup} [Task Duplication]:
 \begin{itemize}
-  \item \textit{Interpretation}: Tasks or nodes with this optimization can be executed by other workers if doing so helps unlock dependent tasks more quickly. The task could be "duplicated" by workers that depend on its output. It is a trade-off between performance and resource utilization, allowing potentially faster execution at the cost of using additional compute resources;
-  \item \textit{Assignment Logic}: Assigned to all nodes whose execution time and input size do not exceed predefined thresholds. Whether duplication actually occurs is decided at run-time. The optimization targets fast tasks with small inputs, as these are inexpensive to duplicate in terms of both downloading dependencies and execution. This way, even if duplication turns out to be unnecessary, the impact on performance and resource usage remains minimal.
+    \item \textit{Interpretation}: Tasks or nodes with this optimization can be executed by other workers if doing so helps unlock dependent tasks more quickly. The task could be "duplicated" by workers that depend on its output. It is a trade-off between performance and resource utilization, allowing potentially faster execution at the cost of using additional compute resources. It is similar to the \texttt{pre-load} optimization, but more aggressive/costly, as instead of downloading dependencies as soon as they're ready, \texttt{task-dup} can execute the tasks that produce those dependencies locally;
+    \item \textit{Assignment Logic}: During the planning phase, a task is marked as \textit{"duppable"} if it has at least one downstream dependency scheduled on a different worker. The final decision to duplicate is made dynamically at runtime based on a time-saving prediction. The worker compares the expected time to wait for the original execution, upload time, plus download time versus the time it would take to download the task's inputs and execute it locally. A duplication is only triggered if it is predicted to be faster by a predefined threshold.
+    \item \textit{Integration with Task Handling Logic}: When a \textit{"duppable"} task starts, it records its start time in \textit{Metadata Storage} for other workers to use in their duplication analysis. Only one task duplication can happen at a time at a single worker to try avoiding resource contention. A duplicated task's output is kept local and is \textbf{not uploaded} to \textit{Intermediate Storage}. It also does not update the dependency counters of its downstream tasks in the standard way; instead, it directly signals to its local, dependent tasks that its output is ready, allowing them to proceed immediately.
 \end{itemize}
 \end{enumerate}
+
 Because planners may sometimes lack sufficient information to make optimal decisions about optimization assignments, it is important to not only allow the user to select optimizations at the workflow-level, but also allow them the flexibility to specify optimizations at the \textit{task-level}. An example of this feature is shown in Listing~\ref{lst:dag_lang_example}, where the user requests that \texttt{task\_b} attempt to use the \textit{pre-load} optimization.
 
 Once these optimizations are assigned, workflow planning is complete, and workers can begin execution. Because planning occurs on the user's machine (i.e., the machine launching the workflow), it is responsible for initiating the workflow by starting the initial workers. From that point onward, workers dynamically invoke additional workers as needed, following a choreographed, decentralized execution model.
