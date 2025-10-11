@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex main"] 1760201975.71829 "main.aux" "main.bbl" "main" 1760201979.9884 0
+["bibtex main"] 1760208128.99216 "main.aux" "main.bbl" "main" 1760208277.47088 0
   "./references.bib" 1758028517 21220 afafbbfc2e52312bb109a642cb642f6b ""
   "C:/Users/dijes/AppData/Local/Programs/MiKTeX/bibtex/bst/ieeetran/IEEEtran.bst" 1440622569 57748 7c8250ecf02814ce6ddc0cdbb63df1dd ""
-  "main.aux" 1760201979 8761 5cf8beef7ca26ed4f8301a3f97d098a2 "pdflatex"
+  "main.aux" 1760208276 9010 71d04dbc2ca887e30c2558fd23b293ff "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1760201976.17654 "c:/Users/dijes/Desktop/Current/PG/Tecnico/_A2/TESE/DgJ_MEIC_paper/main.tex" "main.pdf" "main" 1760201979.98917 0
+["pdflatex"] 1760208273.74338 "c:/Users/dijes/Desktop/Current/PG/Tecnico/_A2/TESE/DgJ_MEIC_paper/main.tex" "main.pdf" "main" 1760208277.47169 0
   "C:/Users/dijes/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1759398184 82507 a9eef8696c92627b87e9975edea03b2a ""
   "C:/Users/dijes/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1757504112 24225046 38d4591ba2ff146cd60fb2b4577dd929 ""
   "C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc" 1458473887 4993 80dc9bab7f31fb78a000ccfed0e27cab ""
@@ -109,7 +109,7 @@
   "C:/Users/dijes/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "C:/Users/dijes/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1700127522 55487 80a65caedd3722f4c20a14a69e785d8f ""
   "IEEEtran.cls" 1758995741 281957 5b2e4fa15b0f7eabb840ebf67df4c0f7 ""
-  "c:/Users/dijes/Desktop/Current/PG/Tecnico/_A2/TESE/DgJ_MEIC_paper/main.tex" 1760201970 81498 45e4cdedde93a07616fc906b0cd40c53 ""
+  "c:/Users/dijes/Desktop/Current/PG/Tecnico/_A2/TESE/DgJ_MEIC_paper/main.tex" 1760208272 83514 7ae41782db76775c2c721144e1c4f123 ""
   "figures/choreographed_execution_example.png" 1759944345 179514 5edfff6547eb1fa42725bf0f34ab7037 ""
   "figures/dag_image_gemm.png" 1759872921 122763 eb96eb55c5d5f2e7cc1b6d38b4ba5dec ""
   "figures/dag_image_image_transformer.png" 1758200274 454110 ea09231dbaf1f51f9292ed4d4770d674 ""
@@ -118,9 +118,9 @@
   "figures/dag_lang_example.png" 1757518705 8863 0fc7d9127968840b4e9cee339d4157c9 ""
   "figures/solution_distributedarchintegrated.png" 1758124742 244522 bd3bb73c28ec6b17c68a6eb6574550d0 ""
   "figures/solution_workflowinstanceexample.png" 1758549772 212083 9b4d5bd2b87ce289f5d0fc767371c378 ""
-  "main.aux" 1760201979 8761 5cf8beef7ca26ed4f8301a3f97d098a2 "pdflatex"
-  "main.bbl" 1760201976 6544 038c94d48bad0d1fc59caa056f0f066e "bibtex main"
-  "main.tex" 1760201970 81498 45e4cdedde93a07616fc906b0cd40c53 ""
+  "main.aux" 1760208276 9010 71d04dbc2ca887e30c2558fd23b293ff "pdflatex"
+  "main.bbl" 1760208129 6544 038c94d48bad0d1fc59caa056f0f066e "bibtex main"
+  "main.tex" 1760208272 83514 7ae41782db76775c2c721144e1c4f123 ""
   (generated)
   "main.aux"
   "main.log"

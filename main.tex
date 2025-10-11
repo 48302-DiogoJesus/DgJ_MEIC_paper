@@ -535,7 +535,19 @@ Serverless workflow engines like PyWren, Unum, and WUKONG represent the most dir
 % ------------------------------------------------ %
 
 \section{Conclusion}
-%TODO:
+% #############################################################################
+\subsection{Achievements}
+%TODO: After results and results analysis are added to  the document, use Gemini Pro to bootstrap this subsection (context: entire pdf doc)
+%TODO: Mention that we created a solution with enough flexiblity to be used and expanded by other researchers to experiment with different prediction and scheduling strategies (ask gemini to help with this given the context of the pdf doc)
+
+% #############################################################################
+\subsection{Limitations and Future Work}
+
+While this thesis presents a novel solution for efficiently scheduling serverless workflows, several limitations suggest avenues for future work. A primary concern is the unbounded growth of stored prediction samples; implementing a \textbf{data summarization or downsampling strategy} would reduce storage needs while preserving essential statistics. The \textbf{optimization system} could also benefit from a stronger abstraction layer to manage \textbf{conflicting optimizations}, and adding robust \textbf{error handling}, including \textbf{exponential backoff} retries and improved client-side reporting, would enhance both reliability and would help users debug their workflows.
+
+User control and expressiveness could be expanded by allowing \textbf{dynamic fan-outs} and specifying \textbf{minimum resource configurations} for tasks, enabling more complex workflows. A more interactive dashboard could provide richer visualizations and allow users to \textbf{manage, launch, and simulate workflows} directly.
+
+Finally, to assess generalizability, future work should include a \textbf{comparative analysis of alternative prediction strategies} and \textbf{quantification of individual optimization contributions}. Evaluating the system on \textbf{commercial FaaS platforms} and a \textbf{broader set of real-world workflows} would test scalability, robustness, and highlight potential areas for improvement.
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
