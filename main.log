@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.9.10)  11 OCT 2025 17:43
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.9.10)  11 OCT 2025 17:59
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -387,24 +387,17 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <figures/solution_workflowinstanceexample.png, id=33, 1017.8025pt x 548.80031pt>
 File: figures/solution_workflowinstanceexample.png Graphic file (type png)
 <use figures/solution_workflowinstanceexample.png>
-Package pdftex.def Info: figures/solution_workflowinstanceexample.png  used on input line 316.
+Package pdftex.def Info: figures/solution_workflowinstanceexample.png  used on input line 317.
 (pdftex.def)             Requested size: 516.0pt x 278.23476pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[6]
-
-LaTeX Warning: Reference `s:client' on page 7 undefined on input line 336.
-
-
-LaTeX Warning: Reference `ss:planning_algorithms' on page 7 undefined on input line 340.
-
-[7 <./figures/solution_workflowinstanceexample.png>]
+[6] [7 <./figures/solution_workflowinstanceexample.png>]
 <figures/choreographed_execution_example.png, id=42, 1263.97218pt x 372.64218pt>
 File: figures/choreographed_execution_example.png Graphic file (type png)
 <use figures/choreographed_execution_example.png>
-Package pdftex.def Info: figures/choreographed_execution_example.png  used on input line 355.
+Package pdftex.def Info: figures/choreographed_execution_example.png  used on input line 356.
 (pdftex.def)             Requested size: 516.0pt x 152.1247pt.
 
 
@@ -416,12 +409,12 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <figures/dag_image_gemm.png, id=66, 764.8575pt x 1143.27126pt>
 File: figures/dag_image_gemm.png Graphic file (type png)
 <use figures/dag_image_gemm.png>
-Package pdftex.def Info: figures/dag_image_gemm.png  used on input line 631.
+Package pdftex.def Info: figures/dag_image_gemm.png  used on input line 632.
 (pdftex.def)             Requested size: 516.02312pt x 571.1981pt.
 <figures/dag_image_tree_reduction.png, id=67, 904.37875pt x 2299.59125pt>
 File: figures/dag_image_tree_reduction.png Graphic file (type png)
 <use figures/dag_image_tree_reduction.png>
-Package pdftex.def Info: figures/dag_image_tree_reduction.png  used on input line 637.
+Package pdftex.def Info: figures/dag_image_tree_reduction.png  used on input line 638.
 (pdftex.def)             Requested size: 515.99805pt x 571.17699pt.
 
 
@@ -430,7 +423,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <figures/dag_image_text_analysis.png, id=68, 2474.24374pt x 2299.59125pt>
 File: figures/dag_image_text_analysis.png Graphic file (type png)
 <use figures/dag_image_text_analysis.png>
-Package pdftex.def Info: figures/dag_image_text_analysis.png  used on input line 643.
+Package pdftex.def Info: figures/dag_image_text_analysis.png  used on input line 644.
 (pdftex.def)             Requested size: 515.98216pt x 571.17699pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -438,7 +431,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <figures/dag_image_image_transformer.png, id=69, 1967.35pt x 2299.59125pt>
 File: figures/dag_image_image_transformer.png Graphic file (type png)
 <use figures/dag_image_image_transformer.png>
-Package pdftex.def Info: figures/dag_image_image_transformer.png  used on input line 649.
+Package pdftex.def Info: figures/dag_image_image_transformer.png  used on input line 650.
 (pdftex.def)             Requested size: 516.00185pt x 571.17699pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -462,21 +455,17 @@ Before submitting the final camera ready copy, remember to:
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
-
-
-LaTeX Warning: There were undefined references.
-
  ) 
 Here is how much of TeX's memory you used:
- 8179 strings out of 474486
- 131881 string characters out of 5743755
+ 8178 strings out of 474486
+ 131876 string characters out of 5743755
  2033542 words of memory out of 5000000
- 30370 multiletter control sequences out of 15000+600000
+ 30369 multiletter control sequences out of 15000+600000
  607587 words of font info for 133 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  57i,10n,65p,1600b,1712s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi9.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy9.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrb8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrro8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (19 pages, 1680053 bytes).
+Output written on main.pdf (19 pages, 1679608 bytes).
 PDF statistics:
  147 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
