@@ -1,8 +1,8 @@
-- Update tree reduction and text analysis workflow structures
-- Ensure good image and listing placement
-
 - Evaluation
     - summary of most relevant results from thesis
+
+- QUESTIONS
+    - move workflow images to appendix?
 
 - For the Conclusion maybe possible solution extensions/improvements
     - improvements to prediction logic
