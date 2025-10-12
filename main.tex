@@ -132,7 +132,7 @@ result = a4.compute(
         planner_config=UniformPlanner.Config(
             sla=sla,
             worker_resource_configuration=TaskWorkerResourceConfiguration(cpus=3, memory_mb=512),
-            optimizations=[PreLoadOptimization, TaskDupOptimization, PreWarmOptimization]
+            optimizations=[PreLoadOptimization, PreWarmOptimization]
         )
     )
 )
@@ -152,12 +152,12 @@ The user writes its workflows in Python (demonstrated in Section \ref{ss:workflo
 
 The following sections should provide a deeper understanding of each layer as well as how the user interacts with the system.
 
-\begin{figure}[h]
+\begin{figure*}[h]
   \centering
-  \includegraphics[width=\columnwidth]{figures/solution_distributedarchintegrated.png}
+  \includegraphics[width=\textwidth]{figures/solution_distributedarchintegrated.png}
   \caption{Solution Architecture}
   \label{fig:solution_architecture}
-\end{figure}
+\end{figure*}
 
 \begin{enumerate}
     \item \textbf{Metadata Management}: Responsible for collecting and storing task metadata from previous executions. It also uses this metadata to provide predictions regarding task execution times, data transfer times, task output sizes, and worker startup times;
@@ -282,7 +282,7 @@ After this, the \textbf{Non-Uniform} planner runs an additional algorithm, shown
 
 With the information they have access to, planners can estimate whether it is worthwhile to offload a task to a more powerful worker. This involves weighing the overhead of uploading the input data, waiting for the worker to be provisioned, and then executing the task, against the alternative of simply executing the task on the current, less powerful worker.
 
-Aside from their \texttt{worker\_id} and resource assignments, planners can also apply different \textbf{optimizations} to further improve the workflow execution. The optimizations to be used are selected by the user, as shown in Listing \ref{lst:setup_and_launch_workflow_execution}. Similarly to planners, we provide three optimizations: \textbf{pre-warm}, \textbf{pre-load} and \textbf{task-dup}, but it is also possible to create new optimizations and define how workers should react to them. Now, we will describe the three base optimizations and how they are assigned to tasks:
+Aside from their \texttt{worker\_id} and resource assignments, planners can also apply different \textbf{optimizations} to further improve the workflow execution. The optimizations to be used are selected by the user, as shown in Listing \ref{lst:setup_and_launch_workflow_execution}. Similarly to planners, we provide two optimizations: \textbf{pre-warm} and \textbf{pre-load}, but it is also possible to create new optimizations and define how workers should react to them. Now, we will describe the two base optimizations and how they are assigned to tasks:
 
 
 \begin{enumerate}
@@ -298,13 +298,6 @@ Aside from their \texttt{worker\_id} and resource assignments, planners can also
 \item \textit{Interpretation}: Workers assigned to a task with this optimization will proactively download the task's dependencies as soon as they become available. This is achieved by subscribing to completion notifications from the \textit{Metadata Storage} for the task's upstream dependencies. When an upstream task finishes, the worker is notified and can immediately start downloading the result in the background, parallel to other ongoing computations. This strategy aims to reduce data-fetching latency when the task is finally ready to execute, as its inputs may already be present locally;
 \item \textit{Assignment Logic}: The optimization is applied using a simple, single-pass heuristic. The logic iterates through the tasks and assigns the \texttt{pre-load} optimization to tasks that depend on at least two upstream tasks that are assigned to a different worker;
 \item \textit{Integration with Task Handling Logic}: Before a worker starts fetching a task dependencies, it prevents any new \texttt{pre-loads} from starting, and gathers a list of all ongoing \texttt{pre-loads}. It then fetches all other dependencies from storage and waits for all preloads to complete before executing the task.
-\end{itemize}
-
-\item\textbf{task-dup} [Task Duplication]:
-\begin{itemize}
-    \item \textit{Interpretation}: Tasks or nodes with this optimization can be executed by other workers if doing so helps unlock dependent tasks more quickly. The task could be "duplicated" by workers that depend on its output. It is a trade-off between performance and resource utilization, allowing potentially faster execution at the cost of using additional compute resources. It is similar to the \texttt{pre-load} optimization, but more aggressive/costly, as instead of downloading dependencies as soon as they're ready, \texttt{task-dup} can execute the tasks that produce those dependencies locally;
-    \item \textit{Assignment Logic}: During the planning phase, a task is marked as \textit{"duppable"} if it has at least one downstream dependency scheduled on a different worker. The final decision to duplicate is made dynamically at runtime based on a time-saving prediction. The worker compares the expected time to wait for the original execution, upload time, plus download time versus the time it would take to download the task's inputs and execute it locally. A duplication is only triggered if it is predicted to be faster by a predefined threshold.
-    \item \textit{Integration with Task Handling Logic}: When a \textit{"duppable"} task starts, it records its start time in \textit{Metadata Storage} for other workers to use in their duplication analysis. Only one task duplication can happen at a time at a single worker to try avoiding resource contention. A duplicated task's output is kept local and is \textbf{not uploaded} to \textit{Intermediate Storage}. It also does not update the dependency counters of its downstream tasks in the standard way; instead, it directly signals to its local, dependent tasks that its output is ready, allowing them to proceed immediately.
 \end{itemize}
 \end{enumerate}
 
@@ -334,7 +327,7 @@ When invoked, a worker receives the \texttt{workflow\_id} and the \texttt{task\_
 
 After that, the worker starts executing the initial tasks concurrently. The logic for executing tasks is the following:
 \begin{enumerate}
-    \item \textbf{Gathering Dependencies}: Check which dependencies are missing (not downloaded yet) and download them from storage. Some dependencies might be present in the local representation of the DAG if \texttt{task-dup} or \texttt{pre-load} were applied, if the same worker executed some of the upstream tasks, or if the worker already downloaded large hardcoded data because previous tasks needed it;
+    \item \textbf{Gathering Dependencies}: Check which dependencies are missing (not downloaded yet) and download them from storage. Some dependencies might be present in the local representation of the DAG if \texttt{pre-load} was applied, if the same worker executed some of the upstream tasks, or if the worker already downloaded large hardcoded data because previous tasks needed it;
     \item \textbf{Executing Task}: After gathering all task dependencies (upstream task outputs and hardcoded data), it executes the task's code. Its function code is embedded within the workflow representation so it can be easily executed by the workers, similarly to WUKONG. This enables the worker to remain generic, capable of receiving and executing arbitrary task code (excluding async functions, since \textit{cloudpickle} can't serialize them). Tasks' code execute on a separate thread, to avoid slowing down or even blocking (e.g., if the task code calls \texttt{time.sleep()}) the main thread, where the other coroutines are running: both task branch execution and other internal coroutines (i.e., Redis pub/sub listener, and delayed \texttt{pre-warm} requests);
     \item \textbf{Handling Output}: This phase is responsible for evaluating whether it's necessary to upload the task's output to storage and emitting a \texttt{TASK\_COMPLETED} event. A tasks' output is uploaded if there is at least one downstream task assigned to a different worker, or if it's the sink/last task of the workflow;
     \item \textbf{Updating Dependency Counters}: For each downstream task, the worker performs an \textit{atomic increment and get} operation on a \textit{"Dependency Counter"} (inspired by WUKONG~\cite{wukong_2}) stored in \textit{Metadata Storage}, which tracks how many dependencies of a task have been satisfied. If the counter sees that the value returned is the same as the number of dependencies for a downstream task, the worker emits a \texttt{TASK\_READY} event for that task, signaling other workers or workers that aren't active yet that the task became ready to execute;
