@@ -1,1 +1,2 @@
-- Conclusion
+- Check references against thesis (this has a lot less)
+- too many pages?

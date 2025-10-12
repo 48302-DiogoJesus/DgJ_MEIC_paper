@@ -1,8 +1,14 @@
 \relax 
+\citation{aws_lambda}
+\citation{azure_functions}
+\citation{google_cloud_run_functions}
 \citation{cybershake_workflow}
 \citation{montage_astronomy}
 \citation{cold_starts_surey}
 \citation{serverless_computing_drawbacks_survey_rw1}
+\citation{aws_step_functions}
+\citation{azure_durable_functions}
+\citation{google_cloud_workflows}
 \citation{faast_caching}
 \citation{palette_load_balancing}
 \citation{lambdata_intents}
@@ -12,12 +18,10 @@
 \citation{dewe_v3}
 \@writefile{toc}{\contentsline {section}{\numberline {I}Introduction}{1}{}\protected@file@percent }
 \newlabel{s:introduction}{{I}{1}{}{}{}}
-\newlabel{fn:aws-lambda}{{1}{1}{}{}{}}
-\newlabel{fn:azure-funcs}{{2}{1}{}{}{}}
-\newlabel{fn:google-cloud-functions}{{3}{1}{}{}{}}
-\newlabel{fn:aws-step-functions}{{4}{1}{}{}{}}
-\newlabel{fn:azure-durable-functions}{{5}{1}{}{}{}}
-\newlabel{fn:google-cloud-workflows}{{6}{1}{}{}{}}
+\citation{dask_python}
+\citation{wukong_2}
+\citation{unum_decentralized_orchestrator}
+\citation{apache_oozie}
 \@writefile{toc}{\contentsline {section}{\numberline {II}Architecture}{2}{}\protected@file@percent }
 \newlabel{s:architecture}{{II}{2}{}{}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-A}}Workflow Definition Language}{2}{}\protected@file@percent }
@@ -29,24 +33,23 @@
 \newlabel{fig:dag_lang_example}{{1}{2}{}{}{}}
 \newlabel{lst:setup_and_launch_workflow_execution}{{2}{2}{}{}{}}
 \@writefile{lol}{\contentsline {lstlisting}{\numberline {2}{\ignorespaces Setting up and launching workflow execution}}{2}{}\protected@file@percent }
-\citation{apache_oozie}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-B}}Architecture Overview}{3}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-C}}Metadata Management}{3}{}\protected@file@percent }
 \newlabel{ss:metadata_management}{{\mbox  {II-C}}{3}{}{}{}}
+\newlabel{lst:task_predictions_api}{{3}{3}{}{}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {3}{\ignorespaces Task Predictions API}}{3}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Solution Architecture}}{4}{}\protected@file@percent }
 \newlabel{fig:solution_architecture}{{2}{4}{}{}{}}
-\newlabel{lst:task_predictions_api}{{3}{4}{}{}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {3}{\ignorespaces Task Predictions API}}{4}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-D}}Static Workflow Planning}{4}{}\protected@file@percent }
 \newlabel{ss:static_workflow_planning}{{\mbox  {II-D}}{4}{}{}{}}
 \citation{palette_load_balancing}
 \citation{wukong_2}
 \@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Resource Downgrading Algorithm (used by Non-Uniform planner)}}{5}{}\protected@file@percent }
 \newlabel{alg:resource_downgrading}{{1}{5}{}{}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-E}}Decentralized Scheduling}{6}{}\protected@file@percent }
 \citation{wukong_2}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Planned Workflow Execution Example}}{7}{}\protected@file@percent }
 \newlabel{fig:planned_workflow_execution_example}{{3}{7}{}{}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-E}}Decentralized Scheduling}{7}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {III}Evaluation}{8}{}\protected@file@percent }
 \newlabel{s:evaluation}{{III}{8}{}{}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-A}}FaaS Environment Emulation}{8}{}\protected@file@percent }
@@ -71,12 +74,15 @@
 \@writefile{toc}{\contentsline {section}{\numberline {V}Related Work}{11}{}\protected@file@percent }
 \newlabel{s:related_work}{{V}{11}{}{}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}Traditional Workflow Scheduling}{11}{}\protected@file@percent }
+\citation{aws_step_functions}
+\citation{azure_durable_functions}
+\citation{google_cloud_workflows}
+\citation{apache_airflow}
 \@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces \textit  {Makespan} vs Resource Usage comparison, showing the trade-off between execution time and resource consumption (lower is better for both).}}{12}{}\protected@file@percent }
 \newlabel{fig:makespan_resource_usage_tradeoff}{{7}{12}{}{}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces \textit  {Makespan} distribution across all planners. Lower values indicate better performance.}}{12}{}\protected@file@percent }
 \newlabel{fig:makespan_dist}{{8}{12}{}{}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}Cloud-Native Workflow Scheduling}{12}{}\protected@file@percent }
-\citation{apache_airflow}
 \citation{palette_load_balancing}
 \citation{faast_caching}
 \citation{lambdata_intents}
@@ -87,7 +93,7 @@
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {V-C}1}Palette Load Balancing}{13}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {V-C}2}Faa\$T}{13}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {V-C}3}Lambdata}{13}{}\protected@file@percent }
-\newlabel{fn:etl}{{12}{13}{}{}{}}
+\newlabel{fn:etl}{{6}{13}{}{}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-D}}Serverless Workflow Scheduling Execution Engines}{13}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {V-D}1}DEWE v3}{13}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {V-D}2}PyWren}{13}{}\protected@file@percent }
@@ -98,31 +104,37 @@
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {V-D}4}WUKONG}{14}{}\protected@file@percent }
 \bibstyle{IEEEtran}
 \bibdata{references}
-\bibcite{cybershake_workflow}{1}
-\bibcite{montage_astronomy}{2}
-\bibcite{cold_starts_surey}{3}
-\bibcite{serverless_computing_drawbacks_survey_rw1}{4}
-\bibcite{faast_caching}{5}
-\bibcite{palette_load_balancing}{6}
-\bibcite{lambdata_intents}{7}
-\bibcite{open_whisk}{8}
-\bibcite{wukong_2}{9}
-\bibcite{unum_decentralized_orchestrator}{10}
-\bibcite{dewe_v3}{11}
-\bibcite{apache_oozie}{12}
-\bibcite{apache_hadoop}{13}
-\bibcite{apache_spark}{14}
-\bibcite{apache_flink}{15}
-\bibcite{mapreduce}{16}
-\bibcite{dask_python}{17}
-\bibcite{dask_python_distributed}{18}
-\bibcite{apache_airflow}{19}
+\bibcite{aws_lambda}{1}
+\bibcite{azure_functions}{2}
+\bibcite{google_cloud_run_functions}{3}
+\bibcite{cybershake_workflow}{4}
+\bibcite{montage_astronomy}{5}
+\bibcite{cold_starts_surey}{6}
+\bibcite{serverless_computing_drawbacks_survey_rw1}{7}
+\bibcite{aws_step_functions}{8}
+\bibcite{azure_durable_functions}{9}
+\bibcite{google_cloud_workflows}{10}
+\bibcite{faast_caching}{11}
+\bibcite{palette_load_balancing}{12}
+\bibcite{lambdata_intents}{13}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-E}}Discussion}{15}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {VI}Conclusion}{15}{}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-A}}Achievements}{15}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-A}}Summary of Achievements}{15}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-B}}Limitations and Future Work}{15}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{References}{15}{}\protected@file@percent }
-\bibcite{pywren}{20}
+\bibcite{open_whisk}{14}
+\bibcite{wukong_2}{15}
+\bibcite{unum_decentralized_orchestrator}{16}
+\bibcite{dewe_v3}{17}
+\bibcite{dask_python}{18}
+\bibcite{apache_oozie}{19}
+\bibcite{apache_hadoop}{20}
+\bibcite{apache_spark}{21}
+\bibcite{apache_flink}{22}
+\bibcite{mapreduce}{23}
+\bibcite{dask_python_distributed}{24}
+\bibcite{apache_airflow}{25}
+\bibcite{pywren}{26}
 \@writefile{toc}{\contentsline {section}{Appendix}{17}{}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Matrix Multiplication Workflow}}{17}{}\protected@file@percent }
 \newlabel{fig:matrix_multiplication}{{9}{17}{}{}{}}

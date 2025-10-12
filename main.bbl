@@ -21,6 +21,23 @@
 \providecommand{\BIBdecl}{\relax}
 \BIBdecl
 
+\bibitem{aws_lambda}
+\BIBentryALTinterwordspacing
+Aws lambda. [Online]. Available: \url{https://aws.amazon.com/pt/lambda/}
+\BIBentrySTDinterwordspacing
+
+\bibitem{azure_functions}
+\BIBentryALTinterwordspacing
+Azure functions. [Online]. Available:
+  \url{https://azure.microsoft.com/en-us/products/functions}
+\BIBentrySTDinterwordspacing
+
+\bibitem{google_cloud_run_functions}
+\BIBentryALTinterwordspacing
+Google cloud run functions. [Online]. Available:
+  \url{https://cloud.google.com/functions}
+\BIBentrySTDinterwordspacing
+
 \bibitem{cybershake_workflow}
 \BIBentryALTinterwordspacing
 R.~Graves, T.~H. Jordan, S.~Callaghan, E.~Deelman, E.~Field, G.~Juve,
@@ -51,6 +68,24 @@ M.~Golec, G.~K. Walia, M.~Kumar, F.~Cuadrado, S.~S. Gill, and S.~Uhlig, ``Cold
 J.~M. Hellerstein, J.~Faleiro, J.~E. Gonzalez, J.~Schleier-Smith, V.~Sreekanti,
   A.~Tumanov, and C.~Wu, ``Serverless computing: One step forward, two steps
   back,'' \emph{arXiv preprint arXiv:1812.03651}, 2018.
+
+\bibitem{aws_step_functions}
+\BIBentryALTinterwordspacing
+Aws step functions. [Online]. Available:
+  \url{https://aws.amazon.com/en/step-functions/}
+\BIBentrySTDinterwordspacing
+
+\bibitem{azure_durable_functions}
+\BIBentryALTinterwordspacing
+Azure durable functions. [Online]. Available:
+  \url{https://learn.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-overview}
+\BIBentrySTDinterwordspacing
+
+\bibitem{google_cloud_workflows}
+\BIBentryALTinterwordspacing
+Google cloud workflows. [Online]. Available:
+  \url{https://cloud.google.com/workflows}
+\BIBentrySTDinterwordspacing
 
 \bibitem{faast_caching}
 \BIBentryALTinterwordspacing
@@ -100,6 +135,12 @@ Q.~Jiang, Y.~C. Lee, and A.~Y. Zomaya, ``Serverless execution of scientific
   Computing}.\hskip 1em plus 0.5em minus 0.4em\relax Springer, 2017, pp.
   706--721.
 
+\bibitem{dask_python}
+\BIBentryALTinterwordspacing
+Dask - python parallel computing framework. [Online]. Available:
+  \url{https://www.dask.org/}
+\BIBentrySTDinterwordspacing
+
 \bibitem{apache_oozie}
 \BIBentryALTinterwordspacing
 Apache oozie. [Online]. Available: \url{https://oozie.apache.org/}
@@ -126,12 +167,6 @@ J.~Dean and S.~Ghemawat, ``Mapreduce: simplified data processing on large
   clusters,'' vol.~51, no.~1.\hskip 1em plus 0.5em minus 0.4em\relax New York,
   NY, USA: Association for Computing Machinery, Jan. 2008, pp. 107--113.
   [Online]. Available: \url{https://doi.org/10.1145/1327452.1327492}
-\BIBentrySTDinterwordspacing
-
-\bibitem{dask_python}
-\BIBentryALTinterwordspacing
-Dask - python parallel computing framework. [Online]. Available:
-  \url{https://www.dask.org/}
 \BIBentrySTDinterwordspacing
 
 \bibitem{dask_python_distributed}
