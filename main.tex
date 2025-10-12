@@ -418,47 +418,68 @@ In the following section, we describe the experimental setup used to evaluate th
 
 \subsection{Experimental Setup}
 
-To evaluate our proposed solution, we deployed the FaaS emulator described in Section~\ref{ss:faas_emulator} on an AMD EPYC 7282 16-Core Processor with 125GiB of RAM, running Ubuntu 22.04.5 LTS. Both \textit{Metadata Storage} and \textit{Intermediate Storage} were deployed as Redis Docker containers. The client, responsible for submitting the workflow and uploading hardcoded dependencies, was also run on the same machine. We added some artificial delay in both storage and gateway interactions, to try simulating a more realistic environment. This delay is applied before requests are made and the value we used was 30ms of round-trip time. This value was chosen based of observations of median latency between AWS Europe data centers in the same region being around 8ms and around 15ms across different data centers~\footnote{\url{https://www.cloudping.co/}}.
+To evaluate our proposed solution, we deployed the FaaS emulator described in Section~\ref{ss:faas_emulator} on an AMD EPYC 7282 16-Core Processor with 125GiB of RAM, running Ubuntu 22.04.5 LTS. Both \textit{Metadata Storage} and \textit{Intermediate Storage} were deployed as Redis Docker containers. The client, responsible for submitting the workflow and uploading hardcoded dependencies, was also run on the same machine. We added some artificial delay in both storage and gateway interactions to try simulating a more realistic environment. This delay is applied before requests are made, and the value we used was 30ms of round-trip time. This value was chosen based on observations of median latency between AWS Europe data centers in the same region being around 8ms and around 15ms across different data centers~\footnote{\url{https://www.cloudping.co/}}.
 
-The workflows used to test out system were the following:
+The workflows used to test our system were the following:
 
 \begin{itemize}
-    \item \textbf{Matrix Multiplication}: A workflow with a straightforward structure, shown in Figure~\ref{fig:matrix_multiplication}, that performs distributed matrix multiplication. The input matrices are first divided into smaller chunks, and each pair of compatible chunks is multiplied independently in parallel. The resulting partial products are then aggregated by a final task, which reconstructs the full matrix from the computed blocks, producing the complete multiplication result. WUKONG's evaluation also includes a comparable workflow that follows the same computational pattern;
-
-    \item \textbf{Tree Reduction}: A workflow that performs a hierarchical reduction over a list of numeric values, depicted in Figure~\ref{fig:tree_reduction}. In each stage, pairs of elements are summed in parallel, forming a binary reduction tree where the number of active tasks halves at each level. This process continues recursively until a single task (the sink) produces the final aggregated result. This workflow is useful for evaluating how well the system handles iterative task dependencies and parallel aggregation. WUKONG's evaluation includes an identical workflow, featuring the exact same structure;
-
-    \item \textbf{Text Analysis}: A workflow with a more complex structure, shown in Figure~\ref{fig:text_analysis}, designed to simulate a multi-stage text processing pipeline, combining both fan-out and fan-in patterns. It includes several interdependent analytical tasks that operate on an input text (a 750,000 lines text file). This workflow aims to highlight scenarios where our decentralized execution model can better exploit task parallelism and reduce scheduling overhead compared to WUKONG;
-
-    \item \textbf{Image Transformation}: A complex, highly parallel workflow that applies multiple transformations to an input image, shown in Figure~\ref{fig:image_transformer}. The image is first divided into chunks, each processed independently through two parallel transformation branches of differing complexity: one performing color-based operations such as resizing, blurring, normalization, and sepia filtering, and another applying edge detection and sharpening. The results from both branches are then combined and merged back into a complete image. This workflow is bigger, composed of 130 tasks large fan-outs and heterogeneous task execution times, making it ideal for evaluating our solutions' efficiency. We also expect better performance compared to WUKONG, as our scheduling model requires fewer worker launches and thus less downstream coordination overhead.
+    \item \textbf{Matrix Multiplication}: A workflow with a straightforward structure that performs distributed matrix multiplication, comparable to a workflow used in WUKONG's evaluation.
+    \item \textbf{Tree Reduction}: A workflow that performs a hierarchical reduction over a list of numeric values, identical in structure to a workflow from WUKONG's evaluation.
+    \item \textbf{Text Analysis}: A workflow with a more complex structure, designed to simulate a multi-stage text processing pipeline on a large text file (750,000 lines).
+    \item \textbf{Image Transformation}: A complex, highly parallel workflow composed of 130 tasks that applies multiple transformations to an input image, featuring large fan-outs and heterogeneous task execution times.
 \end{itemize}
 
-We ran our experiments with three different SLAs: median (50th percentile), 75th percentile, and 90th percentile and analyzed the fulfillment success rates of each SLA, as well as their prediction accuracy.
+We ran our experiments with three different SLAs: median (50th percentile), 75th percentile, and 90th percentile, and analyzed the fulfillment success rates of each SLA, as well as their prediction accuracy.
 
-To assess our research questions, we implemented and evaluated three core planners: our proposed \textbf{Uniform} and \textbf{Non-Uniform} planners, and a planner replicating \textbf{WUKONGs'} scheduling model. To isolate the impact of our optimizations, we tested our two planners with and without them enabled. For a comprehensive comparison, we also implemented WUKONGs' native optimizations (\textit{Task Clustering for Fan-ins and Fan-outs} and \textit{Delayed I/O}, described in Section~\ref{prw:wukong}). In total, we evaluated six planner variations: \textit{Uniform}, \textit{Uniform w/ optimizations}, \textit{Non-Uniform}, \textit{Non-Uniform w/ optimizations}, \textit{WUKONG}, and \textit{WUKONG w/ optimizations}.
+To assess our research questions, we implemented and evaluated three core planners: our proposed \textbf{Uniform} and \textbf{Non-Uniform} planners, and a planner replicating \textbf{WUKONG's} scheduling model. For a comprehensive comparison, we tested each planner with and without their respective optimizations enabled (\textit{pre-load/pre-warm} for our planners, and \textit{Task Clustering/Delayed I/O} for WUKONG). Planners using a uniform resource strategy (\textit{Uniform} and \textit{WUKONG} variations) assigned workers with 2GB of memory. The \textit{Non-Uniform} planner could assign more powerful workers from a predefined list of configurations (\textit{2GB, 4GB, and 8GB}). In total, we evaluated six planner variations.
 
-%TODO: update this if it changes (more instances)
-The experimental process was automated with a script that iterated through every combination of planner variation, SLA, and workflow. Each unique configuration was executed five times to account for performance variability, resulting in 360 total experiments for analysis.
+The experimental process was automated with a script that iterated through every combination of planner variation, SLA, and workflow. Each unique configuration was executed 10 times to account for performance variability, resulting in 720 total experiments for analysis. Before each run, the environment was reset to ensure that the initial tasks of every workflow would trigger a cold start, ensuring consistency.
 
 \section{Results}
-% always analysing and comparing to wukong, trying to provide an explanation for the observed results
-\subsection{Predictions Accuracy}
-TODO: 
 
-\subsection{SLA Fulfillment}
-TODO: 
+\begin{figure*}[h]
+    \centering
+    \includegraphics[width=\textwidth]{figures/eval/1_predictions/prediction_accuracy_by_sla_and_fullfilment.png}
+    \caption{Predictions Accuracy across all planners and SLA fulfillment rates.}
+    \label{fig:predictions_accuracy_by_sla_and_fullfilment}
+\end{figure*}
 
-\subsection{Planners}
-TODO: 
+\begin{figure*}[h]
+    \centering
+    \includegraphics[width=\textwidth]{figures/eval/3_opts/time breakdown.png}
+    \caption{Time breakdown analysis showing the median time spent on worker startup, waiting for inputs, execution, and uploading results.}
+    \label{fig:time_breakdown_analysis}
+\end{figure*}
 
-\subsection{Optimizations}
-TODO: 
+\begin{figure*}[h]
+    \centering
+    \includegraphics[width=\textwidth]{figures/eval/4_res_usage/us vs wukong makespan res usage.png}
+    \caption{\textit{Makespan} vs Resource Usage comparison, showing the trade-off between execution time and resource consumption (lower is better for both).}
+    \label{fig:makespan_resource_usage_tradeoff}
+\end{figure*}
 
-\subsection{Resource Usage}
-TODO: 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\columnwidth]{figures/eval/2_metrics/makespan dist.png}
+    \caption{\textit{Makespan} distribution across all planners. Lower values indicate better performance.}
+    \label{fig:makespan_dist}
+\end{figure}
 
-\section{Discussion}
-TODO: summary of results analysis\\
-TODO: wukong comparison\\
+Our evaluation focused on \textbf{prediction accuracy}, \textbf{\textit{makespan}}, and \textbf{resource efficiency} (measured in GB-seconds, based on AWS Lambda's cost calculation~\footnote{\url{https://aws.amazon.com/lambda/pricing/}}). As shown in Figure~\ref{fig:predictions_accuracy_by_sla_and_fullfilment}, our system's predictions for task execution time proved highly accurate (median relative error below 9.3\%), while data transfer time predictions were less precise (around 35\% error), highlighting I/O variability even in a controlled and semi-predictable environment.
+
+
+Figure~\ref{fig:time_breakdown_analysis} breaks down the median workflow execution time into its primary components. This analysis reveals that the \textbf{WUKONG} planner spends a significantly larger portion of its time on worker startup compared to our planners. This is a direct result of its scheduling strategy, which launches far more workers (a median of 32 vs. our planners' 13) for workflows with fan-outs. The chart also visually confirms the effectiveness of our optimizations, which reduce the time spent waiting for dependencies.
+
+Figure~\ref{fig:makespan_dist} compares the total workflow completion time (makespan) across all planners. All variations of our planners outperform the WUKONG implementations. The optimized \textbf{Non-Uniform} planner consistently achieves the lowest makespan, demonstrating a clear performance benefit from both the adaptive resource allocation and the optimizations.
+
+Finally, Figure~\ref{fig:makespan_resource_usage_tradeoff} synthesizes these results by plotting makespan against resource usage, illustrating the critical trade-off between speed and cost-efficiency. The optimized \textbf{Non-Uniform} planner is the fastest, achieving a median makespan of 4.31s—a 53\% reduction compared to its non-optimized version. However, the optimized \textbf{Uniform} planner is the most resource-efficient, consuming the least GB-seconds. This highlights a key choice for users: the optimized Non-Uniform planner is 60\% faster than the optimized Uniform one but requires 54\% more memory resources to achieve that speed.
+
+\subsection{Analysis}
+The results demonstrate that our proposed planners achieve a balanced trade-off between performance and efficiency, with our optimizations significantly enhancing both aspects. The \textbf{Non-Uniform} planner consistently delivers the shortest makespan, while the \textbf{Uniform} planner remains the most resource-efficient, achieving the lowest median GB-seconds usage.
+
+The WUKONG scheduling strategy, with its policy of invoking a new worker for almost every task in a fan-out, suffers from high worker startup overhead and synchronization delays. This leads to higher resource consumption and makes it less suitable for the workflows with large fan-outs tested in our evaluation.
+
+Our optimizations, \textit{pre-loading} and \textit{pre-warming}, proved highly effective. They not only reduced makespan by 3 to 5 seconds in some cases but also increased the rate of warm starts by an average of 25\%, directly contributing to both performance and cost-effectiveness. Resource contention, however, remained a challenge for the \textbf{Uniform} planner, which can execute multiple tasks in parallel on less powerful workers. The \textbf{Non-Uniform} planner's use of more powerful workers helped mitigate these effects. Overall, the results validate our design goals of improving execution efficiency through predictive planning and intelligent task co-location.
 
 % ------------------------------------------------ %
 

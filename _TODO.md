@@ -1,3 +1,1 @@
-- Evaluation
-    - summary of most relevant results from thesis
-- Remove taskdup references + images
+- Conclusion
