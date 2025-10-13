@@ -1,2 +1,2 @@
-- Check references against thesis (this has a lot less)
+- validate numbers
 - too many pages?
