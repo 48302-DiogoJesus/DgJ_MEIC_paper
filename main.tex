@@ -437,26 +437,20 @@ The experimental process was automated with a script that iterated through every
 
 \section{Results}
 
-\begin{figure*}[h]
+This section summarizes the main evaluation results of all proposed planners and their optimized versions, focusing on prediction accuracy, workflow execution time (\textit{makespan}), and resource efficiency.
+
+\subsection{Prediction Accuracy and SLA Fulfillment}
+
+\begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{figures/eval/1_predictions/prediction_accuracy_by_sla_and_fullfilment.png}
+    \includegraphics[width=1.15\columnwidth]{figures/eval/1_predictions/prediction_accuracy_by_sla_and_fullfilment.png}
     \caption{Predictions Accuracy across all planners and SLA fulfillment rates.}
     \label{fig:predictions_accuracy_by_sla_and_fullfilment}
-\end{figure*}
+\end{figure}
 
-\begin{figure*}[h]
-    \centering
-    \includegraphics[width=\textwidth]{figures/eval/3_opts/time breakdown.png}
-    \caption{Time breakdown analysis showing the median time spent on worker startup, waiting for inputs, execution, and uploading results.}
-    \label{fig:time_breakdown_analysis}
-\end{figure*}
+Figure~\ref{fig:predictions_accuracy_by_sla_and_fullfilment} shows the prediction accuracy and SLA fulfillment rates across all planners (excluding WUKONG). Execution time predictions were highly accurate, with median relative errors below \textbf{9.3\%}, while data transfer times (upload/download) were less precise, around \textbf{35\%}. SLA fulfillment rates aligned with expectations: \textbf{41.9-71.5\%} for P50, \textbf{66.7-89.7\%} for P75, and \textbf{86.9-100\%} for P90. These results confirm the reliability of the predictive models for workflow planning and SLA adherence.
 
-\begin{figure*}[h]
-    \centering
-    \includegraphics[width=\textwidth]{figures/eval/4_res_usage/us vs wukong makespan res usage.png}
-    \caption{\textit{Makespan} vs Resource Usage comparison, showing the trade-off between execution time and resource consumption (lower is better for both).}
-    \label{fig:makespan_resource_usage_tradeoff}
-\end{figure*}
+\subsection{Execution Performance}
 
 \begin{figure}[h]
     \centering
@@ -465,21 +459,42 @@ The experimental process was automated with a script that iterated through every
     \label{fig:makespan_dist}
 \end{figure}
 
-Our evaluation focused on \textbf{prediction accuracy}, \textbf{\textit{makespan}}, and \textbf{resource efficiency} (measured in GB-seconds, based on AWS Lambda's cost calculation~\footnote{\url{https://aws.amazon.com/lambda/pricing/}}). As shown in Figure~\ref{fig:predictions_accuracy_by_sla_and_fullfilment}, our system's predictions for task execution time proved highly accurate (median relative error below 9.3\%), while data transfer time predictions were less precise (around 35\% error), highlighting I/O variability even in a controlled and semi-predictable environment.
+The makespan distribution in Figure~\ref{fig:makespan_dist} shows that all versions of our planners outperformed both WUKONG implementations. The non-optimized \textbf{Uniform} planner was \textbf{13.4\% faster} than the optimized WUKONG, while the optimized \textbf{Non-Uniform} planner achieved the best overall makespan. Optimization improved execution speed by up to \textbf{53\%} in the Non-Uniform case.
 
+\subsection{Optimization Impact}
 
-Figure~\ref{fig:time_breakdown_analysis} breaks down the median workflow execution time into its primary components. This analysis reveals that the \textbf{WUKONG} planner spends a significantly larger portion of its time on worker startup compared to our planners. This is a direct result of its scheduling strategy, which launches far more workers (a median of 32 vs. our planners' 13) for workflows with fan-outs. The chart also visually confirms the effectiveness of our optimizations, which reduce the time spent waiting for dependencies.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\columnwidth]{figures/eval/3_opts/time breakdown.png}
+    \caption{Time breakdown analysis showing the median time spent on worker startup, waiting for inputs, execution, and uploading results.}
+    \label{fig:time_breakdown_analysis}
+\end{figure}
 
-Figure~\ref{fig:makespan_dist} compares the total workflow completion time (makespan) across all planners. All variations of our planners outperform the WUKONG implementations. The optimized \textbf{Non-Uniform} planner consistently achieves the lowest makespan, demonstrating a clear performance benefit from both the adaptive resource allocation and the optimizations.
+Figure~\ref{fig:time_breakdown_analysis} shows that our planners significantly reduced worker startup and dependency waiting times compared to WUKONG. Optimized versions benefited from both \textit{pre-loading} and \textit{pre-warming}, reducing startup overhead and saving between \textbf{3-5 seconds}. The optimized \textbf{Non-Uniform} planner achieved the shortest execution times, while the optimized \textbf{Uniform} planner remained the most resource-efficient.
 
-Finally, Figure~\ref{fig:makespan_resource_usage_tradeoff} synthesizes these results by plotting makespan against resource usage, illustrating the critical trade-off between speed and cost-efficiency. The optimized \textbf{Non-Uniform} planner is the fastest, achieving a median makespan of 4.31s—a 53\% reduction compared to its non-optimized version. However, the optimized \textbf{Uniform} planner is the most resource-efficient, consuming the least GB-seconds. This highlights a key choice for users: the optimized Non-Uniform planner is 60\% faster than the optimized Uniform one but requires 54\% more memory resources to achieve that speed.
+\subsection{Performance vs. Resource Efficiency}
 
-\subsection{Analysis}
-The results demonstrate that our proposed planners achieve a balanced trade-off between performance and efficiency, with our optimizations significantly enhancing both aspects. The \textbf{Non-Uniform} planner consistently delivers the shortest makespan, while the \textbf{Uniform} planner remains the most resource-efficient, achieving the lowest median GB-seconds usage.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\columnwidth]{figures/eval/4_res_usage/makespan compare.png}
+    \caption{\textit{Makespan} comparison}
+    \label{fig:makespan_comparison}
+\end{figure}
 
-The WUKONG scheduling strategy, with its policy of invoking a new worker for almost every task in a fan-out, suffers from high worker startup overhead and synchronization delays. This leads to higher resource consumption and makes it less suitable for the workflows with large fan-outs tested in our evaluation.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\columnwidth]{figures/eval/4_res_usage/resources compare.png}
+    \caption{Resource usage comparison}
+    \label{fig:resources_comparison}
+\end{figure}
 
-Our optimizations, \textit{pre-loading} and \textit{pre-warming}, proved highly effective. They not only reduced makespan by 3 to 5 seconds in some cases but also increased the rate of warm starts by an average of 25\%, directly contributing to both performance and cost-effectiveness. Resource contention, however, remained a challenge for the \textbf{Uniform} planner, which can execute multiple tasks in parallel on less powerful workers. The \textbf{Non-Uniform} planner's use of more powerful workers helped mitigate these effects. Overall, the results validate our design goals of improving execution efficiency through predictive planning and intelligent task co-location.
+Figures~\ref{fig:makespan_comparison} and~\ref{fig:resources_comparison} summarize the trade-off between execution time and resource usage, respectively. The optimized \textbf{Non-Uniform} planner achieved a \textbf{53\% faster makespan} while consuming \textbf{45\% less memory} than its base version, emerging as the best-performing planner overall. Conversely, the optimized \textbf{Uniform} planner achieved the lowest resource usage, consuming only \textbf{174.5 GB-seconds} (\textbf{74\% less} than the Non-Uniform version) while remaining within \textbf{9.6\%} of its execution speed.
+
+In contrast, the \textbf{WUKONG} planner remained slower and more resource-intensive: it was \textbf{17.5\% slower} and consumed \textbf{108\% more memory} than the Uniform planner. Its optimized version offered only modest gains (\textbf{2.7\%} faster, \textbf{25\%} less memory), confirming the superiority of our approaches.
+
+\subsection{Summary}
+
+Overall, the results demonstrate that our planners achieve a strong balance between speed and efficiency. The \textbf{Non-Uniform} planner excels in performance for the tested workflows, while the \textbf{Uniform} planner is the most cost-efficient, performing better than \textbf{WUKONG} while also consuming less resources. Both benefit substantially from the proposed \textit{pre-loading} and \textit{pre-warming} optimizations, validating their design for efficient, serverless workflow execution.
 
 % ------------------------------------------------ %
 
