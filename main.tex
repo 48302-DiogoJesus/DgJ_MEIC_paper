@@ -57,9 +57,9 @@ Cloud Computing, Serverless, FaaS, Serverless Workflows, DAG, Metadata, Workflow
 \section{Introduction}
 \label{s:introduction}
 
-Function-as-a-Service (FaaS) represents a serverless cloud computing paradigm that simplifies application deployment by abstracting away infrastructure management. It provides automatic, elastic scalability—potentially without limit—along with a fine-grained, pay-per-use pricing model. This has led to its widespread adoption for event-driven systems, microservices, and web services on platforms like AWS Lambda\cite{aws_lambda}, Azure Functions\cite{azure_functions}, and Google Cloud Functions\cite{google_cloud_run_functions}. These applications typically benefit the most from FaaS because they are lightweight, stateless, and characterized by highly variable or unpredictable workloads, allowing them to leverage serverless platforms' on-demand scalability and cost-efficiency.
+Function-as-a-Service (FaaS) represents a serverless cloud computing paradigm that simplifies application deployment by abstracting away infrastructure management. It provides automatic, elastic scalability (potentially without limit) along with a fine-grained, pay-per-use pricing model. This has led to its widespread adoption for event-driven systems, microservices, and web services on platforms like AWS Lambda\cite{aws_lambda}, Azure Functions\cite{azure_functions}, and Google Cloud Functions\cite{google_cloud_run_functions}. These applications typically benefit the most from FaaS because they are lightweight, stateless, and characterized by highly variable or unpredictable workloads, allowing them to leverage serverless platforms' on-demand scalability and cost-efficiency.
 
-This paradigm is also increasingly used to execute complex scientific and data processing workflows, such as the Cybershake~\cite{cybershake_workflow} seismic hazard analysis or Montage~\cite{montage_astronomy}, an astronomy image mosaicking workflow. These applications are structured as workflows—formally represented as Directed Acyclic Graphs (DAGs) of interdependent tasks. However, efficiently executing these complex workflows on serverless platforms remains a significant challenge. 
+This paradigm is also increasingly used to execute complex scientific and data processing workflows, such as the Cybershake~\cite{cybershake_workflow} seismic hazard analysis or Montage~\cite{montage_astronomy}, an astronomy image mosaicking workflow. These applications are structured as workflows, formally represented as Directed Acyclic Graphs (DAGs) of interdependent tasks. However, efficiently executing these complex workflows on serverless platforms remains a significant challenge. 
 
 Despite their advantages, serverless platforms present several limitations that complicate the execution of complex workflows. Since these platforms allow scaling down to zero resources to save costs, they can also introduce unpredictable latency, known as \textit{cold starts}~\cite{cold_starts_surey}, particularly for short-lived functions, affecting overall workflow performance. The lack of \textit{direct inter-function communication}~\cite{serverless_computing_drawbacks_survey_rw1} means that tasks often have to rely on external services, such as message brokers or databases to exchange intermediate data, which can increase overhead and reduce efficiency. Interoperability between platforms is further limited by the use of platform-specific workflow definition languages, which restricts the portability of workflows across different serverless environments. Additionally, while statelessness simplifies scaling and management, it can introduce overhead and complexity for applications that require continuity or coordination across multiple function invocations. Finally, developers have limited control over the underlying infrastructure, restricting the ability to optimize resource usage or tune performance for specific workloads.
 
@@ -154,7 +154,7 @@ The following sections should provide a deeper understanding of each layer as we
 
 \begin{figure*}[h]
   \centering
-  \includegraphics[width=\textwidth]{figures/solution_distributedarchintegrated.png}
+  \includegraphics[width=0.95\textwidth]{figures/solution_distributedarchintegrated.png}
   \caption{Solution Architecture}
   \label{fig:solution_architecture}
 \end{figure*}
@@ -203,7 +203,7 @@ This layer executes on the user side, and it receives the workflow representatio
 
 Planners can run \textit{workflow simulations} based on the predictions, allowing them to experiment with different resource configurations for different tasks and different task co-location strategies. Additionally, they can apply different user-selected optimizations. The accuracy of these simulations depends on the accuracy of the predictions exposed by the \textit{Predictions API}.
 
-For each task, the planner assigns both a \texttt{worker\_id} and a resource configuration (vCPUs and memory). The \texttt{worker\_id} specifies the worker instance that must execute the task—analogous to the “colors” in Palette Load Balancing~\cite{palette_load_balancing}, but in our case this assignment is mandatory rather than advisory, giving strict control over execution locality. Two tasks assigned the same \texttt{worker\_id} should be executed on the same worker instance. If \texttt{worker\_id} is not specified, workers will, at run-time, have to decide whether to execute or delegate those tasks, similar to WUKONG's ~\cite{wukong_2} scheduling. We refer to these workers as \textit{"flexible workers"}.
+For each task, the planner assigns both a \texttt{worker\_id} and a resource configuration (vCPUs and memory). The \texttt{worker\_id} specifies the worker instance that must execute the task analogous to the “colors” in Palette Load Balancing~\cite{palette_load_balancing}, but in our case this assignment is mandatory rather than advisory, giving strict control over execution locality. Two tasks assigned the same \texttt{worker\_id} should be executed on the same worker instance. If \texttt{worker\_id} is not specified, workers will, at run-time, have to decide whether to execute or delegate those tasks, similar to WUKONG's ~\cite{wukong_2} scheduling. We refer to these workers as \textit{"flexible workers"}.
 
 Users can select from three provided planners or implement their own planner by implementing an interface. All planners have access to the predictions API as well as the workflow simulation. The planners the user can choose from are the following:
 
@@ -325,6 +325,13 @@ Since our target execution platform is FaaS, the worker logic is implemented as 
 
 When invoked, a worker receives the \texttt{workflow\_id} and the \texttt{task\_ids} of the tasks it should execute first. Using this information, it retrieves the DAG structure and execution plan from \textit{Metadata Storage}. Rather than immediately executing the initial tasks, the worker first subscribes to \texttt{TASK\_READY} and \texttt{TASK\_COMPLETED} events for specific tasks. These events are essential both for enabling certain optimizations and for ensuring the worker follows the workflow plan correctly.
 
+\begin{figure*}[h]
+    \centering
+    \includegraphics[width=\textwidth]{figures/choreographed_execution_example.png}
+    \caption{Choreographed Scheduling Example}
+    \label{fig:choreographed_scheduling_example}
+\end{figure*}
+
 After that, the worker starts executing the initial tasks concurrently. The logic for executing tasks is the following:
 \begin{enumerate}
     \item \textbf{Gathering Dependencies}: Check which dependencies are missing (not downloaded yet) and download them from storage. Some dependencies might be present in the local representation of the DAG if \texttt{pre-load} was applied, if the same worker executed some of the upstream tasks, or if the worker already downloaded large hardcoded data because previous tasks needed it;
@@ -344,13 +351,6 @@ Then, when T3 finishes execution, its worker will see that T7 depends on externa
 
 Finally, T6 finishes, increments the dependency counter of T8 (because it has other dependencies), but since it's still missing 1 dependency, it exits. Later, then T7 finishes, it increments the dependency counter of T8 and realizes all dependencies are met and that the worker assigned to T8 (Worker D) isn't active yet, so it makes a request to the FaaS gateway to invoke this worker. Once T8 finishes, it emits a \texttt{TASK\_COMPLETED} event which is received by the client, who then downloads the result from \textit{Intermediate Storage}.
 
-\begin{figure*}[h]
-    \centering
-    \includegraphics[width=\textwidth]{figures/choreographed_execution_example.png}
-    \caption{Choreographed Scheduling Example}
-    \label{fig:choreographed_scheduling_example}
-\end{figure*}
-
 A workflow is considered complete once the output of the final (sink) task is available in storage. The worker that uploads this final result is also responsible for cleaning up all intermediate results before shutting down. This worker emits a \texttt{TASK\_COMPLETED} event for the sink task, triggering the client to retrieve the final result from \textit{Intermediate Storage}.
 
 In contrast to traditional FaaS-based workflow engines that rely on a centralized scheduler, our system delegates downstream task scheduling to workers themselves. This decentralized model eliminates continuous coordination with a central controller, reducing overhead and removing a single point of failure. By enabling workers to trigger subsequent tasks immediately after completing their own, the approach minimizes scheduling latency and improves scalability, which primarily depends on the horizontal scalability of the underlying FaaS and storage layers. The client initiates the initial set of workers, after which execution proceeds autonomously based on metadata embedded within the workflow representation passed among the workers. A lightweight coordination mechanism (atomic dependency counter) ensures that all tasks are eventually executed according to the scheduling plan and applied optimizations.
@@ -366,7 +366,7 @@ Having described the design and implementation of the system, we now turn to its
 \subsection{FaaS Environment Emulation}
 \label{ss:faas_emulator}
 
-To enable reproducible and controlled experiments, a lightweight Function-as-a-Service (FaaS) emulator was implemented in approximately \textasciitilde300 lines of Python. The emulator reproduces the core behavior of serverless platforms while remaining simple and with greater observability.
+To enable reproducible and controlled experiments, a lightweight Function-as-a-Service (FaaS) emulator was implemented in approximately \textasciitilde300 lines of Python. It reproduces the core behavior of serverless platforms while remaining simple and with greater observability.
 
 The system consists of two components: a \textbf{gateway service} and a \textbf{worker runtime}. The gateway, implemented as an HTTP server, receives invocation requests, manages container lifecycles, and enforces resource constraints using Docker's built-in CPU and memory limits\footnote{\url{https://docs.docker.com/engine/containers/resource_constraints/}}. Workers are packaged as Docker images containing the execution logic and a persistent background process to keep the container alive between invocations, until the gateway decides to shut it down (when idle for too long).
 
