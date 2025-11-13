@@ -16,45 +16,45 @@ Database file #1: references.bib
 Warning--empty booktitle in mapreduce
 
 Done.
-You've used 26 entries,
+You've used 28 entries,
             4087 wiz_defined-function locations,
-            945 strings with 11730 characters,
-and the built_in function-call counts, 15120 in all, are:
-= -- 1062
-> -- 399
-< -- 83
-+ -- 216
-- -- 77
-* -- 660
-:= -- 2201
-add.period$ -- 43
-call.type$ -- 26
-change.case$ -- 26
-chr.to.int$ -- 195
-cite$ -- 27
-duplicate$ -- 1147
-empty$ -- 1375
-format.name$ -- 89
-if$ -- 3521
+            961 strings with 12260 characters,
+and the built_in function-call counts, 16852 in all, are:
+= -- 1221
+> -- 441
+< -- 96
++ -- 238
+- -- 85
+* -- 748
+:= -- 2474
+add.period$ -- 47
+call.type$ -- 28
+change.case$ -- 28
+chr.to.int$ -- 219
+cite$ -- 29
+duplicate$ -- 1272
+empty$ -- 1491
+format.name$ -- 99
+if$ -- 3923
 int.to.chr$ -- 0
-int.to.str$ -- 26
-missing$ -- 247
-newline$ -- 139
-num.names$ -- 12
-pop$ -- 735
+int.to.str$ -- 28
+missing$ -- 268
+newline$ -- 149
+num.names$ -- 14
+pop$ -- 777
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 1124
+skip$ -- 1265
 stack$ -- 0
-substring$ -- 483
-swap$ -- 815
-text.length$ -- 18
+substring$ -- 553
+swap$ -- 924
+text.length$ -- 23
 text.prefix$ -- 0
 top$ -- 5
-type$ -- 26
+type$ -- 28
 warning$ -- 1
-while$ -- 48
-width$ -- 28
-write$ -- 263
+while$ -- 55
+width$ -- 30
+write$ -- 290
 (There was 1 warning)

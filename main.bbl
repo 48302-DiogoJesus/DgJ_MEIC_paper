@@ -185,4 +185,20 @@ E.~Jonas, Q.~Pu, S.~Venkataraman, I.~Stoica, and B.~Recht, ``Occupy the cloud:
   Distributed computing for the 99\%,'' in \emph{Proceedings of the 2017
   symposium on cloud computing}, 2017, pp. 445--451.
 
+\bibitem{cluster-comp-19}
+\BIBentryALTinterwordspacing
+P.~Kathiravelu, P.~V. Roy, and L.~Veiga, ``{SD-CPS:} software-defined
+  cyber-physical systems. taming the challenges of {CPS} with workflows at the
+  edge,'' \emph{Clust. Comput.}, vol.~22, no.~3, pp. 661--677, 2019. [Online].
+  Available: \url{https://doi.org/10.1007/s10586-018-2874-8}
+\BIBentrySTDinterwordspacing
+
+\bibitem{comp-nets-22}
+\BIBentryALTinterwordspacing
+P.~Kathiravelu, Z.~Zaiman, J.~Gichoya, L.~Veiga, and I.~Banerjee, ``Towards an
+  internet-scale overlay network for latency-aware decentralized workflows at
+  the edge,'' \emph{Comput. Networks}, vol. 203, p. 108654, 2022. [Online].
+  Available: \url{https://doi.org/10.1016/j.comnet.2021.108654}
+\BIBentrySTDinterwordspacing
+
 \end{thebibliography}
