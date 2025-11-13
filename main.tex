@@ -120,6 +120,8 @@ a4 = task_a(b1)
     \label{fig:dag_lang_example}
 \end{figure}
 
+It is important to note that while this example passes data directly, passing storage references (e.g., cloud object storage URLs) as function arguments is a common pattern in serverless workflows, but it is not currently supported. In future iterations, this limitation could be addressed through \textbf{code instrumentation}, wherein storage access APIs would be intercepted to record metrics such as the volume of data transferred and the corresponding I/O latency.
+
 When \texttt{task\_a(10)} is invoked, it doesn't actually run the user code. It instead creates a representation of the task, which can be passed as argument to other tasks. The workflow planning and execution only happens once \texttt{.compute()} is called on the last/sink task (\texttt{a4}), as shown in Listing~\ref{lst:setup_and_launch_workflow_execution}. When \texttt{compute()} is called, we can create a representation of the entire workflow structure by backtracking the task dependencies.
 
 \begin{lstlisting}[language=Python, basicstyle=\ttfamily\footnotesize, columns=fullflexible, breaklines=true, caption=Setting up and launching workflow execution, label=lst:setup_and_launch_workflow_execution]
@@ -675,7 +677,9 @@ The solution's modular architecture, separating \textbf{prediction}, \textbf{pla
 
 \subsection{Limitations and Future Work}
 
-Limitations include unbounded historical data growth, potential conflicts in optimizations, and limited error handling. Future work could explore more aggressive strategies, such as \textit{task duplication}, support for dynamic fan-outs, richer user control, and interactive dashboards. Broader evaluation (comparing prediction strategies, deploying on commercial FaaS platforms, or even on edge computing environments~\cite{cluster-comp-19,comp-nets-22}, and testing complex real-world workflows) would further validate the approach and its practical applicability.
+Limitations of our solution include unbounded historical data growth, potential conflicts in optimizations, and limited error handling. Future work could explore more aggressive strategies, such as \textit{task duplication}, support for dynamic fan-outs, richer user control, and interactive dashboards. Another promising direction lies in adapting to potential platform evolutions, such as FaaS platforms supporting \textbf{decoupled memory and CPU configurations}. Allowing these resources to be configured independently would enhance efficiency and enable \textbf{finer-grained pricing models}. While this introduces complexity in \textbf{scheduling, resource allocation, and locality optimization} for the provider, our solution would \textbf{naturally extend} to such environments, as its design is not constrained by specific resource coupling. Nevertheless, the increased dimensionality of possible resource configurations would significantly expand the prediction search space, potentially leading to slower planning times.
+
+Finally, broader evaluation (comparing prediction strategies, deploying on commercial FaaS platforms, or even on edge computing environments~\cite{cluster-comp-19,comp-nets-22}, and testing complex real-world workflows) would further validate the approach and its practical applicability.
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}

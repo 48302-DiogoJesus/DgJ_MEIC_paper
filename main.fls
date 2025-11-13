@@ -188,6 +188,8 @@ INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\courier\pcrr7t
 INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\courier\pcrr8r.tfm
 INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\courier\pcrb7t.vf
 INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\courier\pcrb8r.tfm
+INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmb7t.vf
+INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmb8r.tfm
 INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmr8.tfm
 INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmr6.tfm
 INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmmi8.tfm
@@ -210,8 +212,6 @@ INPUT .\figures\solution_distributedarchintegrated.png
 INPUT .\figures\solution_distributedarchintegrated.png
 INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmr7t.vf
 INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmr8r.tfm
-INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmb7t.vf
-INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmb8r.tfm
 INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\vf\adobe\times\ptmr7t.vf
 INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\times\ptmr8r.tfm
 INPUT C:\Users\dijes\AppData\Local\Programs\MiKTeX\fonts\tfm\adobe\courier\pcrr7t.tfm

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.9.10)  13 NOV 2025 13:22
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.9.10)  13 NOV 2025 13:32
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -377,7 +377,7 @@ Package pdftex.def Info: figures/dag_lang_example.png  used on input line 118.
 <figures/solution_distributedarchintegrated.png, id=19, 802.49812pt x 600.74437pt>
 File: figures/solution_distributedarchintegrated.png Graphic file (type png)
 <use figures/solution_distributedarchintegrated.png>
-Package pdftex.def Info: figures/solution_distributedarchintegrated.png  used on input line 157.
+Package pdftex.def Info: figures/solution_distributedarchintegrated.png  used on input line 159.
 (pdftex.def)             Requested size: 490.19843pt x 366.96686pt.
 
 
@@ -387,7 +387,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <figures/solution_workflowinstanceexample.png, id=38, 855.94781pt x 624.08156pt>
 File: figures/solution_workflowinstanceexample.png Graphic file (type png)
 <use figures/solution_workflowinstanceexample.png>
-Package pdftex.def Info: figures/solution_workflowinstanceexample.png  used on input line 398.
+Package pdftex.def Info: figures/solution_workflowinstanceexample.png  used on input line 400.
 (pdftex.def)             Requested size: 335.39685pt x 244.54308pt.
 
 
@@ -396,7 +396,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <figures/choreographed_execution_example.png, id=39, 1255.69125pt x 365.86688pt>
 File: figures/choreographed_execution_example.png Graphic file (type png)
 <use figures/choreographed_execution_example.png>
-Package pdftex.def Info: figures/choreographed_execution_example.png  used on input line 418.
+Package pdftex.def Info: figures/choreographed_execution_example.png  used on input line 420.
 (pdftex.def)             Requested size: 464.39685pt x 135.3072pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -405,17 +405,17 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <figures/eval/1_predictions/prediction_accuracy_by_sla_and_fullfilment.png, id=55, 903.375pt x 552.0625pt>
 File: figures/eval/1_predictions/prediction_accuracy_by_sla_and_fullfilment.png Graphic file (type png)
 <use figures/eval/1_predictions/prediction_accuracy_by_sla_and_fullfilment.png>
-Package pdftex.def Info: figures/eval/1_predictions/prediction_accuracy_by_sla_and_fullfilment.png  used on input line 534.
+Package pdftex.def Info: figures/eval/1_predictions/prediction_accuracy_by_sla_and_fullfilment.png  used on input line 536.
 (pdftex.def)             Requested size: 289.79846pt x 177.10164pt.
 
-Overfull \hbox (37.79846pt too wide) in paragraph at lines 534--535
+Overfull \hbox (37.79846pt too wide) in paragraph at lines 536--537
  [][] 
  []
 
 <figures/eval/2_metrics/makespan dist.png, id=56, 784.9325pt x 501.875pt>
 File: figures/eval/2_metrics/makespan dist.png Graphic file (type png)
 <use figures/eval/2_metrics/makespan dist.png>
-Package pdftex.def Info: figures/eval/2_metrics/makespan dist.png  used on input line 545.
+Package pdftex.def Info: figures/eval/2_metrics/makespan dist.png  used on input line 547.
 (pdftex.def)             Requested size: 252.0pt x 161.12401pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -423,35 +423,39 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <figures/eval/3_opts/time breakdown.png, id=57, 602.25pt x 501.875pt>
 File: figures/eval/3_opts/time breakdown.png Graphic file (type png)
 <use figures/eval/3_opts/time breakdown.png>
-Package pdftex.def Info: figures/eval/3_opts/time breakdown.png  used on input line 558.
+Package pdftex.def Info: figures/eval/3_opts/time breakdown.png  used on input line 560.
 (pdftex.def)             Requested size: 252.0pt x 209.99728pt.
-[11 <./figures/eval/1_predictions/prediction_accuracy_by_sla_and_fullfilment.png> <./figures/eval/2_metrics/makespan dist.png> <./figures/eval/3_opts/time breakdown.png>]
-<figures/eval/4_res_usage/makespan compare.png, id=64, 652.4375pt x 652.4375pt>
-File: figures/eval/4_res_usage/makespan compare.png Graphic file (type png)
-<use figures/eval/4_res_usage/makespan compare.png>
-Package pdftex.def Info: figures/eval/4_res_usage/makespan compare.png  used on input line 571.
-(pdftex.def)             Requested size: 252.0pt x 252.00056pt.
-<figures/eval/4_res_usage/resources compare.png, id=65, 652.4375pt x 652.4375pt>
-File: figures/eval/4_res_usage/resources compare.png Graphic file (type png)
-<use figures/eval/4_res_usage/resources compare.png>
-Package pdftex.def Info: figures/eval/4_res_usage/resources compare.png  used on input line 578.
-(pdftex.def)             Requested size: 252.0pt x 252.00056pt.
-
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[12 <./figures/eval/4_res_usage/makespan compare.png> <./figures/eval/4_res_usage/resources compare.png>] [13] [14] [15] (main.bbl [16]) [17
+<figures/eval/4_res_usage/makespan compare.png, id=58, 652.4375pt x 652.4375pt>
+File: figures/eval/4_res_usage/makespan compare.png Graphic file (type png)
+<use figures/eval/4_res_usage/makespan compare.png>
+Package pdftex.def Info: figures/eval/4_res_usage/makespan compare.png  used on input line 573.
+(pdftex.def)             Requested size: 252.0pt x 252.00056pt.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<figures/eval/4_res_usage/resources compare.png, id=59, 652.4375pt x 652.4375pt>
+File: figures/eval/4_res_usage/resources compare.png Graphic file (type png)
+<use figures/eval/4_res_usage/resources compare.png>
+Package pdftex.def Info: figures/eval/4_res_usage/resources compare.png  used on input line 580.
+(pdftex.def)             Requested size: 252.0pt x 252.00056pt.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[11 <./figures/eval/1_predictions/prediction_accuracy_by_sla_and_fullfilment.png> <./figures/eval/2_metrics/makespan dist.png>] [12 <./figures/eval/3_opts/time breakdown.png> <./figures/eval/4_res_usage/makespan compare.png> <./figures/eval/4_res_usage/resources compare.png>] [13] [14] [15] (main.bbl [16]) [17
 
 ]
 <figures/dag_image_gemm.png, id=87, 764.8575pt x 1143.27126pt>
 File: figures/dag_image_gemm.png Graphic file (type png)
 <use figures/dag_image_gemm.png>
-Package pdftex.def Info: figures/dag_image_gemm.png  used on input line 689.
+Package pdftex.def Info: figures/dag_image_gemm.png  used on input line 693.
 (pdftex.def)             Requested size: 361.19867pt x 470.40152pt.
 <figures/dag_image_tree_reduction.png, id=88, 678.28406pt x 871.75688pt>
 File: figures/dag_image_tree_reduction.png Graphic file (type png)
 <use figures/dag_image_tree_reduction.png>
-Package pdftex.def Info: figures/dag_image_tree_reduction.png  used on input line 695.
+Package pdftex.def Info: figures/dag_image_tree_reduction.png  used on input line 699.
 (pdftex.def)             Requested size: 516.01872pt x 571.19783pt.
 
 
@@ -460,7 +464,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <figures/dag_image_text_analysis.png, id=89, 1855.68282pt x 589.4522pt>
 File: figures/dag_image_text_analysis.png Graphic file (type png)
 <use figures/dag_image_text_analysis.png>
-Package pdftex.def Info: figures/dag_image_text_analysis.png  used on input line 701.
+Package pdftex.def Info: figures/dag_image_text_analysis.png  used on input line 705.
 (pdftex.def)             Requested size: 515.9916pt x 235.20107pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -468,7 +472,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 <figures/dag_image_image_transformer.png, id=90, 1475.5125pt x 426.84468pt>
 File: figures/dag_image_image_transformer.png Graphic file (type png)
 <use figures/dag_image_image_transformer.png>
-Package pdftex.def Info: figures/dag_image_image_transformer.png  used on input line 707.
+Package pdftex.def Info: figures/dag_image_image_transformer.png  used on input line 711.
 (pdftex.def)             Requested size: 515.98683pt x 235.20819pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -496,13 +500,13 @@ L3 programming layer <2024-01-04>
 Here is how much of TeX's memory you used:
  8224 strings out of 474486
  134012 string characters out of 5743755
- 2037542 words of memory out of 5000000
+ 2017542 words of memory out of 5000000
  30414 multiletter control sequences out of 15000+600000
  608102 words of font info for 135 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  57i,10n,65p,1600b,1712s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi9.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy9.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrb8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrro8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (20 pages, 1217565 bytes).
+Output written on main.pdf (20 pages, 1218498 bytes).
 PDF statistics:
  160 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
