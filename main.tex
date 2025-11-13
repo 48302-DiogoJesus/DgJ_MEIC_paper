@@ -183,7 +183,7 @@ Storing these metrics enables us to provide a prediction API, shown in Listing~\
 
 The prediction methods take an additional parameter, \texttt{SLA} (Service-level Agreement), which is specified by the user and influences the selection of prediction samples. For example, \texttt{SLA="median"} will use the median of the historical samples, whereas \texttt{SLA=Percentile(80)} will return a more conservative estimate. By allowing the user to control this parameter, the API can provide predictions that are tailored to different performance requirements.
 
-\begin{lstlisting}[basicstyle=\ttfamily\footnotesize, columns=fullflexible, breaklines=true, caption=Task Predictions API, label=lst:task_predictions_api]
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize, columns=fullflexible, breaklines=true, caption=Task Predictions API, label=lst:task_predictions_api]
 class PredictionsProvider:
     def predict_output_size(function_name, input_size, sla) -> int
 
@@ -213,7 +213,95 @@ Users can select from three provided planners or implement their own planner by 
     \item \textbf{Non-Uniform}: Tasks can use different worker configurations (list of available resources is specified by the user). Each task is assigned a \texttt{worker\_id}. This algorithm starts by assigning the best available resources to all tasks. Then it runs a resource downgrading algorithm that attempts to downgrade resources of workers \textit{outside the critical path} as much as possible without introducing a new critical path.
 \end{enumerate}
 
-Both the \textbf{Uniform} and \textbf{Non-Uniform} planners follow a two-phase approach for task allocation: resource configuration assignment followed by worker ID assignment. The planners differ in their resource allocation strategies. The \textbf{Uniform planner} applies a single, user-specified CPU and memory configuration to all tasks, while the \textbf{Non-Uniform planner} selects the most powerful configuration from the user-specified options for each task. After resource configuration, both planners employ the logic detailed in Algorithm \ref{alg:worker_assignment} (in Appendix) for worker ID assignment. This algorithm implements an intelligent clustering strategy with two primary objectives: launch as few new workers as possible while trying not to overload workers; and minimizing network data transfers by co-locating tasks whose outputs are expected to be larger. This clustering approach provides an additional benefit of reducing fan-in operation costs.
+\begin{algorithm}
+    \caption{Worker Assignment Algorithm (used by Uniform and Non-Uniform planners)}
+    \label{alg:worker_assignment}
+    \small
+    \begin{algorithmic}[1]
+    \Require $nodes$, $predictions$, $MAX\_CLUSTERING$
+    \State $assigned \gets \emptyset$
+    
+    \Comment{nodes are topologically sorted}
+    \ForAll{$n \in nodes$}
+        \If{$n \in assigned$}
+            \State \textbf{continue}
+        \EndIf
+        
+        \If{$n.upstream = \emptyset$} \Comment{root nodes}
+            \State $roots \gets \{r \in nodes \mid r.upstream = \emptyset \land r \notin assigned\}$
+            \State \Call{AssignGroup}{$\textit{null}$, $roots$}
+        \ElsIf{$|n.upstream| = 1$} \Comment{1$\to$1 or 1$\to$N}
+            \State $u \gets n.upstream[0]$
+            \If{$|u.downstream| = 1$}
+                \State \Call{AssignWorker}{$[n]$, $u.worker$} \Comment{reuse worker}
+            \Else \Comment{1$\to$N}
+                \State $fanout \gets \{d \in u.downstream \mid d \notin assigned\}$
+                \State \Call{AssignGroup}{$u.worker$, $fanout$}
+            \EndIf
+        \Else \Comment{N$\to$1 (assign to worker of upstream task with the largest total output)}
+            \State $outputs \gets \{u.worker: predictions.output\_size(u) \mid u \in n.upstream\}$
+            \State $worker\_w\_greatest\_acc\_output \gets \arg\max_{w \in outputs} outputs[w]$
+            \State \Call{AssignWorker}{$[n]$, $worker\_w\_greatest\_acc\_output$}
+        \EndIf
+    \EndFor
+    \end{algorithmic}
+\end{algorithm}
+
+Both the \textbf{Uniform} and \textbf{Non-Uniform} planners follow a two-phase approach for task allocation: resource configuration assignment followed by worker ID assignment. The planners differ in their resource allocation strategies. The \textbf{Uniform planner} applies a single, user-specified CPU and memory configuration to all tasks, while the \textbf{Non-Uniform planner} selects the most powerful configuration from the user-specified options for each task. After resource configuration, both planners employ the logic detailed in Algorithm \ref{alg:worker_assignment} (in Appendix) for worker ID assignment. This algorithm implements a balanced clustering strategy with two primary objectives: launch as few new workers as possible while trying not to overload workers; and minimizing network data transfers by co-locating tasks whose outputs are expected to be larger. This clustering approach achieves a \textbf{balance between resource contention and data locality}, contrasting with \textbf{WUKONG}.
+
+\begin{algorithm}
+    \caption{AssignGroup Procedure}
+    \label{alg:assign_group}
+    \small
+    \begin{algorithmic}[1]
+    \Function{AssignGroup}{$up\_worker$, $tasks$}
+        \If{$tasks = \emptyset$}
+            \Return
+        \EndIf
+        
+        \State $exec\_t \gets \{t: predictions.exec\_time(t) \mid t \in tasks\}$
+        \State $out\_sz \gets \{t: predictions.output\_size(t) \mid t \in tasks\}$
+        \State $median \gets \textsc{Median}(exec\_t.values())$
+        \State $longs \gets \{t \in tasks \mid exec\_t[t] > median\}$
+        \State $shorts \gets \textsc{SortLargerOutputFirst}(\{t \in tasks \mid exec\_t[t] \leq median\})$
+        
+        \Statex
+        \State \Comment{1) short tasks with bigger outputs on upstream worker}
+        \If{$up\_worker \neq \textit{null} \land shorts \neq \emptyset$}
+            \State $cluster \gets shorts[0:MAX\_CLUSTERING]$
+            \State \Call{AssignWorker}{$cluster$, $up\_worker$}
+            \State $shorts \gets shorts[MAX\_CLUSTERING:]$
+        \EndIf
+        
+        \Statex
+        \State \Comment{2) pair long tasks with remaining shorts tasks}
+        \While{$longs \neq \emptyset \land shorts \neq \emptyset$}
+            \State $cluster \gets [longs[0]] + shorts[0:MAX\_CLUSTERING-1]$
+            \State $worker\_id \gets$ \Call{NewWorkerId}{}
+            \State \Call{AssignWorker}{$cluster$, $worker\_id$}
+            \State $longs \gets longs[1:]$
+            \State $shorts \gets shorts[MAX\_CLUSTERING-1:]$
+        \EndWhile
+        
+        \Statex
+        \State \Comment{3) group remaining short tasks}
+        \While{$shorts \neq \emptyset$}
+            \State $worker\_id \gets$ \Call{NewWorkerId}{}
+            \State \Call{AssignWorker}{$shorts[0:MAX\_CLUSTERING]$, $worker\_id$}
+            \State $shorts \gets shorts[MAX\_CLUSTERING:]$
+        \EndWhile
+        
+        \Statex
+        \State \Comment{4) group remaining longs (half-size)}
+        \State $half \gets \max(1, \lfloor MAX\_CLUSTERING / 2 \rfloor)$
+        \While{$longs \neq \emptyset$}
+            \State $worker\_id \gets$ \Call{NewWorkerId}{}
+            \State \Call{AssignWorker}{$longs[0:half]$, $worker\_id$}
+            \State $longs \gets longs[half:]$
+        \EndWhile
+    \EndFunction
+    \end{algorithmic}
+\end{algorithm}
 
 After this, the \textbf{Non-Uniform} planner runs an additional algorithm, shown in Algorithm \ref{alg:resource_downgrading}, that attempts to downgrade resources of workers \textit{outside the critical path} as much as possible without introducing a new critical path, by iteratively simulating the effect of downgrading resources of workers \textit{outside the critical path} with different configurations.
 
@@ -242,7 +330,7 @@ After this, the \textbf{Non-Uniform} planner runs an additional algorithm, shown
         \State $last\_acceptable_\_rc \gets \{n.id: n.config \mid n \in nodes\_outside\_cp \land n.worker\_id = wid\}$
         
         \Statex
-        \State \Comment{Iterate through weaker configurations (skip strongest at index 0)}
+        \State \Comment{Iterate through weaker configurations (skip best)}
         \For{$i \gets 1$ \textbf{to} $|configs| - 1$}
             \State $trial \gets configs[i].\textsc{Clone}(wid)$
             
@@ -307,7 +395,7 @@ Once these optimizations are assigned, workflow planning is complete, and worker
 
 \begin{figure*}[h]
     \centering
-    \includegraphics[width=\textwidth]{figures/solution_workflowinstanceexample.png}
+    \includegraphics[width=0.65\textwidth]{figures/solution_workflowinstanceexample.png}
     \caption{Planned Workflow Execution Example}
     \label{fig:planned_workflow_execution_example}
 \end{figure*}
@@ -327,7 +415,7 @@ When invoked, a worker receives the \texttt{workflow\_id} and the \texttt{task\_
 
 \begin{figure*}[h]
     \centering
-    \includegraphics[width=\textwidth]{figures/choreographed_execution_example.png}
+    \includegraphics[width=0.9\textwidth]{figures/choreographed_execution_example.png}
     \caption{Choreographed Scheduling Example}
     \label{fig:choreographed_scheduling_example}
 \end{figure*}
@@ -504,6 +592,8 @@ The \textbf{Uniform} planner establishes itself as the most cost-effective appro
 
 For use cases prioritizing maximum speed, the \textbf{Non-Uniform} planner provides a distinct advantage over the \textbf{Uniform} planner, consistently delivering the shortest makespan. This performance gain is achieved by leveraging more powerful workers, presenting a clear trade-off between execution time and cost. The impact of our optimizations is most evident with this planner; its optimized version achieves a makespan over \textbf{50\%} shorter while consuming \textbf{45\%} fewer resources than its unoptimized counterpart.
 
+The \textbf{SLA} parameter, specified as a \textbf{percentile}, was also validated as a practical parameter for managing user expectations. Our lightweight, SLA-driven predictions provided reliable results without the computational overhead of complex models, enabling a path toward future dynamic scheduling.
+
 In summary, this research validates two key findings. First, that predictive optimizations like \textit{pre-loading} and \textit{pre-warming} are critical for mitigating latency and inefficiency in serverless workflows. Second, it presents a practical choice for developers: the \textbf{Uniform} planner for robust and resource-efficient execution, and the \textbf{Non-Uniform} planner for unparalleled performance in time-sensitive applications. Both strategies represent a significant advancement over existing scheduling models.
 
 % ------------------------------------------------ %
@@ -594,111 +684,28 @@ Limitations include unbounded historical data growth, potential conflicts in opt
 \onecolumn
 \appendix
 
-\begin{algorithm}
-    \caption{Worker Assignment Algorithm (used by Uniform and Non-Uniform planners)}
-    \label{alg:worker_assignment}
-    \small
-    \begin{algorithmic}[1]
-    \Require $nodes$, $predictions$, $MAX\_CLUSTERING$
-    \State $assigned \gets \emptyset$
-    
-    \Comment{nodes are topologically sorted}
-    \ForAll{$n \in nodes$}
-        \If{$n \in assigned$}
-            \State \textbf{continue}
-        \EndIf
-        
-        \If{$n.upstream = \emptyset$} \Comment{root nodes}
-            \State $roots \gets \{r \in nodes \mid r.upstream = \emptyset \land r \notin assigned\}$
-            \State \Call{AssignGroup}{$\textit{null}$, $roots$}
-        \ElsIf{$|n.upstream| = 1$} \Comment{1$\to$1 or 1$\to$N}
-            \State $u \gets n.upstream[0]$
-            \If{$|u.downstream| = 1$}
-                \State \Call{AssignWorker}{$[n]$, $u.worker$} \Comment{reuse worker}
-            \Else \Comment{1$\to$N}
-                \State $fanout \gets \{d \in u.downstream \mid d \notin assigned\}$
-                \State \Call{AssignGroup}{$u.worker$, $fanout$}
-            \EndIf
-        \Else \Comment{N$\to$1 (assign to worker of upstream task with the largest total output)}
-            \State $outputs \gets \{u.worker: predictions.output\_size(u) \mid u \in n.upstream\}$
-            \State $worker\_w\_greatest\_acc\_output \gets \arg\max_{w \in outputs} outputs[w]$
-            \State \Call{AssignWorker}{$[n]$, $best$}
-        \EndIf
-    \EndFor
-    
-    \Statex
-    
-    \Function{AssignGroup}{$up\_worker$, $tasks$}
-        \If{$tasks = \emptyset$}
-            \Return
-        \EndIf
-        
-        \State $exec\_t \gets \{t: predictions.exec\_time(t) \mid t \in tasks\}$
-        \State $out\_sz \gets \{t: predictions.output\_size(t) \mid t \in tasks\}$
-        \State $median \gets \textsc{Median}(exec\_t.values())$
-        \State $longs \gets \{t \in tasks \mid exec\_t[t] > median\}$
-        \State $shorts \gets \textsc{SortLargerOutputFirst}(\{t \in tasks \mid exec\_t[t] \leq median\})$
-        
-        \Statex
-        \State \Comment{1) cluster short tasks with bigger outputs on upstream worker}
-        \If{$up\_worker \neq \textit{null} \land shorts \neq \emptyset$}
-            \State $cluster \gets shorts[0:MAX\_CLUSTERING]$
-            \State \Call{AssignWorker}{$cluster$, $up\_worker$}
-            \State $shorts \gets shorts[MAX\_CLUSTERING:]$
-        \EndIf
-        
-        \Statex
-        \State \Comment{2) pair long tasks with remaining short tasks (1 long per group)}
-        \While{$longs \neq \emptyset \land shorts \neq \emptyset$}
-            \State $cluster \gets [longs[0]] + shorts[0:MAX\_CLUSTERING-1]$
-            \State $worker\_id \gets$ \Call{NewWorkerId}{}
-            \State \Call{AssignWorker}{$cluster$, $worker\_id$}
-            \State $longs \gets longs[1:]$
-            \State $shorts \gets shorts[MAX\_CLUSTERING-1:]$
-        \EndWhile
-        
-        \Statex
-        \State \Comment{3) group remaining short tasks}
-        \While{$shorts \neq \emptyset$}
-            \State $worker\_id \gets$ \Call{NewWorkerId}{}
-            \State \Call{AssignWorker}{$shorts[0:MAX\_CLUSTERING]$, $worker\_id$}
-            \State $shorts \gets shorts[MAX\_CLUSTERING:]$
-        \EndWhile
-        
-        \Statex
-        \State \Comment{4) group remaining longs (half-size)}
-        \State $half \gets \max(1, \lfloor MAX\_CLUSTERING / 2 \rfloor)$
-        \While{$longs \neq \emptyset$}
-            \State $worker\_id \gets$ \Call{NewWorkerId}{}
-            \State \Call{AssignWorker}{$longs[0:half]$, $worker\_id$}
-            \State $longs \gets longs[half:]$
-        \EndWhile
-    \EndFunction
-\end{algorithmic}
-\end{algorithm}
-
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\linewidth, height=0.85\textheight]{figures/dag_image_gemm.png}
+    \includegraphics[width=0.7\linewidth, height=0.7\textheight]{figures/dag_image_gemm.png}
     \caption{Matrix Multiplication Workflow}
     \label{fig:matrix_multiplication}
 \end{figure}
 \begin{figure}[h]
     \centering
     \includegraphics[width=\linewidth, height=0.85\textheight]{figures/dag_image_tree_reduction.png}
-    \caption{Tree Reduction Workflow}
+    \caption{Tree Reduction Workflow (Partial)}
     \label{fig:tree_reduction}
 \end{figure}
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\linewidth, height=0.85\textheight]{figures/dag_image_text_analysis.png}
-    \caption{Text Analysis Workflow}
+    \includegraphics[width=\linewidth, height=0.35\textheight]{figures/dag_image_text_analysis.png}
+    \caption{Text Analysis Workflow (Partial)}
     \label{fig:text_analysis}
 \end{figure}
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\linewidth, height=0.85\textheight]{figures/dag_image_image_transformer.png}
-    \caption{Image Transformation Workflow}
+    \includegraphics[width=\linewidth, height=0.35\textheight]{figures/dag_image_image_transformer.png}
+    \caption{Image Transformation Workflow (Partial)}
     \label{fig:image_transformer}
 \end{figure}
 

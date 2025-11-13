@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex main"] 1763037153.87916 "main.aux" "main.bbl" "main" 1763037164.0759 0
+["bibtex main"] 1763039512.17492 "main.aux" "main.bbl" "main" 1763040151.26721 0
   "./references.bib" 1763036694 25037 8c687bc7bd46288239060e77d8a2fc85 ""
   "C:/Users/dijes/AppData/Local/Programs/MiKTeX/bibtex/bst/ieeetran/IEEEtran.bst" 1440622569 57748 7c8250ecf02814ce6ddc0cdbb63df1dd ""
-  "main.aux" 1763037163 10333 8e169901a26e0463ec72d815af30377d "pdflatex"
+  "main.aux" 1763040150 10530 43d5358c63d27019ed8c2731d9883e2d "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1763037159.44905 "c:/Users/dijes/Desktop/Current/PG/Tecnico/_A2/TESE/DgJ_MEIC_paper/main.tex" "main.pdf" "main" 1763037164.07663 0
+["pdflatex"] 1763040148.28462 "c:/Users/dijes/Desktop/Current/PG/Tecnico/_A2/TESE/DgJ_MEIC_paper/main.tex" "main.pdf" "main" 1763040151.26794 0
   "C:/Users/dijes/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1759398184 82507 a9eef8696c92627b87e9975edea03b2a ""
   "C:/Users/dijes/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1757504112 24225046 38d4591ba2ff146cd60fb2b4577dd929 ""
   "C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/base/8r.enc" 1458473887 4993 80dc9bab7f31fb78a000ccfed0e27cab ""
@@ -109,12 +109,12 @@
   "C:/Users/dijes/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "C:/Users/dijes/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1700127522 55487 80a65caedd3722f4c20a14a69e785d8f ""
   "IEEEtran.cls" 1758995741 281957 5b2e4fa15b0f7eabb840ebf67df4c0f7 ""
-  "c:/Users/dijes/Desktop/Current/PG/Tecnico/_A2/TESE/DgJ_MEIC_paper/main.tex" 1763037158 87158 12b9af31581c9fcb4464c2e0aae1c007 ""
-  "figures/choreographed_execution_example.png" 1759944345 179514 5edfff6547eb1fa42725bf0f34ab7037 ""
+  "c:/Users/dijes/Desktop/Current/PG/Tecnico/_A2/TESE/DgJ_MEIC_paper/main.tex" 1763040147 87679 c71c5f1eec44aace9ab0b5cae5917c29 ""
+  "figures/choreographed_execution_example.png" 1763038452 114403 edbadad0fb7f4554f91e8de6ae52c726 ""
   "figures/dag_image_gemm.png" 1759872921 122763 eb96eb55c5d5f2e7cc1b6d38b4ba5dec ""
-  "figures/dag_image_image_transformer.png" 1758200274 454110 ea09231dbaf1f51f9292ed4d4770d674 ""
-  "figures/dag_image_text_analysis.png" 1760199246 605807 03e7008a91a39ff82847b219cee9d4ff ""
-  "figures/dag_image_tree_reduction.png" 1760199228 159878 574ac824f8fe2f3081cc75ec88231c5f ""
+  "figures/dag_image_image_transformer.png" 1763039169 158022 2991e156229b6f25e55674ce87a56066 ""
+  "figures/dag_image_text_analysis.png" 1763039147 322892 9f37c1c54be1bca4a10982d1cb00f2fe ""
+  "figures/dag_image_tree_reduction.png" 1763039125 87108 901291a2bd4b1da6ed3674a0c134a97b ""
   "figures/dag_lang_example.png" 1757518705 8863 0fc7d9127968840b4e9cee339d4157c9 ""
   "figures/eval/1_predictions/prediction_accuracy_by_sla_and_fullfilment.png" 1760361430 86482 d4430a984ff36ffc5beac1ea745e45ba ""
   "figures/eval/2_metrics/makespan dist.png" 1760282131 55407 e1c1063b0063e61c6eea48ccd780e019 ""
@@ -122,10 +122,10 @@
   "figures/eval/4_res_usage/makespan compare.png" 1760359345 36004 42e3f9f7665e181470e2329719de812e ""
   "figures/eval/4_res_usage/resources compare.png" 1760359369 44186 d7d2396ac5d0f9d7fcbac297ece08450 ""
   "figures/solution_distributedarchintegrated.png" 1758124742 244522 bd3bb73c28ec6b17c68a6eb6574550d0 ""
-  "figures/solution_workflowinstanceexample.png" 1758549772 212083 9b4d5bd2b87ce289f5d0fc767371c378 ""
-  "main.aux" 1763037163 10333 8e169901a26e0463ec72d815af30377d "pdflatex"
-  "main.bbl" 1763037154 8470 38f4d2637dc1dabeb6584ed2028f3278 "bibtex main"
-  "main.tex" 1763037158 87158 12b9af31581c9fcb4464c2e0aae1c007 ""
+  "figures/solution_workflowinstanceexample.png" 1763038680 146989 0892efe428e3ff909eaaaaa67b774e9e ""
+  "main.aux" 1763040150 10530 43d5358c63d27019ed8c2731d9883e2d "pdflatex"
+  "main.bbl" 1763039512 8470 38f4d2637dc1dabeb6584ed2028f3278 "bibtex main"
+  "main.tex" 1763040147 87679 c71c5f1eec44aace9ab0b5cae5917c29 ""
   (generated)
   "main.aux"
   "main.log"
