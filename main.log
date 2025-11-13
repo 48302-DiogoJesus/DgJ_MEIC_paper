@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.9.10)  13 NOV 2025 13:43
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.9.10)  13 NOV 2025 15:09
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -417,9 +417,6 @@ File: figures/eval/2_metrics/makespan dist.png Graphic file (type png)
 <use figures/eval/2_metrics/makespan dist.png>
 Package pdftex.def Info: figures/eval/2_metrics/makespan dist.png  used on input line 547.
 (pdftex.def)             Requested size: 252.0pt x 161.12401pt.
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
 <figures/eval/3_opts/time breakdown.png, id=57, 602.25pt x 501.875pt>
 File: figures/eval/3_opts/time breakdown.png Graphic file (type png)
 <use figures/eval/3_opts/time breakdown.png>
@@ -500,13 +497,13 @@ L3 programming layer <2024-01-04>
 Here is how much of TeX's memory you used:
  8228 strings out of 474486
  134054 string characters out of 5743755
- 2017542 words of memory out of 5000000
+ 2016542 words of memory out of 5000000
  30418 multiletter control sequences out of 15000+600000
  608102 words of font info for 135 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  57i,10n,65p,1600b,1712s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi9.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy9.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrb8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/courier/ucrro8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Users/dijes/AppData/Local/Programs/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (20 pages, 1228261 bytes).
+Output written on main.pdf (20 pages, 1229020 bytes).
 PDF statistics:
  165 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
