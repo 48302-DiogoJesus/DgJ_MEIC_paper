@@ -146,6 +146,27 @@ Dask - python parallel computing framework. [Online]. Available:
 Apache oozie. [Online]. Available: \url{https://oozie.apache.org/}
 \BIBentrySTDinterwordspacing
 
+\bibitem{cose}
+N.~Akhtar, A.~Raza, V.~Ishakian, and I.~Matta, ``Cose: Configuring serverless
+  functions using statistical learning,'' in \emph{IEEE INFOCOM 2020 - IEEE
+  Conference on Computer Communications}, 2020, pp. 129--138.
+
+\bibitem{orion}
+A.~Mahgoub, E.~B. Yi, K.~Shankar, S.~Elnikety, S.~Chaterji, and S.~Bagchi,
+  ``$\{$ORION$\}$ and the three rights: Sizing, bundling, and prewarming for
+  serverless $\{$DAGs$\}$,'' in \emph{16th USENIX Symposium on Operating
+  Systems Design and Implementation (OSDI 22)}, 2022, pp. 303--320.
+
+\bibitem{jolteon}
+Z.~Zhang, C.~Jin, and X.~Jin, ``Jolteon: Unleashing the promise of serverless
+  for serverless workflows,'' in \emph{21st USENIX Symposium on Networked
+  Systems Design and Implementation (NSDI 24)}, 2024, pp. 167--183.
+
+\bibitem{predictiveadaptive}
+S.~K. Koney, ``Predictive and adaptive scheduling of serverless ml pipelines
+  for cost-efficient and low-latency execution,'' \emph{Journal Of Engineering
+  And Computer Sciences}, vol.~4, no.~7, pp. 620--629, 2025.
+
 \bibitem{apache_hadoop}
 \BIBentryALTinterwordspacing
 Apache hadoop. [Online]. Available: \url{https://hadoop.apache.org/}
