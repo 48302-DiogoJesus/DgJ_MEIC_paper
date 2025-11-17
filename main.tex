@@ -423,7 +423,7 @@ After this preparation phase, the worker starts executing its initial tasks conc
     \item \textbf{Gathering Dependencies}: Check which dependencies are missing (not downloaded yet) and download them from storage. Some dependencies might be present in the local representation of the DAG if \texttt{pre-load} was applied, if the same worker executed some of the upstream tasks, or if the worker already downloaded large hardcoded data because previous tasks needed it;
     \item \textbf{Executing Task}: After gathering all task dependencies (upstream task outputs and hardcoded data), it executes the task's code. Its function code is embedded within the workflow representation so it can be easily executed by the workers, similarly to WUKONG. This enables the worker to remain generic, capable of receiving and executing arbitrary task code (except async functions, since \textit{cloudpickle} can't serialize them). Tasks' code execute on a separate thread, to avoid slowing down or even blocking (e.g., if the task code calls \texttt{time.sleep()}) the main thread, where the other coroutines are running: both task branch execution and other internal coroutines (i.e., Redis pub/sub listener, and delayed \texttt{pre-warm} requests);
     \item \textbf{Handling Output}: This phase is responsible for evaluating whether it's necessary to upload the task's output to storage and emitting a \texttt{TASK\_COMPLETED} event. A tasks' output is uploaded if there is at least one downstream task assigned to a different worker, or if it's the sink/last task of the workflow;
-    \item \textbf{Updating Dependency Counters}: For each downstream task, the worker performs an \textit{atomic increment and get} operation on a \textit{"Dependency Counter"} (inspired by WUKONG~\cite{wukong_2}) stored in \textit{Metadata Storage}, which tracks how many dependencies of a task have been satisfied. If the counter sees that the value returned is the same as the number of dependencies for a downstream task, the worker emits a \texttt{TASK\_READY} event for that task, signaling other workers or workers that aren't active yet that the task became ready to execute;
+    \item \textbf{Updating Dependency Counters}: For each downstream task, the worker performs an \textit{atomic increment and get} operation on a \textit{"Dependency Counter"} (inspired by WUKONG~\cite{wukong_2}) stored in \textit{Metadata Storage}, which tracks how many dependencies of a task have been satisfied. If the counter value is the same as the number of dependencies for a downstream task, the worker emits a \texttt{TASK\_READY} event for that task, signaling other workers or workers that aren't active yet that the task became ready to execute;
     \item \textbf{Delegating Downstream Tasks}: After updating dependency counters, the worker knows which tasks became \textit{ready}. The worker then consults the execution plan to determine how to proceed for each of those tasks: for tasks assigned to the same worker and with no remaining unfulfilled dependencies, the worker will execute it (one \textit{coroutine} for each task); for tasks assigned to another worker \textbf{that is already active}, a \texttt{TASK\_READY} event is emitted; for tasks assigned to another worker \textbf{that is not active}, this worker launches the target worker, indicating the branches (\textit{immediate task identifiers}) it should execute. Because of the planner validation mentioned in Section ~\ref{ss:static_workflow_planning}, it is possible for a worker to know, at any point in time, whether another worker is already active or not just by looking at the workflow structure and respective plan.
 \end{enumerate}
 
@@ -685,28 +685,28 @@ Finally, broader evaluation (comparing prediction strategies, deploying on comme
 \appendix
 
 \begin{figure}[h]
-    \centering
-    \includegraphics[width=0.7\linewidth, height=0.7\textheight]{figures/dag_image_gemm.png}
-    \caption{Matrix Multiplication Workflow}
-    \label{fig:matrix_multiplication}
+   \centering
+   \includegraphics[width=0.7\linewidth, height=0.7\textheight]{figures/dag_image_gemm.png}
+   \caption{Matrix Multiplication Workflow}
+   \label{fig:matrix_multiplication}
 \end{figure}
 \begin{figure}[h]
-    \centering
-    \includegraphics[width=\linewidth, height=0.85\textheight]{figures/dag_image_tree_reduction.png}
-    \caption{Tree Reduction Workflow (Partial)}
-    \label{fig:tree_reduction}
+   \centering
+   \includegraphics[width=\linewidth, height=0.85\textheight]{figures/dag_image_tree_reduction.png}
+   \caption{Tree Reduction Workflow (Partial)}
+   \label{fig:tree_reduction}
 \end{figure}
 \begin{figure}[h]
-    \centering
-    \includegraphics[width=\linewidth, height=0.35\textheight]{figures/dag_image_text_analysis.png}
-    \caption{Text Analysis Workflow (Partial)}
-    \label{fig:text_analysis}
+   \centering
+   \includegraphics[width=\linewidth, height=0.35\textheight]{figures/dag_image_text_analysis.png}
+   \caption{Text Analysis Workflow (Partial)}
+   \label{fig:text_analysis}
 \end{figure}
 \begin{figure}[h]
-    \centering
-    \includegraphics[width=\linewidth, height=0.35\textheight]{figures/dag_image_image_transformer.png}
-    \caption{Image Transformation Workflow (Partial)}
-    \label{fig:image_transformer}
+   \centering
+   \includegraphics[width=\linewidth, height=0.35\textheight]{figures/dag_image_image_transformer.png}
+   \caption{Image Transformation Workflow (Partial)}
+   \label{fig:image_transformer}
 \end{figure}
 
 \end{document}
